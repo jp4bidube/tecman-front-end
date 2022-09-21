@@ -7,8 +7,9 @@ export type ThemeSlice = {
 };
 
 export const createThemeSlice: StateCreator<ThemeSlice> = (set) => ({
-  colorScheme: "light",
+  colorScheme: (localStorage.getItem("color-mode") as ColorScheme) || "light",
   setColorScheme: (colorScheme) => {
+    localStorage.setItem("color-mode", colorScheme);
     set((state) => ({ ...state, colorScheme }));
   },
 });
