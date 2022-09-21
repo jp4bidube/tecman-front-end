@@ -1,5 +1,7 @@
+import { useMemo } from "react";
 import { useLogout } from "@/services/features/auth/hooks/Logout";
 import useStore from "@/store";
+import { getRandomColor } from "@/utils/getRandomColor";
 import {
   Avatar,
   Box,
@@ -20,6 +22,7 @@ export function AccountSettingsLink() {
     mutation.mutate();
   };
 
+  const color = useMemo(() => getRandomColor(), []);
   return (
     <Menu shadow="md" width={200} position="right">
       <Menu.Target>
@@ -53,7 +56,14 @@ export function AccountSettingsLink() {
             }}
           >
             <Group>
-              <Avatar src={store.loggedUser.avatarUrl} radius="xl" />
+              <Avatar
+                src={store.loggedUser.avatarUrl}
+                radius="xl"
+                color={color}
+              >
+                {!store.loggedUser.avatarUrl &&
+                  store.loggedUser.name.toUpperCase().substring(0, 2)}
+              </Avatar>
               <Box sx={{ flex: 1 }}>
                 <Text
                   size="sm"
