@@ -38,7 +38,7 @@ const App = () => {
         withGlobalStyles
         withNormalizeCSS
       >
-        <NotificationsProvider position="top-center">
+        <NotificationsProvider position="top-right">
           <ModalsProvider>
             <GlobalStyle />
             <MainRoutes />

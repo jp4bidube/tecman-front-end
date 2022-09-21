@@ -1,4 +1,5 @@
 import { useMe } from "@/services/features/users/hooks/useMe";
+import useStore from "@/store";
 import {
   AppShell,
   Burger,
@@ -19,7 +20,7 @@ import { MainLinks } from "./components/MainLink";
 
 export const Layout = () => {
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
+  const { isMenuOpen, setIsMenuOpen } = useStore();
 
   const me = useMe();
 
@@ -55,8 +56,8 @@ export const Layout = () => {
         }
         overlayOpacity={0.55}
         overlayBlur={3}
-        opened={opened}
-        onClose={() => setOpened(false)}
+        opened={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
         padding="xl"
       >
         <Grid>
@@ -75,8 +76,8 @@ export const Layout = () => {
         <Group spacing={-20}>
           <MediaQuery largerThan="sm" styles={{ display: "none" }}>
             <Burger
-              opened={opened}
-              onClick={() => setOpened((o) => !o)}
+              opened={isMenuOpen}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
               size="sm"
               color={theme.colors.gray[6]}
               mr="xl"

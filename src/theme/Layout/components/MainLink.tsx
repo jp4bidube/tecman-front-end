@@ -18,6 +18,7 @@ import {
 } from "react-icons/tb";
 import { IoBuildOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import useStore from "@/store";
 
 interface MainLinkProps {
   icon: React.ReactNode;
@@ -27,6 +28,11 @@ interface MainLinkProps {
 
 function MainLink({ icon, label, path }: MainLinkProps) {
   const navigate = useNavigate();
+  const { setIsMenuOpen } = useStore();
+  const handleClick = () => {
+    setIsMenuOpen(false);
+    navigate(path);
+  };
 
   return (
     <UnstyledButton
@@ -45,7 +51,7 @@ function MainLink({ icon, label, path }: MainLinkProps) {
               : theme.colors.gray[0],
         },
       })}
-      onClick={() => navigate(path)}
+      onClick={handleClick}
     >
       <Group>
         <ThemeIcon variant="light">{icon}</ThemeIcon>

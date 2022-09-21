@@ -1,3 +1,4 @@
+import useStore from "@/store";
 import {
   ActionIcon,
   Box,
@@ -12,8 +13,13 @@ import logo from "../../../assets/logo.svg";
 
 export function Brand() {
   const navigate = useNavigate();
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const { setIsMenuOpen } = useStore();
 
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const handleClick = () => {
+    setIsMenuOpen(false);
+    navigate("/");
+  };
   return (
     <Box
       sx={(theme) => ({
@@ -31,7 +37,7 @@ export function Brand() {
           src={logo}
           alt="Logo"
           sx={{ maxWidth: 200, minWidth: 100, cursor: "pointer" }}
-          onClick={() => navigate("/")}
+          onClick={handleClick}
         />
         <ActionIcon
           variant="default"

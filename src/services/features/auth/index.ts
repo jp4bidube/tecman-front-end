@@ -1,5 +1,4 @@
 import { api, uninterceptedAxiosInstance } from "@/services/api";
-import axios from "axios";
 import { LoginPayload } from "@/types/auth";
 
 type AuthPayload = {
@@ -8,6 +7,7 @@ type AuthPayload = {
   userStatus: number;
   userProfile: number;
   userName: string;
+  name: string;
   expiration: string;
   accessToken: string;
   refreshToken: string;
