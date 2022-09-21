@@ -43,9 +43,22 @@ export const Login = () => {
       <Center
         sx={{
           height: "100vh",
+          "@media (max-width: 755px)": {
+            margin: "0px",
+          },
         }}
       >
-        <Paper shadow="md" p="xs" withBorder>
+        <Paper
+          shadow="md"
+          p="xs"
+          withBorder
+          sx={{
+            width: "45%",
+            "@media (max-width: 755px)": {
+              width: "100%",
+            },
+          }}
+        >
           <Center>
             <Image
               src={logo}
@@ -56,10 +69,10 @@ export const Login = () => {
 
           <form onSubmit={action.handleSubmit}>
             <Stack
+              p="xl"
               sx={{
-                padding: "2rem",
                 "@media (max-width: 1200px)": {
-                  width: "100vw",
+                  width: "100%",
                 },
                 "@media (max-width: 755px)": {
                   width: "100%",
