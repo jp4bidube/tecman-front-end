@@ -9,7 +9,9 @@ import {
   FileButton,
   Grid,
   Group,
+  InputBase,
   Paper,
+  PasswordInput,
   Select,
   Stack,
   Text,
@@ -21,6 +23,10 @@ import { useState } from "react";
 import { TbDeviceFloppy, TbUpload } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { validationSchema } from "./validationSchema";
+import cep from "cep-promise";
+import InputMask from "react-input-mask";
+import "dayjs/locale/pt-BR";
+import { DatePicker } from "@mantine/dates";
 
 type UserEditProps = {
   user: User;
@@ -28,16 +34,24 @@ type UserEditProps = {
 
 export const UserEditForm = ({ user }: UserEditProps) => {
   const navigate = useNavigate();
-
+  const initialValue = {
+    ...user,
+    role: user.role.id + "",
+    employeeUser: {
+      login: true,
+      username: "",
+      password: "",
+    },
+    confirmPassword: "" || undefined,
+  };
   const formik = useFormik({
-    initialValues: { ...user, role: user.role.id + "" } || ({} as User),
+    initialValues: initialValue,
     validationSchema,
     onSubmit: (values) => {
       console.log(values);
       navigate("/users");
     },
   });
-
   const { values, errors, touched, ...action } = formik;
   const currentRole = getIn(values, "role");
   const [avatar, setAvatar] = useState<File | null>(null);
@@ -46,8 +60,14 @@ export const UserEditForm = ({ user }: UserEditProps) => {
   const changeImg = async () => {
     if (avatar) {
       const b64 = await toBase64(avatar);
-      formik.setFieldValue("avatarUrl", b64);
+      formik.setFieldValue("avatar_url", b64);
     }
+  };
+
+  const handleSearchCep = async (cepNumber: string) => {
+    const { street, neighborhood } = await cep(cepNumber);
+    action.setFieldValue("address.street", street);
+    action.setFieldValue("address.district", neighborhood);
   };
 
   useEffect(() => {
@@ -73,8 +93,12 @@ export const UserEditForm = ({ user }: UserEditProps) => {
               <Group position="apart">
                 <Title order={3}>Informações básicas</Title>
                 <Group>
-                  <Button radius="xl" leftIcon={<TbDeviceFloppy size={20} />}>
-                    Atualizar
+                  <Button
+                    radius="xl"
+                    type="submit"
+                    leftIcon={<TbDeviceFloppy size={20} />}
+                  >
+                    Salvar
                   </Button>
                   <Button
                     radius="xl"
@@ -143,27 +167,31 @@ export const UserEditForm = ({ user }: UserEditProps) => {
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
-              <TextInput
+              <InputBase
                 placeholder="CPF"
                 label="CPF"
                 name="cpf"
                 id="cpf"
+                component={InputMask}
                 value={values.cpf}
                 onChange={action.handleChange}
                 error={touched.cpf && errors.cpf}
                 withAsterisk
+                mask="999.999.999-99"
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
-              <TextInput
+              <InputBase
                 placeholder="Telefone"
                 label="Telefone"
                 name="phoneNumber"
+                component={InputMask}
                 id="phoneNumber"
                 value={values.phoneNumber}
                 onChange={action.handleChange}
                 error={touched.phoneNumber && errors.phoneNumber}
                 withAsterisk
+                mask="(99) 99999-9999"
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
@@ -182,8 +210,19 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                 ]}
               />
             </Grid.Col>
+            <Grid.Col xs={12} md={6}>
+              <DatePicker
+                placeholder="Data de nascimento"
+                locale="pt-BR"
+                label="Data de Nascimento"
+                value={values.birthDate}
+                error={touched.birthDate && errors.birthDate}
+                onChange={(value) => action.setFieldValue("birthDate", value)}
+                withAsterisk
+              />
+            </Grid.Col>
           </Grid>
-          <Collapse in={showUserCredentials}>
+          {initialValue && initialValue.role !== "4" && (
             <Grid>
               <Grid.Col span={12}>
                 <Title order={3} mt={20}>
@@ -194,40 +233,47 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                 <TextInput
                   placeholder="Nome de usuário"
                   label="Nome de usuário"
-                  name="name"
-                  id="name"
-                  value={values.name}
+                  name="employeeUser.username"
+                  id="employeeUser.username"
+                  value={values.employeeUser?.username}
                   onChange={action.handleChange}
-                  error={touched.name && errors.name}
+                  error={
+                    touched.employeeUser?.username &&
+                    errors.employeeUser?.username
+                  }
                   withAsterisk
                 />
               </Grid.Col>
               <Grid.Col xs={12} md={4}>
-                <TextInput
+                <PasswordInput
                   placeholder="Senha"
                   label="Senha"
-                  name="name"
-                  id="name"
-                  value={values.name}
+                  name="employeeUser.password"
+                  id="employeeUser.password"
+                  value={values.employeeUser?.password}
                   onChange={action.handleChange}
-                  error={touched.name && errors.name}
+                  error={
+                    touched.employeeUser?.password &&
+                    errors.employeeUser?.password
+                  }
                   withAsterisk
                 />
               </Grid.Col>
               <Grid.Col xs={12} md={4}>
-                <TextInput
+                <PasswordInput
                   placeholder="Confirmar Senha"
                   label="Confirmar Senha"
-                  name="name"
-                  id="name"
-                  value={values.name}
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  value={values.confirmPassword}
                   onChange={action.handleChange}
-                  error={touched.name && errors.name}
+                  error={touched.confirmPassword && errors.confirmPassword}
                   withAsterisk
                 />
               </Grid.Col>
             </Grid>
-          </Collapse>
+          )}
+
           <Grid>
             <Grid.Col span={12}>
               <Title order={3} mt={20}>
@@ -235,14 +281,17 @@ export const UserEditForm = ({ user }: UserEditProps) => {
               </Title>
             </Grid.Col>
             <Grid.Col xs={12} md={4}>
-              <TextInput
+              <InputBase
                 placeholder="CEP"
                 label="CEP"
                 name="address.cep"
                 id="address.cep"
+                component={InputMask}
                 value={values.address?.cep}
+                onBlur={(e) => handleSearchCep(e.target.value)}
                 onChange={action.handleChange}
                 error={touched.address?.cep && errors.address?.cep}
+                mask="99.999-999"
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
@@ -254,7 +303,6 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                 value={values.address?.street}
                 onChange={action.handleChange}
                 error={touched.address?.street && errors.address?.street}
-                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={2}>
@@ -277,7 +325,6 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                 value={values.address?.district}
                 onChange={action.handleChange}
                 error={touched.address?.district && errors.address?.district}
-                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
@@ -291,7 +338,6 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                 error={
                   touched.address?.complement && errors.address?.complement
                 }
-                withAsterisk
               />
             </Grid.Col>
           </Grid>

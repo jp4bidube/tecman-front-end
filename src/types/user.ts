@@ -4,7 +4,7 @@ export type User = {
   phoneNumber: string;
   cpf: string;
   email: string;
-  birthDate: string;
+  birthDate: Date | null;
   registrationDate: string;
   deactivationDate: string;
   role: {
@@ -32,7 +32,7 @@ export type CreateUserPayload = {
   cpf: string;
   email: string;
   avatar_url: string;
-  birthDate: string;
+  birthDate: string | null;
   role: number;
   address: {
     street: string;

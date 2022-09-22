@@ -1,6 +1,6 @@
 import useStore from "@/store";
 import { User } from "@/types/user";
-import { Badge, Group, Table, ThemeIcon, Tooltip } from "@mantine/core";
+import { Badge, Group, Table, ThemeIcon, Title, Tooltip } from "@mantine/core";
 
 import {
   TbChevronDown,
@@ -64,6 +64,21 @@ export const UsersTable = ({ users, confirmInactivation }: UsersTableProps) => {
             </Group>
           </th>
           <th>
+            <Group
+              sx={{ cursor: "pointer" }}
+              onClick={() => handleSort("role")}
+            >
+              Perfil
+              <ThemeIcon variant="light" color={sort === "role" ? "" : "gray"}>
+                {sort === "role" && order === "asc" ? (
+                  <TbChevronUp size={15} />
+                ) : (
+                  <TbChevronDown size={15} />
+                )}
+              </ThemeIcon>
+            </Group>
+          </th>
+          <th>
             <Group sx={{ cursor: "pointer" }} onClick={() => handleSort("cpf")}>
               Documento
               <ThemeIcon variant="light" color={sort === "cpf" ? "" : "gray"}>
@@ -102,6 +117,9 @@ export const UsersTable = ({ users, confirmInactivation }: UsersTableProps) => {
             <tr key={user.id}>
               <td>{user.name}</td>
               <td>{user.email}</td>
+              <td>
+                <Badge color="tecman">{user.role.role}</Badge>
+              </td>
               <td>{user.cpf}</td>
               <td>
                 <Badge

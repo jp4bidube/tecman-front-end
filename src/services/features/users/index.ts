@@ -1,5 +1,7 @@
 import { api } from "@/services/api";
+import { ResponseOK } from "@/types/responseOk";
 import { CreateUserPayload, LoggedUser, User } from "@/types/user";
+import { AxiosResponse } from "axios";
 
 class UsersService {
   async getCurrentUser(): Promise<LoggedUser> {
@@ -33,8 +35,13 @@ class UsersService {
   }
 
   async getUserById(id: string): Promise<User> {
-    const { data } = await api.get(`/Employee/${id}`);
-    return data.result;
+    const { data }: AxiosResponse<ResponseOK> = await api.get(
+      `/Employee/${id}`
+    );
+    return {
+      ...data.result,
+      birthDate: data.result.birthDate ? new Date(data.result.birthDate) : null,
+    };
   }
 
   async patchToggleDisableUser(id: number) {

@@ -24,6 +24,8 @@ import { useNavigate } from "react-router-dom";
 import cep from "cep-promise";
 import { validationSchema } from "./validationSchema";
 import { useCreateUser } from "@/services/features/users/hooks/useCreateUser";
+import "dayjs/locale/pt-BR";
+import { DatePicker } from "@mantine/dates";
 
 export const UserCreateForm = () => {
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ export const UserCreateForm = () => {
       cpf: "",
       email: "",
       avatar_url: "",
-      birthDate: "2022-09-19T05:15:23.690Z",
+      birthDate: null,
       role: "",
       address: {
         street: "",
@@ -54,7 +56,6 @@ export const UserCreateForm = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
       let payload = { ...values };
       delete payload.confirmPassword;
       mutation.mutate({ ...payload, role: +payload.role });
@@ -217,6 +218,17 @@ export const UserCreateForm = () => {
                   { value: "3", label: "Gerência" },
                   { value: "4", label: "Técnicos" },
                 ]}
+              />
+            </Grid.Col>
+            <Grid.Col xs={12} md={6}>
+              <DatePicker
+                placeholder="Data de nascimento"
+                locale="pt-BR"
+                label="Data de Nascimento"
+                value={values.birthDate}
+                error={touched.birthDate && errors.birthDate}
+                onChange={(value) => action.setFieldValue("birthDate", value)}
+                withAsterisk
               />
             </Grid.Col>
           </Grid>

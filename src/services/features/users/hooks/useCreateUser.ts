@@ -1,5 +1,7 @@
+import { ResponseError } from "@/types/responseError";
 import { CreateUserPayload } from "@/types/user";
 import { showNotification } from "@mantine/notifications";
+import { AxiosError, AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { usersService } from "..";
@@ -22,10 +24,10 @@ export const useCreateUser = () => {
         });
         navigate("/users");
       },
-      onError: () => {
+      onError: ({ data }: AxiosResponse<ResponseError>) => {
         showNotification({
           title: "Erro",
-          message: "Erro inesperado",
+          message: data.message,
           color: "red",
           autoClose: true,
         });

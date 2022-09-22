@@ -9,14 +9,15 @@ const employeeUserSchema = yup.object().shape({
 });
 
 export const validationSchema = yup.object({
-  name: yup.string().required("Usuário é obrigatório"),
-  cpf: yup.string().required("Usuário é obrigatório"),
+  name: yup.string().required("O campo é obrigatório"),
+  cpf: yup.string().required("O campo é obrigatório"),
   email: yup
     .string()
     .email("E-mail não é válido")
-    .required("Usuário é obrigatório"),
-  phoneNumber: yup.string().required("Usuário é obrigatório"),
-  role: yup.string().required("Usuário é obrigatório"),
+    .required("O campo é obrigatório"),
+  phoneNumber: yup.string().required("O campo é obrigatório"),
+  role: yup.string().required("O campo é obrigatório"),
+  birthDate: yup.mixed().required("O campo é obrigatório"),
   employeeUser: yup.object().when("role", {
     is: (roleValue: string) => roleValue !== "" && roleValue !== "4",
     then: employeeUserSchema,
