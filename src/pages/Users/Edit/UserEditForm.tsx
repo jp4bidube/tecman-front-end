@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { User } from "@/types/user";
+import { useUpdateUser } from "@/services/features/users/hooks/useUpdateUser";
+import { EditUserPayload, User } from "@/types/user";
 import { toBase64 } from "@/utils/fileToB64";
 import {
   Avatar,
@@ -10,23 +10,25 @@ import {
   Grid,
   Group,
   InputBase,
+  Overlay,
   Paper,
-  PasswordInput,
   Select,
+  Space,
   Stack,
   Text,
   TextInput,
   Title,
 } from "@mantine/core";
-import { getIn, useFormik } from "formik";
-import { useState } from "react";
-import { TbDeviceFloppy, TbUpload } from "react-icons/tb";
-import { useNavigate } from "react-router-dom";
-import { validationSchema } from "./validationSchema";
-import cep from "cep-promise";
-import InputMask from "react-input-mask";
-import "dayjs/locale/pt-BR";
 import { DatePicker } from "@mantine/dates";
+import cep from "cep-promise";
+import "dayjs/locale/pt-BR";
+import { getIn, useFormik } from "formik";
+import { useEffect, useState } from "react";
+import { TbDeviceFloppy, TbUpload } from "react-icons/tb";
+import InputMask from "react-input-mask";
+import { useNavigate } from "react-router-dom";
+import { CreateUserCredentials } from "./CreateUserCredentials";
+import { validationSchema } from "./validationSchema";
 
 type UserEditProps = {
   user: User;
@@ -34,33 +36,52 @@ type UserEditProps = {
 
 export const UserEditForm = ({ user }: UserEditProps) => {
   const navigate = useNavigate();
+  const mutation = useUpdateUser();
+
   const initialValue = {
     ...user,
-    role: user.role.id + "",
+    role: user?.role?.id + "",
     employeeUser: {
-      login: true,
-      username: "",
-      password: "",
+      login: user.user ? true : false,
+      username: user.user ? user.user.username : "",
     },
-    confirmPassword: "" || undefined,
   };
+
   const formik = useFormik({
     initialValues: initialValue,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
-      navigate("/users");
+      const payload: EditUserPayload = {
+        name: values.name,
+        phoneNumber: values.phoneNumber,
+        cpf: values.cpf,
+        email: values.email,
+        avatarUrl: values.avatarUrl,
+        birthDate: values.birthDate,
+        role: +values.role,
+        address: {
+          street: values?.address?.street,
+          cep: values?.address?.cep,
+          number: values?.address?.number,
+          district: values?.address?.district,
+          complement: values?.address?.complement,
+        },
+        employeeUser: values.employeeUser,
+      };
+      mutation.mutate({ id: user.id, payload });
     },
   });
   const { values, errors, touched, ...action } = formik;
   const currentRole = getIn(values, "role");
   const [avatar, setAvatar] = useState<File | null>(null);
   const [showUserCredentials, setShowUserCredentials] = useState(false);
+  const [showCreateUserCredentials, setShowCreateUserCredentials] =
+    useState(false);
 
   const changeImg = async () => {
     if (avatar) {
       const b64 = await toBase64(avatar);
-      formik.setFieldValue("avatar_url", b64);
+      formik.setFieldValue("avatarUrl", b64);
     }
   };
 
@@ -75,20 +96,30 @@ export const UserEditForm = ({ user }: UserEditProps) => {
   }, [avatar, changeImg]);
 
   useEffect(() => {
-    if (currentRole !== "" && currentRole !== "4") {
-      action.setFieldValue("employeeUser.login", true);
-      setShowUserCredentials(true);
+    if (!user.user && user.role.id === 4 && currentRole !== "4") {
+      setShowCreateUserCredentials(true);
     } else {
-      action.setFieldValue("employeeUser.login", false);
-      setShowUserCredentials(false);
+      if (currentRole !== "" && currentRole !== "4") {
+        action.setFieldValue("employeeUser.login", true);
+        setShowUserCredentials(true);
+      } else {
+        action.setFieldValue("employeeUser.login", false);
+        setShowUserCredentials(false);
+      }
     }
   }, [currentRole]);
+
+  const handleCancelCredentials = () => {
+    action.setFieldValue("role", user.role.id + "");
+    setShowCreateUserCredentials(false);
+  };
 
   return (
     <Stack>
       <form onSubmit={action.handleSubmit}>
         <Paper withBorder sx={{ padding: "1.5rem" }}>
-          <Grid gutter="xl">
+          <Grid gutter="xl" sx={{ position: "relative" }}>
+            {showCreateUserCredentials && <Overlay blur={2} color="dark" />}
             <Grid.Col span={12}>
               <Group position="apart">
                 <Title order={3}>Informações básicas</Title>
@@ -98,7 +129,7 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                     type="submit"
                     leftIcon={<TbDeviceFloppy size={20} />}
                   >
-                    Salvar
+                    Atualizar
                   </Button>
                   <Button
                     radius="xl"
@@ -118,7 +149,7 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                   size="lg"
                   src={values.avatarUrl}
                 >
-                  {values.name.toUpperCase().substring(0, 2)}
+                  {values.name?.toUpperCase().substring(0, 2)}
                 </Avatar>
                 <div>
                   <Title order={5}>Foto de perfil</Title>
@@ -222,7 +253,7 @@ export const UserEditForm = ({ user }: UserEditProps) => {
               />
             </Grid.Col>
           </Grid>
-          {initialValue && initialValue.role !== "4" && (
+          <Collapse in={showUserCredentials}>
             <Grid>
               <Grid.Col span={12}>
                 <Title order={3} mt={20}>
@@ -244,37 +275,13 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                   withAsterisk
                 />
               </Grid.Col>
-              <Grid.Col xs={12} md={4}>
-                <PasswordInput
-                  placeholder="Senha"
-                  label="Senha"
-                  name="employeeUser.password"
-                  id="employeeUser.password"
-                  value={values.employeeUser?.password}
-                  onChange={action.handleChange}
-                  error={
-                    touched.employeeUser?.password &&
-                    errors.employeeUser?.password
-                  }
-                  withAsterisk
-                />
-              </Grid.Col>
-              <Grid.Col xs={12} md={4}>
-                <PasswordInput
-                  placeholder="Confirmar Senha"
-                  label="Confirmar Senha"
-                  name="confirmPassword"
-                  id="confirmPassword"
-                  value={values.confirmPassword}
-                  onChange={action.handleChange}
-                  error={touched.confirmPassword && errors.confirmPassword}
-                  withAsterisk
-                />
-              </Grid.Col>
             </Grid>
+          </Collapse>
+          {showCreateUserCredentials && (
+            <Space h={300} sx={{ position: "relative" }} />
           )}
-
-          <Grid>
+          <Grid sx={{ position: "relative" }}>
+            {showCreateUserCredentials && <Overlay blur={2} color="dark" />}
             <Grid.Col span={12}>
               <Title order={3} mt={20}>
                 Endereço
@@ -343,6 +350,14 @@ export const UserEditForm = ({ user }: UserEditProps) => {
           </Grid>
         </Paper>
       </form>
+      {showCreateUserCredentials && (
+        <CreateUserCredentials
+          open={showCreateUserCredentials}
+          employeeId={user.id}
+          onCancel={handleCancelCredentials}
+          role={parseInt(currentRole)}
+        />
+      )}
     </Stack>
   );
 };

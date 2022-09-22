@@ -1,28 +1,25 @@
 import { ResponseError } from "@/types/responseError";
-import { CreateUserPayload } from "@/types/user";
+import { UserCredentialsPayload } from "@/types/user";
 import { showNotification } from "@mantine/notifications";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
 import { usersService } from "..";
 
-export const useCreateUser = () => {
+export const useCreateUserCredentials = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   return useMutation(
-    async (user: CreateUserPayload) => usersService.postCreateUser(user),
+    async (user: UserCredentialsPayload) =>
+      usersService.postCreateUserCredentials(user),
     {
       onSuccess: async () => {
-        queryClient.invalidateQueries("fetchUsers");
-        await queryClient.refetchQueries();
+        queryClient.invalidateQueries("fetchUserById");
         showNotification({
           title: "Sucesso",
-          message: "Funcionario criado com sucesso",
+          message: "Credenciais criadas com sucesso",
           color: "teal",
           autoClose: true,
         });
-        navigate("/users");
       },
       onError: ({ data }: AxiosResponse<ResponseError>) => {
         showNotification({

@@ -128,7 +128,7 @@ export const UserCreateForm = () => {
                   size="lg"
                   src={values.avatar_url}
                 >
-                  {values.name.toUpperCase().substring(0, 2)}
+                  {values.name?.toUpperCase().substring(0, 2)}
                 </Avatar>
                 <div>
                   <Title order={5}>Foto de perfil</Title>

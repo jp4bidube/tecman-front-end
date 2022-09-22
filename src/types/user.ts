@@ -1,5 +1,5 @@
 export type User = {
-  id: 0;
+  id: number;
   name: string;
   phoneNumber: string;
   cpf: string;
@@ -8,11 +8,11 @@ export type User = {
   registrationDate: string;
   deactivationDate: string;
   role: {
-    id: 0;
+    id: number;
     role: string;
   };
   address: {
-    id: 0;
+    id?: number;
     street: string;
     cep: string;
     number: string;
@@ -24,6 +24,10 @@ export type User = {
     status: string;
   };
   avatarUrl: string;
+  user: {
+    id: number;
+    username: string;
+  };
 };
 
 export type CreateUserPayload = {
@@ -47,6 +51,26 @@ export type CreateUserPayload = {
     password: string;
   };
 };
+export type EditUserPayload = {
+  name: string;
+  phoneNumber: string;
+  cpf: string;
+  email: string;
+  avatarUrl: string;
+  birthDate: Date | null;
+  role: number;
+  address: {
+    street: string;
+    cep: string;
+    number: string;
+    district: string;
+    complement: string;
+  };
+  employeeUser: {
+    login: boolean;
+    username: string;
+  };
+};
 
 export type UserFilter = {
   page: number;
@@ -61,4 +85,11 @@ export type LoggedUser = {
   role: string;
   avatarUrl: string;
   email: string;
+};
+
+export type UserCredentialsPayload = {
+  username: string;
+  password: string;
+  employeeId: number;
+  role: number;
 };

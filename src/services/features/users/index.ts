@@ -1,6 +1,12 @@
 import { api } from "@/services/api";
 import { ResponseOK } from "@/types/responseOk";
-import { CreateUserPayload, LoggedUser, User } from "@/types/user";
+import {
+  CreateUserPayload,
+  EditUserPayload,
+  LoggedUser,
+  User,
+  UserCredentialsPayload,
+} from "@/types/user";
 import { AxiosResponse } from "axios";
 
 class UsersService {
@@ -56,6 +62,32 @@ class UsersService {
     success: boolean;
   }> {
     const { data } = await api.post(`/Employee`, payload);
+
+    return data.result;
+  }
+
+  async putUpdateUser(
+    id: number,
+    payload: EditUserPayload
+  ): Promise<{
+    message: string;
+    errorCode: number;
+    success: boolean;
+  }> {
+    const { data }: AxiosResponse<ResponseOK> = await api.put(
+      `/Employee/${id}`,
+      payload
+    );
+
+    return data;
+  }
+
+  async postCreateUserCredentials(payload: UserCredentialsPayload): Promise<{
+    message: string;
+    errorCode: number;
+    success: boolean;
+  }> {
+    const { data } = await api.post("/User", payload);
 
     return data.result;
   }

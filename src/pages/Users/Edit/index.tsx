@@ -29,7 +29,7 @@ export const UserEdit = () => {
       {isLoading || isFetching ? (
         <UserEditFormSkeleton />
       ) : (
-        <UserEditForm user={data} />
+        <UserEditForm user={data!} />
       )}
     </>
   );
