@@ -1,3 +1,4 @@
+import useStore from "@/store";
 import {
   ActionIcon,
   Box,
@@ -16,9 +17,7 @@ import {
   TbUserCircle,
   TbUsers,
 } from "react-icons/tb";
-import { IoBuildOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import useStore from "@/store";
 
 interface MainLinkProps {
   icon: React.ReactNode;

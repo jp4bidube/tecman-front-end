@@ -1,36 +1,112 @@
-import { useUserById } from "@/services/features/users/hooks/useUserById";
+import { useState } from "react";
+import { useFetchClientById } from "@/services/features/clients/hooks/useFetchClientById";
 import useStore from "@/store";
-import { User } from "@/types/user";
+import { Paper, Tabs, Text, ThemeIcon, Title } from "@mantine/core";
 import { useEffect } from "react";
-import { TbUserCircle } from "react-icons/tb";
-import { useNavigate, useParams } from "react-router-dom";
-import { UserEditForm } from "./UserEditForm";
-import { UserEditFormSkeleton } from "./UserEditFormSkeleton";
+import { TbAd2, TbFileText, TbUsers } from "react-icons/tb";
+import { useParams } from "react-router-dom";
+import { ClientEditForm } from "./ClientEditForm";
+import { ClientEditFormSkeleton } from "./ClientEditFormSkeleton";
 
-export const UserEdit = () => {
+export const ClientEdit = () => {
   const params = useParams();
   const store = useStore();
-
-  const { data, isFetching, isLoading } = useUserById(params.id || "");
+  const [activeTab, setActiveTab] = useState<string | null>("client");
+  const { data, isFetching, isLoading } = useFetchClientById(params.id || "");
 
   useEffect(
     () =>
       store.setNewBreadcrumbs({
-        name: "Funcionários",
-        path: "/users",
-        icon: <TbUserCircle size={25} />,
+        name: "Clientes",
+        path: "/clients",
+        icon: <TbUsers size={25} />,
         subhead: `Edição - ${data?.name}`,
       }),
     [data]
   );
 
   return (
-    <>
-      {isLoading || isFetching ? (
-        <UserEditFormSkeleton />
-      ) : (
-        <UserEditForm user={data} />
-      )}
-    </>
+    <Paper withBorder sx={{ padding: "1.5rem" }}>
+      <Tabs value={activeTab} onTabChange={setActiveTab}>
+        <Tabs.List>
+          <Tabs.Tab
+            value="client"
+            icon={
+              activeTab === "client" ? (
+                <ThemeIcon variant="light">
+                  <TbUsers size={20} />
+                </ThemeIcon>
+              ) : (
+                <TbUsers size={20} />
+              )
+            }
+          >
+            {activeTab === "client" ? (
+              <Title order={5} color="tecman">
+                Clientes
+              </Title>
+            ) : (
+              <Text>Clientes</Text>
+            )}
+          </Tabs.Tab>
+          <Tabs.Tab
+            value="service-orders"
+            icon={
+              activeTab === "service-orders" ? (
+                <ThemeIcon variant="light">
+                  <TbAd2 size={20} />
+                </ThemeIcon>
+              ) : (
+                <TbAd2 size={20} />
+              )
+            }
+          >
+            {activeTab === "service-orders" ? (
+              <Title order={5} color="tecman">
+                Ordens de Serviço
+              </Title>
+            ) : (
+              <Text>Ordens de Serviço</Text>
+            )}
+          </Tabs.Tab>
+          <Tabs.Tab
+            value="guarantees"
+            icon={
+              activeTab === "guarantees" ? (
+                <ThemeIcon variant="light">
+                  <TbFileText size={20} />
+                </ThemeIcon>
+              ) : (
+                <TbFileText size={20} />
+              )
+            }
+          >
+            {activeTab === "guarantees" ? (
+              <Title order={5} color="tecman">
+                Garantias
+              </Title>
+            ) : (
+              <Text>Garantias</Text>
+            )}
+          </Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="client" pt="xl">
+          {isLoading || isFetching ? (
+            <ClientEditFormSkeleton />
+          ) : (
+            <ClientEditForm client={data!} />
+          )}
+        </Tabs.Panel>
+
+        <Tabs.Panel value="service-orders" pt="xl">
+          Ordens de Serviço
+        </Tabs.Panel>
+
+        <Tabs.Panel value="guarantees" pt="xl">
+          Garantias
+        </Tabs.Panel>
+      </Tabs>
+    </Paper>
   );
 };

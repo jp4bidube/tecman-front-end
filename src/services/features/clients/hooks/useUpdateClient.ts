@@ -1,34 +1,33 @@
+import { ClientUpdatePayload } from "@/types/clients";
 import { ResponseError } from "@/types/responseError";
-import { EditUserPayload } from "@/types/user";
 import { showNotification } from "@mantine/notifications";
 import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { usersService } from "..";
+import { clientsService } from "..";
 
 type useUpdateProps = {
-  payload: EditUserPayload;
+  payload: ClientUpdatePayload;
   id: number;
 };
 
-export const useUpdateUser = () => {
+export const useUpdateClient = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   return useMutation(
     async ({ id, payload }: useUpdateProps) =>
-      usersService.putUpdateUser(id, payload),
+      clientsService.putUpdateClient(id, payload),
     {
       onSuccess: async () => {
-        queryClient.invalidateQueries("fetchUsers");
-        queryClient.invalidateQueries("me");
+        queryClient.invalidateQueries("fetchClients");
         showNotification({
           title: "Sucesso",
           message: "Funcionario criado com sucesso",
           color: "teal",
           autoClose: true,
         });
-        navigate("/users");
+        navigate("/clients");
       },
       onError: ({ data }: AxiosResponse<ResponseError>) => {
         showNotification({

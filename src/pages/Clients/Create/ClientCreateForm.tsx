@@ -1,4 +1,5 @@
 import { useCreateClient } from "@/services/features/clients/hooks/useCreateClient";
+import { ClientCreatePayload } from "@/types/clients";
 import {
   Button,
   Grid,
@@ -35,7 +36,7 @@ export const ClientCreateForm = () => {
         complement: "",
         defaultAddress: true,
       },
-    },
+    } as ClientCreatePayload,
     validationSchema,
     onSubmit: (values) => {
       mutation.mutate(values);
@@ -70,7 +71,7 @@ export const ClientCreateForm = () => {
                   <Button
                     radius="xl"
                     variant="outline"
-                    onClick={() => navigate("/users")}
+                    onClick={() => navigate("/clients")}
                   >
                     Cancelar
                   </Button>

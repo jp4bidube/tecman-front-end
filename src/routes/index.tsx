@@ -1,11 +1,12 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Login, Home, Users } from "@/pages";
-import { Layout } from "@/theme/Layout";
-import { UserEdit } from "@/pages/Users/Edit";
-import { UserCreate } from "@/pages/Users/Create";
-import { PrivateRoute } from "./privateRoute";
+import { Home, Login, Users } from "@/pages";
 import { Clients } from "@/pages/Clients";
-import { ClientCreateForm } from "@/pages/Clients/Create/ClientCreateForm";
+import { ClientCreate } from "@/pages/Clients/Create";
+import { ClientEdit } from "@/pages/Clients/Edit";
+import { UserCreate } from "@/pages/Users/Create";
+import { UserEdit } from "@/pages/Users/Edit";
+import { Layout } from "@/theme/Layout";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { PrivateRoute } from "./privateRoute";
 
 export const MainRoutes = () => {
   return (
@@ -19,7 +20,8 @@ export const MainRoutes = () => {
             <Route path="/users/:id/edit" element={<UserEdit />} />
             <Route path="/users/create" element={<UserCreate />} />
             <Route path="/clients" element={<Clients />} />
-            <Route path="/clients/create" element={<ClientCreateForm />} />
+            <Route path="/clients/create" element={<ClientCreate />} />
+            <Route path="/clients/:id/edit" element={<ClientEdit />} />
             {/* <Route path="/clients/:id/overview" element={<ClientOverview />} />
             <Route path="/service-orders" element={<ServiceOrders />} />
             <Route path="/guarantees" element={<Guarantees />} />

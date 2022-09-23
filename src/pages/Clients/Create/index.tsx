@@ -1,17 +1,17 @@
 import useStore from "@/store";
 import { useEffect } from "react";
-import { TbUserCircle } from "react-icons/tb";
+import { TbUsers } from "react-icons/tb";
 import { ClientCreateForm } from "./ClientCreateForm";
 
-export const UserCreate = () => {
+export const ClientCreate = () => {
   const store = useStore();
 
   useEffect(
     () =>
       store.setNewBreadcrumbs({
-        name: "Funcionários",
-        path: "/users",
-        icon: <TbUserCircle size={25} />,
+        name: "Clientes",
+        path: "/clients",
+        icon: <TbUsers size={25} />,
         subhead: `Cadastro`,
       }),
     []

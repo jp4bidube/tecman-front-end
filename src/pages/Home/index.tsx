@@ -53,6 +53,7 @@ export const Home: React.FC = () => {
                   : theme.colors.tecman[6],
             },
           }}
+          onClick={() => navigate("/clients")}
           withBorder
         >
           <Center>

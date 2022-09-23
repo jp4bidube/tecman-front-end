@@ -1,16 +1,6 @@
-import {
-  Button,
-  Grid,
-  Group,
-  Paper,
-  Skeleton,
-  Stack,
-  TextInput,
-  Title,
-} from "@mantine/core";
-import { TbDeviceFloppy } from "react-icons/tb";
+import { Grid, Paper, Skeleton, Stack } from "@mantine/core";
 
-export const UserEditFormSkeleton = () => {
+export const ClientEditFormSkeleton = () => {
   return (
     <Stack>
       <Paper withBorder sx={{ padding: "1.5rem" }}>

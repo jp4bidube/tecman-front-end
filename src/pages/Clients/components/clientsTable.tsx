@@ -1,12 +1,12 @@
 import useStore from "@/store";
-import { Client } from "@/types/clients";
+import { ClientList } from "@/types/clients";
 import { Group, Table, ThemeIcon, Tooltip } from "@mantine/core";
 
 import { TbChevronDown, TbChevronUp, TbEdit } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
 type ClientsTableProps = {
-  clients: Client[] | undefined;
+  clients: ClientList[] | undefined;
 };
 
 export const ClientsTable = ({ clients }: ClientsTableProps) => {

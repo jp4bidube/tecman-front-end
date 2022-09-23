@@ -9,6 +9,7 @@ import { ModalsProvider } from "@mantine/modals";
 import { NotificationsProvider } from "@mantine/notifications";
 import useStore from "./store";
 import { GlobalStyle } from "./theme/Global";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 const App = () => {
   const store = useStore();

@@ -17,6 +17,7 @@ import { Breadcrumbs } from "./Breadcrumbs";
 import { AccountSettingsLink } from "./components/AccountSettingsLink";
 import { Brand } from "./components/Brand";
 import { MainLinks } from "./components/MainLink";
+import PerfectScrollbar from "react-perfect-scrollbar";
 
 export const Layout = () => {
   const theme = useMantineTheme();
