@@ -1,7 +1,5 @@
-import { useToggleDisableUser } from "@/services/features/users/hooks/useToggleDisableUser";
-import { useFetchUsers } from "@/services/features/users/hooks/useFetchUsers";
+import { useFetchClients } from "@/services/features/clients/hooks/useFetchClients";
 import useStore from "@/store";
-import { User } from "@/types/user";
 import {
   Button,
   Grid,
@@ -11,23 +9,19 @@ import {
   Paper,
   Skeleton,
   Stack,
-  Text,
   TextInput,
-  Title,
 } from "@mantine/core";
-import { openConfirmModal } from "@mantine/modals";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TbSearch } from "react-icons/tb";
-import { useQueryClient } from "react-query";
-import { UsersCards } from "../components/usersCards";
-import { UsersTable } from "../components/usersTable";
-import { UsersTableSkeleton } from "./UserTableSkeleton";
+import { ClientsCards } from "../components/clientsCards";
+import { ClientsTable } from "../components/clientsTable";
+import { ClientsTableSkeleton } from "./ClientsTableSkeleton";
 
 export const ClientsList = () => {
   const store = useStore();
-  const queryClient = useQueryClient();
-  const { page, order, search, sort } = store.usersFilter;
-  const { data, isFetching, isLoading, refetch } = useFetchUsers(
+
+  const { page, order, search, sort } = store.clientsFilter;
+  const { data, isFetching, isLoading } = useFetchClients(
     page,
     order,
     sort,
@@ -35,49 +29,27 @@ export const ClientsList = () => {
   );
   const [keySearch, setKeySearch] = useState(search);
 
-  const mutation = useToggleDisableUser();
-
   const handleSearch = () => {
-    store.setFilter({ ...store.usersFilter, search: keySearch, page: 1 });
+    store.setClientsFilter({
+      ...store.clientsFilter,
+      search: keySearch,
+      page: 1,
+    });
   };
 
   const handleClear = () => {
     setKeySearch("");
-    store.setFilter({ ...store.usersFilter, search: "" });
-  };
-  const handleToggleDisableUser = async (id: number) => {
-    console.log("chamour");
-    await mutation.mutate(id);
-    refetch();
+    store.setClientsFilter({ ...store.clientsFilter, search: "" });
   };
 
-  const openInactiveUserModal = (id: number, user: User) => {
-    openConfirmModal({
-      title: (
-        <Title order={4}>
-          {user.employeeStatus.status === "Ativo"
-            ? "Desativar usuário"
-            : "Ativar usuário"}
-        </Title>
-      ),
-      centered: true,
-      children: (
-        <Text size="sm">
-          {user.employeeStatus.status === "Ativo"
-            ? "Tem certeza de que deseja desativar esse usuário? Esta ação impedirá o usuário de realizar login na aplicação."
-            : "Ao ativar o usuário será capaz de realizar login."}
-        </Text>
-      ),
-      labels: { confirm: "Confirmar", cancel: "Cancelar" },
-      confirmProps: {
-        color: user.employeeStatus.status === "Ativo" ? "red" : "primary",
-        radius: "xl",
-        variant: "outline",
-      },
-      cancelProps: { radius: "xl" },
-      onConfirm: () => handleToggleDisableUser(id),
+  useEffect(() => {
+    store.setClientsFilter({
+      page: 1,
+      order: "desc",
+      search: "",
+      sort: "name",
     });
-  };
+  }, []);
 
   return (
     <Paper withBorder sx={{ padding: "1.5rem" }}>
@@ -96,10 +68,19 @@ export const ClientsList = () => {
             </Grid.Col>
             <Grid.Col xs={12} md={4}>
               <Group>
-                <Button radius="xl" onClick={handleSearch}>
+                <Button
+                  radius="xl"
+                  onClick={handleSearch}
+                  disabled={isFetching}
+                >
                   Buscar
                 </Button>
-                <Button variant="light" radius="xl" onClick={handleClear}>
+                <Button
+                  variant="light"
+                  radius="xl"
+                  onClick={handleClear}
+                  disabled={isFetching}
+                >
                   Limpar
                 </Button>
               </Group>
@@ -109,21 +90,15 @@ export const ClientsList = () => {
         <Grid.Col span={12}>
           <MediaQuery largerThan="md" styles={{ display: "none" }}>
             <div>
-              <UsersCards
-                users={data?.users}
-                confirmInactivation={openInactiveUserModal}
-              />
+              <ClientsCards clients={data?.clients} />
             </div>
           </MediaQuery>
           <MediaQuery smallerThan="md" styles={{ display: "none" }}>
             <div>
               {isFetching ? (
-                <UsersTableSkeleton />
+                <ClientsTableSkeleton />
               ) : (
-                <UsersTable
-                  users={data?.users}
-                  confirmInactivation={openInactiveUserModal}
-                />
+                <ClientsTable clients={data?.clients} />
               )}
             </div>
           </MediaQuery>
@@ -148,7 +123,7 @@ export const ClientsList = () => {
             ) : (
               <Pagination
                 page={store.usersFilter.page}
-                total={data?.total ? Math.ceil(data.total / 5) : 1}
+                total={data?.total ? Math.ceil(data.total / 10) : 1}
                 onChange={(page) => store.setPage(page)}
                 radius="xl"
               />

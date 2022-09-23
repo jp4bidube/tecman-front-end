@@ -1,5 +1,5 @@
 import useStore from "@/store";
-import { User } from "@/types/user";
+import { Client } from "@/types/clients";
 import {
   Badge,
   Button,
@@ -10,22 +10,21 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { useEffect } from "react";
-import { TbChevronDown, TbChevronUp, TbEdit, TbUserOff } from "react-icons/tb";
+import { TbChevronDown, TbChevronUp, TbEdit } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
-type UsersCardsProps = {
-  users: User[] | undefined;
-  confirmInactivation: (id: number, user: User) => void;
+type ClientsCardsProps = {
+  clients: Client[] | undefined;
 };
 
-export const UsersCards = ({ users, confirmInactivation }: UsersCardsProps) => {
+export const ClientsCards = ({ clients }: ClientsCardsProps) => {
   const navigate = useNavigate();
   const store = useStore();
-  const { sort, order } = store.usersFilter;
+  const { sort, order } = store.clientsFilter;
 
   useEffect(() => {
-    store.setFilter({
-      ...store.usersFilter,
+    store.setClientsFilter({
+      ...store.clientsFilter,
       sort: "name",
       order: "asc",
     });
@@ -33,9 +32,16 @@ export const UsersCards = ({ users, confirmInactivation }: UsersCardsProps) => {
 
   return (
     <>
-      {users &&
-        users.map((user) => (
-          <Card shadow="sm" p="lg" radius="md" withBorder mb="lg" key={user.id}>
+      {clients &&
+        clients.map((client) => (
+          <Card
+            shadow="sm"
+            p="lg"
+            radius="md"
+            withBorder
+            mb="lg"
+            key={client.id}
+          >
             <Group position="apart" mt="md" mb="xs">
               <Text weight={500}>Situação</Text>
               <Badge color="teal" variant="light">
@@ -56,19 +62,25 @@ export const UsersCards = ({ users, confirmInactivation }: UsersCardsProps) => {
                 </Tooltip>
               </Group>
               <Text size="sm" color="dimmed">
-                {user.name}
+                {client.name}
               </Text>
             </Group>
             <Group position="apart" mt="md" mb="xs">
               <Text weight={500}>E-mail</Text>
               <Text size="sm" color="dimmed">
-                {user.email}
+                {client.email}
               </Text>
             </Group>
             <Group position="apart" mt="md" mb="xs">
               <Text weight={500}>Documento</Text>
               <Text size="sm" color="dimmed">
-                {user.cpf}
+                {client.cpf}
+              </Text>
+            </Group>
+            <Group position="apart" mt="md" mb="xs">
+              <Text weight={500}>Telefone</Text>
+              <Text size="sm" color="dimmed">
+                {client.phoneNumber}
               </Text>
             </Group>
             <Card.Section withBorder inheritPadding py="xs">
@@ -76,20 +88,10 @@ export const UsersCards = ({ users, confirmInactivation }: UsersCardsProps) => {
                 <Tooltip label="Editar" withArrow>
                   <Button
                     variant="light"
-                    onClick={() => navigate(`/users/${user.id}/edit`)}
+                    onClick={() => navigate(`/clients/${client.id}/edit`)}
                     leftIcon={<TbEdit />}
                   >
                     <Text>Editar</Text>
-                  </Button>
-                </Tooltip>
-                <Tooltip label="Desativar usuário" withArrow>
-                  <Button
-                    color="red"
-                    variant="light"
-                    onClick={() => confirmInactivation(user.id, user)}
-                    leftIcon={<TbUserOff />}
-                  >
-                    <Text>Desativar</Text>
                   </Button>
                 </Tooltip>
               </Group>

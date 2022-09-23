@@ -72,8 +72,8 @@ export const CreateUserCredentials = ({
                 title="Aviso!"
                 color="yellow"
               >
-                Something terrible happened! You made a mistake and there is no
-                going back, your data was lost forever!
+                A alteração do perfil técnico para outro tipo de usuário requer
+                cadastramento de credenciais.
               </Alert>
             </Grid.Col>
             <Grid.Col xs={12} md={4}>

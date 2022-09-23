@@ -16,7 +16,7 @@ import {
   Title,
 } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TbSearch } from "react-icons/tb";
 import { UsersCards } from "../components/usersCards";
 import { UsersTable } from "../components/usersTable";
@@ -46,6 +46,15 @@ export const UsersList = () => {
   const handleToggleDisableUser = async (id: number) => {
     mutation.mutate(id);
   };
+
+  useEffect(() => {
+    store.setFilter({
+      page: 1,
+      order: "desc",
+      search: "",
+      sort: "name",
+    });
+  }, []);
 
   const openInactiveUserModal = (id: number, user: User) => {
     openConfirmModal({
@@ -144,7 +153,7 @@ export const UsersList = () => {
             ) : (
               <Pagination
                 page={store.usersFilter.page}
-                total={data?.total ? Math.ceil(data.total / 5) : 1}
+                total={data?.total ? Math.ceil(data.total / 10) : 1}
                 onChange={(page) => store.setPage(page)}
                 radius="xl"
               />

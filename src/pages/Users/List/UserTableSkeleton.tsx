@@ -68,7 +68,7 @@ export const UsersTableSkeleton = () => {
         </tr>
       </thead>
       <tbody>
-        {Array.from(Array(5).keys()).map((_, index) => (
+        {Array.from(Array(10).keys()).map((_, index) => (
           <tr key={index}>
             <td>
               <Skeleton height={20} radius="sm" />

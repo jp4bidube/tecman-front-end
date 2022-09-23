@@ -116,7 +116,14 @@ export const UserEditForm = ({ user }: UserEditProps) => {
 
   return (
     <Stack>
-      <form onSubmit={action.handleSubmit}>
+      <form
+        onSubmit={action.handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+          }
+        }}
+      >
         <Paper withBorder sx={{ padding: "1.5rem" }}>
           <Grid gutter="xl" sx={{ position: "relative" }}>
             {showCreateUserCredentials && <Overlay blur={2} color="dark" />}
@@ -179,6 +186,7 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                 label="Nome"
                 name="name"
                 id="name"
+                maxLength={150}
                 value={values.name}
                 onChange={action.handleChange}
                 error={touched.name && errors.name}
@@ -191,6 +199,7 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                 label="E-mail"
                 name="email"
                 id="email"
+                maxLength={150}
                 value={values.email}
                 onChange={action.handleChange}
                 error={touched.email && errors.email}
@@ -246,6 +255,8 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                 placeholder="Data de nascimento"
                 locale="pt-BR"
                 label="Data de Nascimento"
+                allowFreeInput
+                maxLength={100}
                 value={values.birthDate}
                 error={touched.birthDate && errors.birthDate}
                 onChange={(value) => action.setFieldValue("birthDate", value)}

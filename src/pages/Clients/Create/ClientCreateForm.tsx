@@ -1,11 +1,11 @@
-import { useCreateUser } from "@/services/features/users/hooks/useCreateUser";
+import { useCreateClient } from "@/services/features/clients/hooks/useCreateClient";
 import {
   Button,
   Grid,
   Group,
   InputBase,
+  Loader,
   Paper,
-  Select,
   Stack,
   TextInput,
   Title,
@@ -19,7 +19,7 @@ import { validationSchema } from "./validationSchema";
 
 export const ClientCreateForm = () => {
   const navigate = useNavigate();
-  const mutation = useCreateUser();
+  const mutation = useCreateClient();
 
   const formik = useFormik({
     initialValues: {
@@ -27,24 +27,18 @@ export const ClientCreateForm = () => {
       phoneNumber: "",
       cpf: "",
       email: "",
-      role: "",
       address: {
         street: "",
         cep: "",
         number: "",
         district: "",
         complement: "",
+        defaultAddress: true,
       },
-      employeeUser: {
-        login: true,
-        username: "",
-        password: "",
-      },
-      confirmPassword: "" || undefined,
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      mutation.mutate(values);
     },
   });
 
@@ -68,9 +62,10 @@ export const ClientCreateForm = () => {
                   <Button
                     radius="xl"
                     type="submit"
+                    disabled={mutation.isLoading}
                     leftIcon={<TbDeviceFloppy size={20} />}
                   >
-                    Salvar
+                    {mutation.isLoading ? <Loader size="xs" /> : "Salvar"}
                   </Button>
                   <Button
                     radius="xl"
@@ -88,6 +83,7 @@ export const ClientCreateForm = () => {
                 label="Nome"
                 name="name"
                 id="name"
+                maxLength={100}
                 value={values.name}
                 onChange={action.handleChange}
                 error={touched.name && errors.name}
@@ -100,6 +96,7 @@ export const ClientCreateForm = () => {
                 label="E-mail"
                 name="email"
                 id="email"
+                maxLength={100}
                 value={values.email}
                 onChange={action.handleChange}
                 error={touched.email && errors.email}
@@ -132,22 +129,6 @@ export const ClientCreateForm = () => {
                 error={touched.phoneNumber && errors.phoneNumber}
                 withAsterisk
                 mask="(99) 99999-9999"
-              />
-            </Grid.Col>
-            <Grid.Col xs={12} md={6}>
-              <Select
-                label="Tipo de Perfil"
-                placeholder="selecione um Perfil"
-                value={values.role}
-                onChange={(value) => action.setFieldValue("role", value)}
-                error={touched.role && errors.role}
-                withAsterisk
-                data={[
-                  { value: "1", label: "Administrador" },
-                  { value: "2", label: "Balconista" },
-                  { value: "3", label: "Gerência" },
-                  { value: "4", label: "Técnicos" },
-                ]}
               />
             </Grid.Col>
           </Grid>

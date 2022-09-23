@@ -9,7 +9,7 @@ import {
 
 import { TbChevronDown } from "react-icons/tb";
 
-export const UsersTableSkeleton = () => {
+export const ClientsTableSkeleton = () => {
   return (
     <Table verticalSpacing="sm" striped>
       <thead>

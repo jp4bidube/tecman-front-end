@@ -1,29 +1,22 @@
 import useStore from "@/store";
-import { User } from "@/types/user";
-import { Badge, Group, Table, ThemeIcon, Tooltip } from "@mantine/core";
+import { Client } from "@/types/clients";
+import { Group, Table, ThemeIcon, Tooltip } from "@mantine/core";
 
-import {
-  TbChevronDown,
-  TbChevronUp,
-  TbEdit,
-  TbUser,
-  TbUserOff,
-} from "react-icons/tb";
+import { TbChevronDown, TbChevronUp, TbEdit } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
-type UsersTableProps = {
-  users: User[] | undefined;
-  confirmInactivation: (id: number, user: User) => void;
+type ClientsTableProps = {
+  clients: Client[] | undefined;
 };
 
-export const UsersTable = ({ users, confirmInactivation }: UsersTableProps) => {
+export const ClientsTable = ({ clients }: ClientsTableProps) => {
   const navigate = useNavigate();
   const store = useStore();
-  const { sort, order } = store.usersFilter;
+  const { sort, order } = store.clientsFilter;
 
   const handleSort = (column: string) => {
-    store.setFilter({
-      ...store.usersFilter,
+    store.setClientsFilter({
+      ...store.clientsFilter,
       sort: column,
       order: order === "desc" ? "asc" : "desc",
     });
@@ -76,13 +69,16 @@ export const UsersTable = ({ users, confirmInactivation }: UsersTableProps) => {
             </Group>
           </th>
           <th>
-            <Group sx={{ cursor: "pointer" }}>
-              Situação
+            <Group
+              sx={{ cursor: "pointer" }}
+              onClick={() => handleSort("number")}
+            >
+              Telefone
               <ThemeIcon
                 variant="light"
-                color={sort === "status" ? "" : "gray"}
+                color={sort === "number" ? "" : "gray"}
               >
-                {sort === "status" && order === "asc" ? (
+                {sort === "number" && order === "asc" ? (
                   <TbChevronUp size={15} />
                 ) : (
                   <TbChevronDown size={15} />
@@ -94,55 +90,24 @@ export const UsersTable = ({ users, confirmInactivation }: UsersTableProps) => {
         </tr>
       </thead>
       <tbody>
-        {users &&
-          users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.cpf}</td>
-              <td>
-                <Badge
-                  color={
-                    user.employeeStatus.status === "Ativo" ? "teal" : "red"
-                  }
-                >
-                  {user.employeeStatus.status}
-                </Badge>
-              </td>
+        {clients &&
+          clients.map((client) => (
+            <tr key={client.id}>
+              <td>{client.name}</td>
+              <td>{client.email}</td>
+              <td>{client.cpf}</td>
+              <td>{client.phoneNumber}</td>
               <td>
                 <Group>
                   <Tooltip label="Editar" withArrow>
                     <ThemeIcon
                       variant="light"
                       sx={{ cursor: "pointer" }}
-                      onClick={() => navigate(`/users/${user.id}/edit`)}
+                      onClick={() => navigate(`/clients/${client.id}/edit`)}
                     >
                       <TbEdit />
                     </ThemeIcon>
                   </Tooltip>
-                  {user.employeeStatus.status === "Ativo" ? (
-                    <Tooltip label="Desativar usuário" withArrow>
-                      <ThemeIcon
-                        color="red"
-                        variant="light"
-                        sx={{ cursor: "pointer" }}
-                        onClick={() => confirmInactivation(user.id, user)}
-                      >
-                        <TbUserOff />
-                      </ThemeIcon>
-                    </Tooltip>
-                  ) : (
-                    <Tooltip label="Ativar usuário" withArrow>
-                      <ThemeIcon
-                        color="teal"
-                        variant="light"
-                        sx={{ cursor: "pointer" }}
-                        onClick={() => confirmInactivation(user.id, user)}
-                      >
-                        <TbUser />
-                      </ThemeIcon>
-                    </Tooltip>
-                  )}
                 </Group>
               </td>
             </tr>
