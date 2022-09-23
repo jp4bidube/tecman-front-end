@@ -11,7 +11,6 @@ export const validationSchema = yup.object({
 });
 
 export const validateClientAddress = yup.object({
-  cep: yup.string().required("O campo é obrigatório"),
   street: yup.string().required("O campo é obrigatório"),
   number: yup.string().required("O campo é obrigatório"),
   district: yup.string().required("O campo é obrigatório"),

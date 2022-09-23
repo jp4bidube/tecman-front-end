@@ -36,12 +36,15 @@ export const ClientEditForm = ({ client }: ClientEditFormProps) => {
     },
     validationSchema,
     onSubmit: (values) => {
-      //mutation.mutate();
+      mutation.mutate({ id: client.id, payload: values });
     },
   });
+  const list = client.address.sort(
+    (a, b) => Number(b.defaultAddress) - Number(a.defaultAddress)
+  );
 
   const { values, errors, touched, ...action } = formik;
-  const [clientAddress, setClientAddress] = useState(client.address);
+  const [clientAddress, setClientAddress] = useState(list);
 
   const handleAddAddress = () => {
     const address = {
@@ -69,7 +72,14 @@ export const ClientEditForm = ({ client }: ClientEditFormProps) => {
   };
   return (
     <Stack>
-      <form onSubmit={action.handleSubmit}>
+      <form
+        onSubmit={action.handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+          }
+        }}
+      >
         <Grid gutter="xl">
           <Grid.Col span={12}>
             <Group position="apart">
@@ -168,6 +178,7 @@ export const ClientEditForm = ({ client }: ClientEditFormProps) => {
             clientAddress.map((clientAddress) => (
               <ClientAddressItem
                 key={clientAddress.clientId}
+                id={client.id}
                 data={clientAddress}
                 onRemoveItem={handleRemoveAddress}
               />

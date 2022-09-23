@@ -1,7 +1,7 @@
 import { api } from "@/services/api";
 import {
   Client,
-  ClientAddressUpdatePayload,
+  ClientAddressPayload,
   ClientCreatePayload,
   ClientUpdatePayload,
 } from "@/types/clients";
@@ -67,7 +67,7 @@ class ClientsService {
   }
   async putUpdateClientAddress(
     id: string,
-    payload: ClientAddressUpdatePayload
+    payload: ClientAddressPayload
   ): Promise<{
     message: string;
     errorCode: number;
@@ -75,6 +75,38 @@ class ClientsService {
   }> {
     const { data }: AxiosResponse<ResponseOK> = await api.put(
       `/Client/client-address/${id}`,
+      payload
+    );
+
+    return data;
+  }
+
+  async postUpdateClientAddress(
+    id: number,
+    payload: ClientAddressPayload
+  ): Promise<{
+    message: string;
+    errorCode: number;
+    success: boolean;
+  }> {
+    const { data }: AxiosResponse<ResponseOK> = await api.post(
+      `/Client/client-address/${id}`,
+      payload
+    );
+
+    return data;
+  }
+
+  async patchUpdateClientAddress(
+    id: number,
+    payload: { addressId: number }
+  ): Promise<{
+    message: string;
+    errorCode: number;
+    success: boolean;
+  }> {
+    const { data }: AxiosResponse<ResponseOK> = await api.patch(
+      `/Client/${id}/set-default-address`,
       payload
     );
 

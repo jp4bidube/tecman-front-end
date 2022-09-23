@@ -1,33 +1,37 @@
-import { useState } from "react";
-import { ClientAddress, ClientAddressUpdatePayload } from "@/types/clients";
+import { usePatchClientDefaultAddress } from "@/services/features/clients/hooks/usePatchClientDefaultAddress";
+import { usePostClientAddress } from "@/services/features/clients/hooks/usePostClientAddress";
+import { useUpdateClientAddress } from "@/services/features/clients/hooks/useUpdateClientAddress";
+import { ClientAddress } from "@/types/clients";
 import {
   Badge,
-  Box,
   Button,
   Card,
   Group,
   InputBase,
   Text,
   TextInput,
-  Tooltip,
 } from "@mantine/core";
+import cep from "cep-promise";
+import { useFormik } from "formik";
+import { useCallback, useState } from "react";
 import { TbCheck, TbEdit, TbTarget } from "react-icons/tb";
 import InputMask from "react-input-mask";
-import { useFormik } from "formik";
 import { validateClientAddress } from "./validationSchema";
-import cep from "cep-promise";
-import { useUpdateClientAddress } from "@/services/features/clients/hooks/useUpdateClientAddress";
 
 type ClientAddressItemProps = {
+  id: number;
   data: ClientAddress;
   onRemoveItem: (key: string) => void;
 };
 
 export const ClientAddressItem = ({
+  id,
   data,
   onRemoveItem,
 }: ClientAddressItemProps) => {
-  const mutation = useUpdateClientAddress();
+  const mutationEdit = useUpdateClientAddress();
+  const mutationCreate = usePostClientAddress();
+  const mutationDefault = usePatchClientDefaultAddress();
 
   const formik = useFormik({
     initialValues: {
@@ -40,11 +44,13 @@ export const ClientAddressItem = ({
     },
     validationSchema: validateClientAddress,
     onSubmit: (values) => {
-      console.log(values);
-      // mutation.mutate({
-      //   payload: { address: { ...values } },
-      //   id: data.address.id,
-      // });
+      if (data.id) {
+        return mutationEdit.mutate({
+          id: data.address.id,
+          payload: { ...values },
+        });
+      }
+      return mutationCreate.mutate({ id, payload: { ...values } });
     },
   });
 
@@ -65,6 +71,17 @@ export const ClientAddressItem = ({
     action.setFieldValue("district", neighborhood);
   };
 
+  const handleEditAddress = useCallback(() => {
+    setIsEditing(!isEditing);
+  }, []);
+
+  const handleChangeDefaultAddress = () => {
+    mutationDefault.mutate({
+      id,
+      payload: { addressId: parseInt(data.address.id) },
+    });
+  };
+
   return (
     <Card
       shadow="sm"
@@ -74,7 +91,7 @@ export const ClientAddressItem = ({
       radius="md"
       mb="xs"
       withBorder
-      sx={{ width: "30rem", display: "inline-block" }}
+      sx={{ width: "25rem", display: "inline-block" }}
     >
       <form onSubmit={action.handleSubmit}>
         {data.defaultAddress && isEditing && (
@@ -169,8 +186,10 @@ export const ClientAddressItem = ({
             <TextInput
               variant="filled"
               placeholder="Complemento"
-              name="address.cep"
-              id="address.cep"
+              name="complement"
+              id="complement"
+              value={values.complement}
+              onChange={action.handleChange}
             />
           )}
         </Group>
@@ -183,11 +202,12 @@ export const ClientAddressItem = ({
           <Group>
             {isEditing ? (
               <Group position="apart">
+                <></>
                 <Button
                   variant="light"
+                  color="primary"
                   leftIcon={<TbEdit />}
-                  type="button"
-                  onClick={() => setIsEditing(!isEditing)}
+                  onClick={handleEditAddress}
                 >
                   <Text>Editar</Text>
                 </Button>
@@ -196,6 +216,7 @@ export const ClientAddressItem = ({
                     variant="outline"
                     color="gray"
                     leftIcon={<TbTarget />}
+                    onClick={handleChangeDefaultAddress}
                   >
                     <Text>Tornar padrão</Text>
                   </Button>

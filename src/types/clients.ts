@@ -1,4 +1,5 @@
 export type Client = {
+  id: number;
   name: string;
   cpf: string;
   phoneNumber: string;
@@ -37,15 +38,13 @@ export type ClientUpdatePayload = {
   email: string;
 };
 
-export type ClientAddressUpdatePayload = {
-  address: {
-    street: string;
-    cep: string;
-    number: string;
-    district: string;
-    complement: string;
-    defaultAddress: boolean;
-  };
+export type ClientAddressPayload = {
+  street: string;
+  cep: string;
+  number: string;
+  district: string;
+  complement: string;
+  defaultAddress: boolean;
 };
 
 export type ClientsFilter = {

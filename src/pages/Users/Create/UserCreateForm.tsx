@@ -225,6 +225,7 @@ export const UserCreateForm = () => {
                 placeholder="Data de nascimento"
                 locale="pt-BR"
                 label="Data de Nascimento"
+                allowFreeInput
                 value={values.birthDate}
                 error={touched.birthDate && errors.birthDate}
                 onChange={(value) => action.setFieldValue("birthDate", value)}

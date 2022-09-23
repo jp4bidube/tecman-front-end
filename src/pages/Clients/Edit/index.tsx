@@ -1,10 +1,11 @@
-import { useState } from "react";
 import { useFetchClientById } from "@/services/features/clients/hooks/useFetchClientById";
 import useStore from "@/store";
 import { Paper, Tabs, Text, ThemeIcon, Title } from "@mantine/core";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TbAd2, TbFileText, TbUsers } from "react-icons/tb";
 import { useParams } from "react-router-dom";
+import { ClientsOSTable } from "../components/clientsOSTable";
+import { ClientsTableSkeleton } from "../List/ClientsTableSkeleton";
 import { ClientEditForm } from "./ClientEditForm";
 import { ClientEditFormSkeleton } from "./ClientEditFormSkeleton";
 
@@ -42,7 +43,7 @@ export const ClientEdit = () => {
             }
           >
             {activeTab === "client" ? (
-              <Title order={5} color="tecman">
+              <Title order={5} color="tecman.3">
                 Clientes
               </Title>
             ) : (
@@ -100,11 +101,11 @@ export const ClientEdit = () => {
         </Tabs.Panel>
 
         <Tabs.Panel value="service-orders" pt="xl">
-          Ordens de Serviço
+          {isFetching ? <ClientsTableSkeleton /> : <ClientsOSTable />}
         </Tabs.Panel>
 
         <Tabs.Panel value="guarantees" pt="xl">
-          Garantias
+          {isFetching ? <ClientsTableSkeleton /> : <ClientsOSTable />}
         </Tabs.Panel>
       </Tabs>
     </Paper>

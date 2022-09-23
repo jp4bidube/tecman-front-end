@@ -5,17 +5,17 @@ import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { clientsService } from "..";
 
-type useUpdateClientAddressProps = {
+type usePostClientAddressProps = {
   payload: ClientAddressPayload;
-  id: string;
+  id: number;
 };
 
-export const useUpdateClientAddress = () => {
+export const usePostClientAddress = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async ({ id, payload }: useUpdateClientAddressProps) =>
-      clientsService.putUpdateClientAddress(id, payload),
+    async ({ id, payload }: usePostClientAddressProps) =>
+      clientsService.postUpdateClientAddress(id, payload),
     {
       onSuccess: async () => {
         queryClient.invalidateQueries("fetchClientById");

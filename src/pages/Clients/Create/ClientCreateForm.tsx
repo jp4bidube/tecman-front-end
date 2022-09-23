@@ -159,6 +159,7 @@ export const ClientCreateForm = () => {
                 label="Rua"
                 name="address.street"
                 id="address.street"
+                withAsterisk
                 value={values.address?.street}
                 onChange={action.handleChange}
                 error={touched.address?.street && errors.address?.street}
@@ -170,6 +171,7 @@ export const ClientCreateForm = () => {
                 label="Número"
                 name="address.number"
                 id="address.number"
+                withAsterisk
                 value={values.address?.number}
                 onChange={action.handleChange}
                 error={touched.address?.number && errors.address?.number}
@@ -181,6 +183,7 @@ export const ClientCreateForm = () => {
                 label="Bairro"
                 name="address.district"
                 id="address.district"
+                withAsterisk
                 value={values.address?.district}
                 onChange={action.handleChange}
                 error={touched.address?.district && errors.address?.district}
