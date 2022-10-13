@@ -70,12 +70,12 @@ const data: MainLinkProps[] = [
   {
     icon: <TbAd2 size={16} />,
     label: "Ordens de Serviço",
-    path: "/service-orders",
+    path: "/", // path: "/service-orders",
   },
   {
     icon: <TbFileText size={16} />,
     label: "Garantias",
-    path: "/guarantees",
+    path: "/", //path: "/guarantees",
   },
 ];
 

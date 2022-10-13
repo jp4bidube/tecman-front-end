@@ -1,5 +1,6 @@
 import { useUpdateUser } from "@/services/features/users/hooks/useUpdateUser";
 import { EditUserPayload, User } from "@/types/user";
+import { maskDate } from "@/utils/getRandomColor";
 import { toBase64 } from "@/utils/fileToB64";
 import {
   Avatar,
@@ -259,7 +260,10 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                 maxLength={100}
                 value={values.birthDate}
                 error={touched.birthDate && errors.birthDate}
-                onChange={(value) => action.setFieldValue("birthDate", value)}
+                onKeyDown={(value) => console.log(value)}
+                onChange={(value) => {
+                  return action.setFieldValue("birthDate", value);
+                }}
                 withAsterisk
               />
             </Grid.Col>

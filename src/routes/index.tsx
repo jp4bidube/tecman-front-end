@@ -2,6 +2,7 @@ import { Home, Login, Users } from "@/pages";
 import { Clients } from "@/pages/Clients";
 import { ClientCreate } from "@/pages/Clients/Create";
 import { ClientEdit } from "@/pages/Clients/Edit";
+import { NotFound } from "@/pages/NotFound";
 import { UserCreate } from "@/pages/Users/Create";
 import { UserEdit } from "@/pages/Users/Edit";
 import { Layout } from "@/theme/Layout";
@@ -28,6 +29,7 @@ export const MainRoutes = () => {
 
             <Route path="/users/:id/overview" element={<UserOverview />} />
             <Route path="/employees" element={<Employees />} /> */}
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Route>
       </Routes>

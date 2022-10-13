@@ -1,6 +1,13 @@
 import { useFetchClientById } from "@/services/features/clients/hooks/useFetchClientById";
 import useStore from "@/store";
-import { Paper, Tabs, Text, ThemeIcon, Title } from "@mantine/core";
+import {
+  Paper,
+  Tabs,
+  Text,
+  ThemeIcon,
+  Title,
+  useMantineTheme,
+} from "@mantine/core";
 import { useEffect, useState } from "react";
 import { TbAd2, TbFileText, TbUsers } from "react-icons/tb";
 import { useParams } from "react-router-dom";
@@ -10,6 +17,7 @@ import { ClientEditForm } from "./ClientEditForm";
 import { ClientEditFormSkeleton } from "./ClientEditFormSkeleton";
 
 export const ClientEdit = () => {
+  const theme = useMantineTheme();
   const params = useParams();
   const store = useStore();
   const [activeTab, setActiveTab] = useState<string | null>("client");
@@ -43,7 +51,10 @@ export const ClientEdit = () => {
             }
           >
             {activeTab === "client" ? (
-              <Title order={5} color="tecman.3">
+              <Title
+                order={5}
+                color={theme.colorScheme === "dark" ? "tecman.3" : "tecman.6"}
+              >
                 Clientes
               </Title>
             ) : (
@@ -63,7 +74,10 @@ export const ClientEdit = () => {
             }
           >
             {activeTab === "service-orders" ? (
-              <Title order={5} color="tecman">
+              <Title
+                order={5}
+                color={theme.colorScheme === "dark" ? "tecman.3" : "tecman.6"}
+              >
                 Ordens de Serviço
               </Title>
             ) : (
@@ -83,7 +97,10 @@ export const ClientEdit = () => {
             }
           >
             {activeTab === "guarantees" ? (
-              <Title order={5} color="tecman">
+              <Title
+                order={5}
+                color={theme.colorScheme === "dark" ? "tecman.3" : "tecman.6"}
+              >
                 Garantias
               </Title>
             ) : (

@@ -1,3 +1,4 @@
+import { Th } from "@/components/Th";
 import useStore from "@/store";
 import { User } from "@/types/user";
 import { Badge, Group, Table, ThemeIcon, Title, Tooltip } from "@mantine/core";
@@ -6,6 +7,7 @@ import {
   TbChevronDown,
   TbChevronUp,
   TbEdit,
+  TbSelector,
   TbUser,
   TbUserOff,
 } from "react-icons/tb";
@@ -33,81 +35,22 @@ export const UsersTable = ({ users, confirmInactivation }: UsersTableProps) => {
     <Table verticalSpacing="sm" striped>
       <thead>
         <tr>
-          <th>
-            <Group
-              sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("name")}
-            >
-              Nome
-              <ThemeIcon variant="light" color={sort === "name" ? "" : "gray"}>
-                {sort === "name" && order === "asc" ? (
-                  <TbChevronUp size={15} />
-                ) : (
-                  <TbChevronDown size={15} />
-                )}
-              </ThemeIcon>
-            </Group>
-          </th>
-          <th>
-            <Group
-              sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("email")}
-            >
-              E-mail
-              <ThemeIcon variant="light" color={sort === "email" ? "" : "gray"}>
-                {sort === "email" && order === "asc" ? (
-                  <TbChevronUp size={15} />
-                ) : (
-                  <TbChevronDown size={15} />
-                )}
-              </ThemeIcon>
-            </Group>
-          </th>
-          <th>
-            <Group
-              sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("role")}
-            >
-              Perfil
-              <ThemeIcon variant="light" color={sort === "role" ? "" : "gray"}>
-                {sort === "role" && order === "asc" ? (
-                  <TbChevronUp size={15} />
-                ) : (
-                  <TbChevronDown size={15} />
-                )}
-              </ThemeIcon>
-            </Group>
-          </th>
-          <th>
-            <Group sx={{ cursor: "pointer" }} onClick={() => handleSort("cpf")}>
-              Documento
-              <ThemeIcon variant="light" color={sort === "cpf" ? "" : "gray"}>
-                {sort === "cpf" && order === "asc" ? (
-                  <TbChevronUp size={15} />
-                ) : (
-                  <TbChevronDown size={15} />
-                )}
-              </ThemeIcon>
-            </Group>
-          </th>
-          <th>
-            <Group
-              sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("status")}
-            >
-              Situação
-              <ThemeIcon
-                variant="light"
-                color={sort === "status" ? "" : "gray"}
-              >
-                {sort === "status" && order === "asc" ? (
-                  <TbChevronUp size={15} />
-                ) : (
-                  <TbChevronDown size={15} />
-                )}
-              </ThemeIcon>
-            </Group>
-          </th>
+          <Th onSort={handleSort} columnName="name" sort={sort} order={order}>
+            Nome
+          </Th>
+          <Th onSort={handleSort} columnName="email" sort={sort} order={order}>
+            E-mail
+          </Th>
+
+          <Th onSort={handleSort} columnName="role" sort={sort} order={order}>
+            Perfil
+          </Th>
+          <Th onSort={handleSort} columnName="cpf" sort={sort} order={order}>
+            Documento
+          </Th>
+          <Th onSort={handleSort} columnName="status" sort={sort} order={order}>
+            Status
+          </Th>
           <th style={{ width: "6rem" }}>Açoes</th>
         </tr>
       </thead>

@@ -17,4 +17,5 @@ export const theme: MantineThemeOverride = {
   },
   primaryColor: "tecman",
   fontFamily: "Inter, sans-serif",
+  focusRing: "never",
 };

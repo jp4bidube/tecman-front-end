@@ -91,16 +91,12 @@ export const ClientAddressItem = ({
       radius="md"
       mb="xs"
       withBorder
-      sx={{ width: "25rem", display: "inline-block" }}
+      sx={{
+        width: "25rem",
+        display: "inline-block",
+      }}
     >
       <form onSubmit={action.handleSubmit}>
-        {data.defaultAddress && isEditing && (
-          <Group position="right" mt="md" mb="xs">
-            <Badge color="yellow" variant="light">
-              Endereço Padrão
-            </Badge>
-          </Group>
-        )}
         <Group position="apart" mt="sm" grow>
           <Text weight={500}>CEP</Text>
           {isEditing ? (
@@ -211,7 +207,7 @@ export const ClientAddressItem = ({
                 >
                   <Text>Editar</Text>
                 </Button>
-                {!data.defaultAddress && (
+                {!data.defaultAddress ? (
                   <Button
                     variant="outline"
                     color="gray"
@@ -219,6 +215,14 @@ export const ClientAddressItem = ({
                     onClick={handleChangeDefaultAddress}
                   >
                     <Text>Tornar padrão</Text>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="light"
+                    color="green"
+                    sx={{ cursor: "auto " }}
+                  >
+                    Endereço Padrão
                   </Button>
                 )}
               </Group>
