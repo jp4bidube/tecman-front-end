@@ -12,13 +12,19 @@ import {
   TbUserOff,
 } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import { UsersTableSkeleton } from "../List/UserTableSkeleton";
 
 type UsersTableProps = {
   users: User[] | undefined;
   confirmInactivation: (id: number, user: User) => void;
+  isFetching: boolean;
 };
 
-export const UsersTable = ({ users, confirmInactivation }: UsersTableProps) => {
+export const UsersTable = ({
+  users,
+  confirmInactivation,
+  isFetching,
+}: UsersTableProps) => {
   const navigate = useNavigate();
   const store = useStore();
   const { sort, order } = store.usersFilter;
@@ -55,7 +61,10 @@ export const UsersTable = ({ users, confirmInactivation }: UsersTableProps) => {
         </tr>
       </thead>
       <tbody>
-        {users &&
+        {isFetching ? (
+          <UsersTableSkeleton />
+        ) : (
+          users &&
           users.map((user) => (
             <tr key={user.id}>
               <td>{user.name}</td>
@@ -110,7 +119,8 @@ export const UsersTable = ({ users, confirmInactivation }: UsersTableProps) => {
                 </Group>
               </td>
             </tr>
-          ))}
+          ))
+        )}
       </tbody>
     </Table>
   );

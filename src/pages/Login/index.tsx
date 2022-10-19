@@ -17,7 +17,7 @@ import {
 } from "@mantine/core";
 import { useFormik } from "formik";
 import { TbEye, TbEyeOff, TbLock, TbUserCircle } from "react-icons/tb";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { validationSchema } from "./validationSchema";
 
 export const Login = () => {
@@ -105,9 +105,13 @@ export const Login = () => {
                 }
               />
               <Group position="right" mb={10}>
-                <Anchor href="https://mantine.dev/" target="_blank">
-                  <Text size="xs">Esqueceu a senha?</Text>
-                </Anchor>
+                <Link to="/forgot-password">
+                  <Anchor>
+                    <Text size="xs" weight={500}>
+                      Esqueceu a senha?
+                    </Text>
+                  </Anchor>
+                </Link>
               </Group>
               <Button type="submit" disabled={mutation.isLoading}>
                 {mutation.isLoading ? <Loader size="sm" /> : "Entrar"}

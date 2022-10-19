@@ -68,29 +68,33 @@ export const UsersTableSkeleton = () => {
         </tr>
       </thead>
       <tbody>
-        {Array.from(Array(10).keys()).map((_, index) => (
+        {Array.from(Array(5).keys()).map((_, index) => (
           <tr key={index}>
             <td>
-              <Skeleton height={20} radius="sm" />
+              <Skeleton
+                height={20}
+                radius="sm"
+                width={`${(Math.random() * 100) | 10}%`}
+              />
             </td>
             <td>
               <Skeleton
                 height={20}
-                width={`${Math.random() * 100 + 10}%`}
+                width={`${(Math.random() * 100) | 10}%`}
                 radius="sm"
               />
             </td>
             <td>
               <Skeleton
                 height={20}
-                width={`${Math.random() * 100 + 10}%`}
+                width={`${(Math.random() * 100) | 10}%`}
                 radius="sm"
               />
             </td>
             <td>
               <Skeleton
                 height={20}
-                width={`${Math.random() * 100 + 10}%`}
+                width={`${(Math.random() * 100) | 10}%`}
                 radius="sm"
               />
             </td>

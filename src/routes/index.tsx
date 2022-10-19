@@ -2,6 +2,7 @@ import { Home, Login, Users } from "@/pages";
 import { Clients } from "@/pages/Clients";
 import { ClientCreate } from "@/pages/Clients/Create";
 import { ClientEdit } from "@/pages/Clients/Edit";
+import { ForgotPassword } from "@/pages/ForgotPassword";
 import { NotFound } from "@/pages/NotFound";
 import { UserCreate } from "@/pages/Users/Create";
 import { UserEdit } from "@/pages/Users/Edit";
@@ -14,6 +15,7 @@ export const MainRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

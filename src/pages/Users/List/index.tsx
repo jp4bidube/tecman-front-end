@@ -128,6 +128,7 @@ export const UsersList = () => {
                 <UsersTable
                   users={data?.users}
                   confirmInactivation={openInactiveUserModal}
+                  isFetching={isFetching}
                 />
               )}
             </div>
