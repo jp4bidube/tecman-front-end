@@ -1,5 +1,6 @@
-import { useToggleDisableUser } from "@/services/features/users/hooks/useToggleDisableUser";
+import { PaginationSkeleton } from "@/components/PaginationSkeleton";
 import { useFetchUsers } from "@/services/features/users/hooks/useFetchUsers";
+import { useToggleDisableUser } from "@/services/features/users/hooks/useToggleDisableUser";
 import useStore from "@/store";
 import { User } from "@/types/user";
 import {
@@ -9,7 +10,6 @@ import {
   MediaQuery,
   Pagination,
   Paper,
-  Skeleton,
   Stack,
   Text,
   TextInput,
@@ -18,12 +18,11 @@ import {
 import { openConfirmModal } from "@mantine/modals";
 import { useEffect, useState } from "react";
 import { TbSearch } from "react-icons/tb";
-import { UsersCards } from "../components/usersCards";
-import { UsersTable } from "../components/usersTable";
-import { UsersTableSkeleton } from "./UserTableSkeleton";
-import { PaginationSkeleton } from "@/components/PaginationSkeleton";
+import { TechniciansCards } from "../components/techniciansCards";
+import { TechniciansTable } from "../components/techniciansTable";
+import { TechniciansTableSkeleton } from "./TechniciansTableSkeleton";
 
-export const UsersList = () => {
+export const TechniciansList = () => {
   const store = useStore();
   const { page, order, search, sort } = store.usersFilter;
   const { data, isFetching, isLoading } = useFetchUsers(
@@ -115,7 +114,7 @@ export const UsersList = () => {
         <Grid.Col span={12}>
           <MediaQuery largerThan="md" styles={{ display: "none" }}>
             <div>
-              <UsersCards
+              <TechniciansCards
                 users={data?.users}
                 confirmInactivation={openInactiveUserModal}
               />
@@ -124,9 +123,9 @@ export const UsersList = () => {
           <MediaQuery smallerThan="md" styles={{ display: "none" }}>
             <div>
               {isFetching ? (
-                <UsersTableSkeleton />
+                <TechniciansTableSkeleton />
               ) : (
-                <UsersTable
+                <TechniciansTable
                   users={data?.users}
                   confirmInactivation={openInactiveUserModal}
                   isFetching={isFetching}

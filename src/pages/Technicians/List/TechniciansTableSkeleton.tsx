@@ -2,7 +2,7 @@ import { Grid, Skeleton, Table, ThemeIcon } from "@mantine/core";
 
 import { TbChevronDown } from "react-icons/tb";
 
-export const UsersTableSkeleton = () => {
+export const TechniciansTableSkeleton = () => {
   return (
     <Table verticalSpacing="sm" striped>
       <thead>

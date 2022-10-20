@@ -1,3 +1,4 @@
+import { PaginationSkeleton } from "@/components/PaginationSkeleton";
 import { useFetchClients } from "@/services/features/clients/hooks/useFetchClients";
 import useStore from "@/store";
 import {
@@ -106,20 +107,7 @@ export const ClientsList = () => {
         <Grid.Col span={12} mt={15}>
           <Stack align="center">
             {isLoading || isFetching ? (
-              <Grid gutter="xs">
-                <Grid.Col span={3}>
-                  <Skeleton height={32} circle />
-                </Grid.Col>
-                <Grid.Col span={3}>
-                  <Skeleton height={32} circle />
-                </Grid.Col>
-                <Grid.Col span={3}>
-                  <Skeleton height={32} circle />
-                </Grid.Col>
-                <Grid.Col span={3}>
-                  <Skeleton height={32} circle />
-                </Grid.Col>
-              </Grid>
+              <PaginationSkeleton />
             ) : (
               <Pagination
                 page={store.usersFilter.page}

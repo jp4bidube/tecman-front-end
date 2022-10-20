@@ -4,6 +4,7 @@ import { ClientCreate } from "@/pages/Clients/Create";
 import { ClientEdit } from "@/pages/Clients/Edit";
 import { ForgotPassword } from "@/pages/ForgotPassword";
 import { NotFound } from "@/pages/NotFound";
+import { Technicians } from "@/pages/Technicians";
 import { UserCreate } from "@/pages/Users/Create";
 import { UserEdit } from "@/pages/Users/Edit";
 import { Layout } from "@/theme/Layout";
@@ -22,6 +23,9 @@ export const MainRoutes = () => {
             <Route path="/users" element={<Users />} />
             <Route path="/users/:id/edit" element={<UserEdit />} />
             <Route path="/users/create" element={<UserCreate />} />
+            <Route path="/technicians" element={<Technicians />} />
+            <Route path="/technicians/:id/edit" element={<UserEdit />} />
+            <Route path="/technicians/create" element={<UserCreate />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/clients/create" element={<ClientCreate />} />
             <Route path="/clients/:id/edit" element={<ClientEdit />} />

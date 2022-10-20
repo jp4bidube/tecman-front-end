@@ -17,6 +17,7 @@ import {
   TbUserCircle,
   TbUsers,
 } from "react-icons/tb";
+import { IoBuildOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 interface MainLinkProps {
@@ -141,11 +142,11 @@ export function MainLinks() {
             label="Funcionários"
             path="/users"
           />
-          {/* <MainLink
+          <MainLink
             icon={<IoBuildOutline size={16} />}
             label="Técnicos"
-            path="/users"
-          /> */}
+            path="/technicians"
+          />
         </Box>
       </Collapse>
     </div>
