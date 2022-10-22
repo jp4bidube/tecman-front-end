@@ -33,4 +33,9 @@ export const validationSchema = yup.object({
         ? field.required("A senha é obrigatória")
         : field
     ),
+  address: yup.object({
+    street: yup.string().required("O campo é obrigatório"),
+    number: yup.string().required("O campo é obrigatório"),
+    district: yup.string().required("O campo é obrigatório"),
+  }),
 });

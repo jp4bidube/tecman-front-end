@@ -96,7 +96,14 @@ export const UserCreateForm = () => {
 
   return (
     <Stack>
-      <form onSubmit={action.handleSubmit}>
+      <form
+        onSubmit={action.handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+          }
+        }}
+      >
         <Paper withBorder sx={{ padding: "1.5rem" }}>
           <Grid gutter="xl">
             <Grid.Col span={12}>
