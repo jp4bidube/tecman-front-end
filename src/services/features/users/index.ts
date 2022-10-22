@@ -1,4 +1,5 @@
 import { api } from "@/services/api";
+import { RecouverPasswordUser } from "@/types/auth";
 import { ResponseOK } from "@/types/responseOk";
 import {
   CreateUserPayload,
@@ -66,7 +67,7 @@ class UsersService {
     return data.result;
   }
 
-  async putUpdateUser(
+  async putUpdateEmployee(
     id: number,
     payload: EditUserPayload
   ): Promise<{
@@ -90,6 +91,35 @@ class UsersService {
     const { data } = await api.post("/User", payload);
 
     return data.result;
+  }
+
+  async postRecouverPassword(cpf: string): Promise<RecouverPasswordUser> {
+    const { data }: AxiosResponse<ResponseOK> = await api.post(
+      "/User/Recovery",
+      { cpf }
+    );
+
+    return data.result;
+  }
+
+  async putUpdateUser(
+    id: number,
+    payload: {
+      username: string;
+      password: string;
+      employeeId: number;
+    }
+  ): Promise<{
+    message: string;
+    errorCode: number;
+    success: boolean;
+  }> {
+    const { data }: AxiosResponse<ResponseOK> = await api.put(
+      `/User/${id}`,
+      payload
+    );
+
+    return data;
   }
 }
 
