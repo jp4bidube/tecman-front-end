@@ -71,13 +71,13 @@ const data: MainLinkProps[] = [
   {
     icon: <TbAd2 size={16} />,
     label: "Ordens de Serviço",
-    path: "/", // path: "/service-orders",
+    path: "/service-orders",
   },
-  {
-    icon: <TbFileText size={16} />,
-    label: "Garantias",
-    path: "/", //path: "/guarantees",
-  },
+  // {
+  //   icon: <TbFileText size={16} />,
+  //   label: "Garantias",
+  //   path: "/", //path: "/guarantees",
+  // },
 ];
 
 export function MainLinks() {

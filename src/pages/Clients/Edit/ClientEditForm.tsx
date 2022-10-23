@@ -60,9 +60,9 @@ export const ClientEditForm = ({ client }: ClientEditFormProps) => {
       },
       defaultAddress: false,
     } as ClientAddress;
-    if (clientAddress.length < 3) {
-      setClientAddress([...clientAddress, address]);
-    }
+    setClientAddress([...clientAddress, address]);
+    // if (clientAddress.length < 3) {
+    // }
   };
   const handleRemoveAddress = (key: string) => {
     const filteredAddress = clientAddress.filter(
@@ -164,7 +164,7 @@ export const ClientEditForm = ({ client }: ClientEditFormProps) => {
                 variant="light"
                 radius="xl"
                 onClick={handleAddAddress}
-                disabled={clientAddress.length == 3}
+                // disabled={clientAddress.length == 3}
               >
                 Adicionar Endereço
               </Button>

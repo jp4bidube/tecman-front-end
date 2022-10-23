@@ -247,7 +247,6 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                   { value: "1", label: "Administrador" },
                   { value: "2", label: "Balconista" },
                   { value: "3", label: "Gerência" },
-                  { value: "4", label: "Técnicos" },
                 ]}
               />
             </Grid.Col>
