@@ -1,3 +1,4 @@
+import { useCreateUser } from "@/services/features/users/hooks/useCreateUser";
 import { toBase64 } from "@/utils/fileToB64";
 import {
   Avatar,
@@ -16,16 +17,15 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
+import cep from "cep-promise";
+import "dayjs/locale/pt-BR";
 import { getIn, useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { TbDeviceFloppy, TbUpload } from "react-icons/tb";
 import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
-import cep from "cep-promise";
 import { validationSchema } from "./validationSchema";
-import { useCreateUser } from "@/services/features/users/hooks/useCreateUser";
-import "dayjs/locale/pt-BR";
-import { DatePicker } from "@mantine/dates";
 
 export const UserCreateForm = () => {
   const navigate = useNavigate();

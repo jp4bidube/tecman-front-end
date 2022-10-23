@@ -1,4 +1,6 @@
 import { useCreateClient } from "@/services/features/clients/hooks/useCreateClient";
+import { useFetchClientByCPF } from "@/services/features/clients/hooks/useFetchClientByCPF";
+import { Client } from "@/types/clients";
 import {
   ActionIcon,
   Box,
@@ -11,7 +13,6 @@ import {
   Select,
   Stack,
   TextInput,
-  ThemeIcon,
   Title,
 } from "@mantine/core";
 import cep from "cep-promise";
@@ -19,7 +20,6 @@ import { FieldArray, FormikProvider, useFormik } from "formik";
 import { useState } from "react";
 import {
   TbArrowUpRight,
-  TbChevronRight,
   TbDeviceFloppy,
   TbPlus,
   TbTrash,
@@ -41,6 +41,10 @@ export const OSCreateForm = () => {
   const navigate = useNavigate();
   const mutation = useCreateClient();
   const [openChangeAddress, setOpenChangeAddress] = useState(false);
+  const [lockAdress, setLockAdress] = useState(true);
+  const [client, setClient] = useState<Client | null>(null);
+
+  const clientMutation = useFetchClientByCPF();
 
   const formik = useFormik({
     initialValues: {
@@ -60,9 +64,44 @@ export const OSCreateForm = () => {
 
   const handleSearchCep = async (cepNumber: string) => {
     const { street, neighborhood } = await cep(cepNumber);
-    formik.setFieldValue("address.street", street);
-    formik.setFieldValue("address.district", neighborhood);
+    formik.setFieldValue("street", street);
+    formik.setFieldValue("district", neighborhood);
   };
+
+  const handleFetchClient = async () => {
+    if (!formik.values.cpf) {
+      return formik.setFieldTouched("cpf", true, true);
+    }
+    const client = await clientMutation.mutateAsync(formik.values.cpf);
+    setClient(client);
+    const clientAddress = client.address.find(
+      (address) => address.defaultAddress
+    );
+    formik.setFieldValue("cep", clientAddress?.address.cep);
+    formik.setFieldValue("street", clientAddress?.address.street);
+    formik.setFieldValue("number", clientAddress?.address.number);
+    formik.setFieldValue("district", clientAddress?.address.district);
+    formik.setFieldValue("complement", clientAddress?.address.complement);
+  };
+
+  const handleChangeAdress = (id: string) => {
+    if (id === "other") {
+      formik.setFieldValue("cep", "");
+      formik.setFieldValue("street", "");
+      formik.setFieldValue("number", "");
+      formik.setFieldValue("district", "");
+      formik.setFieldValue("complement", "");
+      return setLockAdress(false);
+    }
+    const changedAdress = client?.address.find((address) => address.id === id);
+    formik.setFieldValue("cep", changedAdress?.address.cep);
+    formik.setFieldValue("street", changedAdress?.address.street);
+    formik.setFieldValue("number", changedAdress?.address.number);
+    formik.setFieldValue("district", changedAdress?.address.district);
+    formik.setFieldValue("complement", changedAdress?.address.complement);
+    return setLockAdress(true);
+  };
+
   return (
     <Stack>
       <FormikProvider value={formik}>
@@ -110,8 +149,8 @@ export const OSCreateForm = () => {
                 <Box mt="1.5rem">
                   <Button
                     radius="xl"
-                    type="submit"
-                    disabled={mutation.isLoading}
+                    disabled={clientMutation.isLoading}
+                    onClick={handleFetchClient}
                   >
                     {mutation.isLoading ? (
                       <Loader size="xs" />
@@ -126,16 +165,18 @@ export const OSCreateForm = () => {
               <Grid.Col span={12}>
                 <Group position="left" mt={20}>
                   <Title order={3}>Endereço</Title>
-                  <Group>
-                    <Button
-                      variant="light"
-                      radius="xl"
-                      leftIcon={<TbArrowUpRight size={20} />}
-                      onClick={() => setOpenChangeAddress(true)}
-                    >
-                      Alterar endereço
-                    </Button>
-                  </Group>
+                  {client && (
+                    <Group>
+                      <Button
+                        variant="light"
+                        radius="xl"
+                        leftIcon={<TbArrowUpRight size={20} />}
+                        onClick={() => setOpenChangeAddress(true)}
+                      >
+                        Alterar endereço
+                      </Button>
+                    </Group>
+                  )}
                 </Group>
               </Grid.Col>
               <Grid.Col xs={12} md={4}>
@@ -150,7 +191,7 @@ export const OSCreateForm = () => {
                   onChange={formik.handleChange}
                   error={formik.touched.cep && formik.errors.cep}
                   mask="99.999-999"
-                  disabled
+                  disabled={lockAdress}
                 />
               </Grid.Col>
               <Grid.Col xs={12} md={6}>
@@ -163,7 +204,7 @@ export const OSCreateForm = () => {
                   value={formik.values.street}
                   onChange={formik.handleChange}
                   error={formik.touched.street && formik.errors.street}
-                  disabled
+                  disabled={lockAdress}
                 />
               </Grid.Col>
               <Grid.Col xs={12} md={2}>
@@ -176,7 +217,7 @@ export const OSCreateForm = () => {
                   value={formik.values.number}
                   onChange={formik.handleChange}
                   error={formik.touched.number && formik.errors.number}
-                  disabled
+                  disabled={lockAdress}
                 />
               </Grid.Col>
               <Grid.Col xs={12} md={6}>
@@ -189,7 +230,7 @@ export const OSCreateForm = () => {
                   value={formik.values.district}
                   onChange={formik.handleChange}
                   error={formik.touched.district && formik.errors.district}
-                  disabled
+                  disabled={lockAdress}
                 />
               </Grid.Col>
               <Grid.Col xs={12} md={6}>
@@ -201,7 +242,7 @@ export const OSCreateForm = () => {
                   value={formik.values.complement}
                   onChange={formik.handleChange}
                   error={formik.touched.complement && formik.errors.complement}
-                  disabled
+                  disabled={lockAdress}
                 />
               </Grid.Col>
             </Grid>
@@ -299,6 +340,8 @@ export const OSCreateForm = () => {
       <ClientAddressList
         opened={openChangeAddress}
         setOpened={setOpenChangeAddress}
+        adresses={client?.address}
+        onChange={handleChangeAdress}
       />
     </Stack>
   );

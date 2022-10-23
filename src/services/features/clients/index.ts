@@ -50,6 +50,14 @@ class ClientsService {
     return data.result;
   }
 
+  async getClientByCPF(cpf: string): Promise<Client> {
+    const { data }: AxiosResponse<ResponseOK> = await api.get(
+      `/Client/cpf/${cpf}`
+    );
+
+    return data.result;
+  }
+
   async putUpdateClient(
     id: number,
     payload: ClientUpdatePayload
