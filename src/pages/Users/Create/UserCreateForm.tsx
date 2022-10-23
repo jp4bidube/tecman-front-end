@@ -37,7 +37,7 @@ export const UserCreateForm = () => {
       phoneNumber: "",
       cpf: "",
       email: "",
-      avatar_url: "",
+      avatarUrl: "",
       birthDate: null,
       role: "",
       address: {
@@ -70,7 +70,7 @@ export const UserCreateForm = () => {
   const changeImg = async () => {
     if (avatar) {
       const b64 = await toBase64(avatar);
-      formik.setFieldValue("avatar_url", b64);
+      formik.setFieldValue("avatarUrl", b64);
     }
   };
 
@@ -133,7 +133,7 @@ export const UserCreateForm = () => {
                   color="cyan"
                   radius="xl"
                   size="lg"
-                  src={values.avatar_url}
+                  src={values.avatarUrl}
                 >
                   {values.name?.toUpperCase().substring(0, 2)}
                 </Avatar>

@@ -19,17 +19,20 @@ type ClientAddressListProps = {
   setOpened: (value: boolean) => void;
 };
 
-const AdreessItem = ({ id }: { id: string }) => {
+const AdreessItem = () => {
   const theme = useMantineTheme();
   return (
     <Paper
       shadow="xs"
-      p="md"
+      py="xs"
+      px="xl"
       radius="lg"
       sx={{
         minHeight: 150,
         cursor: "pointer",
+        flexWrap: "nowrap",
         ":hover": {
+          borderWidth: "2px",
           borderColor:
             theme.colorScheme === "dark"
               ? theme.colors.tecman[3]
@@ -38,39 +41,36 @@ const AdreessItem = ({ id }: { id: string }) => {
       }}
       withBorder
     >
-      <Grid justify="center" align="center">
-        <Grid.Col span={2}>
-          <Box mt="20%">
-            <Radio value={id} />
-          </Box>
-        </Grid.Col>
-        <Grid.Col span={10}>
-          <Group position="apart" mt="sm" grow>
-            <Text weight={500}>CEP</Text>
-            <Text size="sm" color="dimmed" lineClamp={1}>
-              4565464646
-            </Text>
-          </Group>
-          <Group position="apart" mt="sm" grow>
-            <Text weight={500}>Rua</Text>
-            <Text size="sm" color="dimmed" lineClamp={1}>
-              4565464646
-            </Text>
-          </Group>
-          <Group position="apart" mt="sm" grow>
-            <Text weight={500}>Número</Text>
-            <Text size="sm" color="dimmed" lineClamp={1}>
-              4565464646
-            </Text>
-          </Group>
-          <Group position="apart" mt="sm" grow>
-            <Text weight={500}>Número</Text>
-            <Text size="sm" color="dimmed" lineClamp={1}>
-              4565464646
-            </Text>
-          </Group>
-        </Grid.Col>
-      </Grid>
+      <Group mt="sm">
+        <Text weight={500}>CEP</Text>
+        <Text size="sm" color="dimmed" lineClamp={1}>
+          4565464646456546464645654646464565464sssssssscccvvvvvaasas
+        </Text>
+      </Group>
+      <Group mt="sm">
+        <Text weight={500}>Rua</Text>
+        <Text size="sm" color="dimmed" lineClamp={1}>
+          4565464646
+        </Text>
+      </Group>
+      <Group mt="sm">
+        <Text weight={500}>Número</Text>
+        <Text size="sm" color="dimmed" lineClamp={1}>
+          4565464646456546464645654646464565464sssssssscccvvvvvaasas
+        </Text>
+      </Group>
+      <Group mt="sm">
+        <Text weight={500}>Bairro</Text>
+        <Text size="sm" color="dimmed" lineClamp={1}>
+          4565464646456546464645654646464565464sssssssscccvvvvvaasas
+        </Text>
+      </Group>
+      <Group mt="sm">
+        <Text weight={500}>Complemento</Text>
+        <Text size="sm" color="dimmed" lineClamp={1}>
+          4565464646456546464645654646464565464sssssssscccvvvvvaasas
+        </Text>
+      </Group>
     </Paper>
   );
 };
@@ -91,19 +91,17 @@ export const ClientAddressList = ({
     >
       <Box sx={{ height: "30rem", overflow: "auto" }}>
         <PerfectScrollbar>
-          <Radio.Group orientation="vertical">
-            <List spacing="xs" size="sm" center listStyleType="none">
-              <List.Item>
-                <AdreessItem id="1" />
-              </List.Item>
-              <List.Item>
-                <AdreessItem id="2" />
-              </List.Item>
-              <List.Item>
-                <AdreessItem id="3" />
-              </List.Item>
-            </List>
-          </Radio.Group>
+          <List spacing="xs" size="sm" center listStyleType="none">
+            <List.Item>
+              <AdreessItem />
+            </List.Item>
+            <List.Item>
+              <AdreessItem />
+            </List.Item>
+            <List.Item>
+              <AdreessItem />
+            </List.Item>
+          </List>
         </PerfectScrollbar>
       </Box>
 

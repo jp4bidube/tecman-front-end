@@ -35,7 +35,7 @@ export type CreateUserPayload = {
   phoneNumber: string;
   cpf: string;
   email: string;
-  avatar_url: string;
+  avatarUrl: string;
   birthDate: string | null;
   role: number;
   address: {

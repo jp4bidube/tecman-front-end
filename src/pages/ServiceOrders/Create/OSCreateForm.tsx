@@ -216,6 +216,7 @@ export const OSCreateForm = () => {
                         <Group>
                           <Button
                             variant="light"
+                            radius="xl"
                             leftIcon={<TbPlus size={20} />}
                             onClick={() =>
                               arrayHelpers.push({
