@@ -5,4 +5,13 @@ export const validationSchema = yup.object({
   street: yup.string().required("O campo é obrigatório"),
   number: yup.string().required("O campo é obrigatório"),
   district: yup.string().required("O campo é obrigatório"),
+  defect: yup.string().required("O campo é obrigatório"),
+  tecnicId: yup.string().nullable().required("O campo é obrigatório"),
+  devices: yup.array().of(
+    yup.object().shape({
+      type: yup.string().required("O campo é obrigatório"),
+      brand: yup.string().required("O campo é obrigatório"),
+      model: yup.string().required("O campo é obrigatório"),
+    })
+  ),
 });

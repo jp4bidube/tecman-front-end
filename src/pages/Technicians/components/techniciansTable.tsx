@@ -30,7 +30,7 @@ export const TechniciansTable = ({
   const { sort, order } = store.usersFilter;
 
   const handleSort = (column: string) => {
-    store.setFilter({
+    store.setUsersFilter({
       ...store.usersFilter,
       sort: column,
       order: order === "desc" ? "asc" : "desc",

@@ -24,7 +24,7 @@ export const UsersCards = ({ users, confirmInactivation }: UsersCardsProps) => {
   const { sort, order } = store.usersFilter;
 
   useEffect(() => {
-    store.setFilter({
+    store.setUsersFilter({
       ...store.usersFilter,
       sort: "name",
       order: "asc",

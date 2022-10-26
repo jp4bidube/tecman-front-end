@@ -36,19 +36,19 @@ export const TechniciansList = () => {
   const mutation = useToggleDisableUser();
 
   const handleSearch = () => {
-    store.setFilter({ ...store.usersFilter, search: keySearch, page: 1 });
+    store.setUsersFilter({ ...store.usersFilter, search: keySearch, page: 1 });
   };
 
   const handleClear = () => {
     setKeySearch("");
-    store.setFilter({ ...store.usersFilter, search: "" });
+    store.setUsersFilter({ ...store.usersFilter, search: "" });
   };
   const handleToggleDisableUser = async (id: number) => {
     mutation.mutate(id);
   };
 
   useEffect(() => {
-    store.setFilter({
+    store.setUsersFilter({
       page: 1,
       order: "desc",
       search: "",

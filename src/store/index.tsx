@@ -1,7 +1,7 @@
 import create from "zustand";
-import { AuthSlice, createAuthSlice } from "./Auth";
-import { BreadCrumbSlice, createBreadCrumbSlice } from "./BreadCrumbSlice";
-import { ClientsSlice, createClientsSlice } from "./Clients";
+import { createAuthSlice, AuthSlice } from "./Auth";
+import { createBreadCrumbSlice, BreadCrumbSlice } from "./BreadCrumbSlice";
+import { createClientsSlice, ClientsSlice } from "./Clients";
 import { createThemeSlice, ThemeSlice } from "./ThemeSlice";
 import { createUsersSlice, UsersSlice } from "./Users";
 

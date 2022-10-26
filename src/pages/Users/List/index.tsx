@@ -1,5 +1,6 @@
-import { useToggleDisableUser } from "@/services/features/users/hooks/useToggleDisableUser";
+import { PaginationSkeleton } from "@/components/PaginationSkeleton";
 import { useFetchUsers } from "@/services/features/users/hooks/useFetchUsers";
+import { useToggleDisableUser } from "@/services/features/users/hooks/useToggleDisableUser";
 import useStore from "@/store";
 import { User } from "@/types/user";
 import {
@@ -9,19 +10,17 @@ import {
   MediaQuery,
   Pagination,
   Paper,
-  Skeleton,
   Stack,
   Text,
   TextInput,
   Title,
 } from "@mantine/core";
 import { openConfirmModal } from "@mantine/modals";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TbSearch } from "react-icons/tb";
 import { UsersCards } from "../components/usersCards";
 import { UsersTable } from "../components/usersTable";
 import { UsersTableSkeleton } from "./UserTableSkeleton";
-import { PaginationSkeleton } from "@/components/PaginationSkeleton";
 
 export const UsersList = () => {
   const store = useStore();
@@ -37,25 +36,25 @@ export const UsersList = () => {
   const mutation = useToggleDisableUser();
 
   const handleSearch = () => {
-    store.setFilter({ ...store.usersFilter, search: keySearch, page: 1 });
+    store.setUsersFilter({ ...store.usersFilter, search: keySearch, page: 1 });
   };
 
   const handleClear = () => {
     setKeySearch("");
-    store.setFilter({ ...store.usersFilter, search: "" });
+    store.setUsersFilter({ ...store.usersFilter, search: "" });
   };
   const handleToggleDisableUser = async (id: number) => {
     mutation.mutate(id);
   };
 
-  useEffect(() => {
-    store.setFilter({
-      page: 1,
-      order: "desc",
-      search: "",
-      sort: "name",
-    });
-  }, []);
+  // useEffect(() => {
+  //   store.setFilter({
+  //     page: 1,
+  //     order: "desc",
+  //     search: "",
+  //     sort: "name",
+  //   });
+  // }, []);
 
   const openInactiveUserModal = (id: number, user: User) => {
     openConfirmModal({
@@ -142,8 +141,8 @@ export const UsersList = () => {
             ) : (
               <Pagination
                 page={store.usersFilter.page}
-                total={data?.total ? Math.ceil(data.total / 10) : 1}
-                onChange={(page) => store.setPage(page)}
+                total={data?.total ? Math.ceil(data.total / 5) : 1}
+                onChange={(page) => store.setUsersPage(page)}
                 radius="xl"
               />
             )}

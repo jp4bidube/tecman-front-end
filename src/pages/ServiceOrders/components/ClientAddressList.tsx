@@ -5,6 +5,7 @@ import {
   Button,
   Center,
   Chip,
+  Divider,
   Group,
   List,
   Modal,
@@ -74,13 +75,7 @@ const AdreessItem = ({ data, onSelect, selected }: AdreessItemProps) => {
       <Group mt="sm" grow>
         <Text weight={500}>Rua</Text>
         <Text size="sm" color="dimmed" lineClamp={1}>
-          {data.address.street}
-        </Text>
-      </Group>
-      <Group mt="sm" grow>
-        <Text weight={500}>Número</Text>
-        <Text size="sm" color="dimmed" lineClamp={1}>
-          {data.address.number}
+          {`${data.address.street}🔹${data.address.number}`}
         </Text>
       </Group>
       <Group mt="sm" grow>
@@ -125,7 +120,7 @@ export const ClientAddressList = ({
       centered
       title={<Title order={3}>Alterar endereço padrão</Title>}
     >
-      <ScrollArea style={{ height: "30rem" }}>
+      <ScrollArea style={{ height: "30rem", padding: "0 2rem" }}>
         <List spacing="xs" size="sm" center listStyleType="none">
           {adresses?.length! > 0 &&
             adresses!.map((address) => (
@@ -181,7 +176,7 @@ export const ClientAddressList = ({
           </List.Item>
         </List>
       </ScrollArea>
-
+      <Divider />
       <Group align="flex-end" mt={20}>
         <Button radius="xl" onClick={handleChange}>
           Alterar Endereço

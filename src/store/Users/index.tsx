@@ -5,8 +5,8 @@ export type UsersSlice = {
   loggedUser: LoggedUser;
   setLoggedUser: (user: LoggedUser) => void;
   usersFilter: UserFilter;
-  setPage: (page: number) => void;
-  setFilter: (filter: UserFilter) => void;
+  setUsersPage: (page: number) => void;
+  setUsersFilter: (filter: UserFilter) => void;
 };
 
 export const createUsersSlice: StateCreator<UsersSlice> = (set) => ({
@@ -20,13 +20,13 @@ export const createUsersSlice: StateCreator<UsersSlice> = (set) => ({
     search: "",
     sort: "name",
   },
-  setPage(page) {
+  setUsersPage(page) {
     set((state) => ({
       ...state,
       usersFilter: { ...state.usersFilter, page },
     }));
   },
-  setFilter(filter) {
+  setUsersFilter(filter) {
     set((state) => ({
       ...state,
       usersFilter: filter,
