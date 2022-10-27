@@ -6,6 +6,7 @@ import { ForgotPassword } from "@/pages/ForgotPassword";
 import { NotFound } from "@/pages/NotFound";
 import { ServiceOrders } from "@/pages/ServiceOrders";
 import { ServiceOrdersCreate } from "@/pages/ServiceOrders/Create";
+import { ServiceOrdersOverView } from "@/pages/ServiceOrders/OverView";
 import { Technicians } from "@/pages/Technicians";
 import { UserCreate } from "@/pages/Users/Create";
 import { UserEdit } from "@/pages/Users/Edit";
@@ -35,6 +36,10 @@ export const MainRoutes = () => {
             <Route
               path="/service-orders/create"
               element={<ServiceOrdersCreate />}
+            />
+            <Route
+              path="/service-orders/:id/over-view"
+              element={<ServiceOrdersOverView />}
             />
             {/* <Route path="/clients/:id/overview" element={<ClientOverview />} />
             <Route path="/guarantees" element={<Guarantees />} />
