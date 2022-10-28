@@ -37,7 +37,6 @@ class AuthService {
   }
 
   async refreshToken(refreshToken: string): Promise<AuthPayload> {
-    console.log(refreshToken);
     const { data } = await uninterceptedAxiosInstance.get(
       `/User/Refresh/${refreshToken}`
     );

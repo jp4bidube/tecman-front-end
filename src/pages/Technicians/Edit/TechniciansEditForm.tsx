@@ -1,20 +1,16 @@
-import { useUpdateUser } from "@/services/features/users/hooks/useUpdateUser";
+import { useUpdateTechnicians } from "@/services/features/technicians/hooks/useUpdateTechnicians";
 import { EditUserPayload, User } from "@/types/user";
-import { maskDate } from "@/utils/getRandomColor";
 import { toBase64 } from "@/utils/fileToB64";
 import {
   Avatar,
   Button,
-  Collapse,
   Divider,
   FileButton,
   Grid,
   Group,
   InputBase,
-  Overlay,
   Paper,
   Select,
-  Space,
   Stack,
   Text,
   TextInput,
@@ -23,25 +19,24 @@ import {
 import { DatePicker } from "@mantine/dates";
 import cep from "cep-promise";
 import "dayjs/locale/pt-BR";
-import { getIn, useFormik } from "formik";
+import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { TbDeviceFloppy, TbUpload } from "react-icons/tb";
 import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
-import { CreateUserCredentials } from "./CreateUserCredentials";
 import { validationSchema } from "./validationSchema";
 
-type UserEditProps = {
+type TechniciansEditProps = {
   user: User;
 };
 
-export const UserEditForm = ({ user }: UserEditProps) => {
+export const TechniciansEditForm = ({ user }: TechniciansEditProps) => {
   const navigate = useNavigate();
-  const mutation = useUpdateUser();
+  const mutation = useUpdateTechnicians();
 
   const initialValue = {
     ...user,
-    role: user?.role?.id + "",
+    role: user?.role?.id + "4",
     employeeUser: {
       login: user.user ? true : false,
       username: user.user ? user.user.username : "",
@@ -59,7 +54,7 @@ export const UserEditForm = ({ user }: UserEditProps) => {
         email: values.email,
         avatarUrl: values.avatarUrl,
         birthDate: values.birthDate,
-        role: +values.role,
+        role: 4,
         address: {
           street: values?.address?.street,
           cep: values?.address?.cep,
@@ -73,11 +68,7 @@ export const UserEditForm = ({ user }: UserEditProps) => {
     },
   });
   const { values, errors, touched, ...action } = formik;
-  const currentRole = getIn(values, "role");
   const [avatar, setAvatar] = useState<File | null>(null);
-  const [showUserCredentials, setShowUserCredentials] = useState(false);
-  const [showCreateUserCredentials, setShowCreateUserCredentials] =
-    useState(false);
 
   const changeImg = async () => {
     if (avatar) {
@@ -96,25 +87,6 @@ export const UserEditForm = ({ user }: UserEditProps) => {
     changeImg();
   }, [avatar, changeImg]);
 
-  useEffect(() => {
-    if (!user.user && user.role.id === 4 && currentRole !== "4") {
-      setShowCreateUserCredentials(true);
-    } else {
-      if (currentRole !== "" && currentRole !== "4") {
-        action.setFieldValue("employeeUser.login", true);
-        setShowUserCredentials(true);
-      } else {
-        action.setFieldValue("employeeUser.login", false);
-        setShowUserCredentials(false);
-      }
-    }
-  }, [currentRole]);
-
-  const handleCancelCredentials = () => {
-    action.setFieldValue("role", user.role.id + "");
-    setShowCreateUserCredentials(false);
-  };
-
   return (
     <Stack>
       <form
@@ -127,7 +99,6 @@ export const UserEditForm = ({ user }: UserEditProps) => {
       >
         <Paper withBorder sx={{ padding: "1.5rem" }}>
           <Grid gutter="xl" sx={{ position: "relative" }}>
-            {showCreateUserCredentials && <Overlay blur={2} color="dark" />}
             <Grid.Col span={12}>
               <Group position="apart">
                 <Title order={3}>Informações básicas</Title>
@@ -236,22 +207,6 @@ export const UserEditForm = ({ user }: UserEditProps) => {
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
-              <Select
-                label="Tipo de Perfil"
-                placeholder="selecione um Perfil"
-                value={values.role}
-                onChange={(value) => action.setFieldValue("role", value)}
-                error={touched.role && errors.role}
-                withAsterisk
-                data={[
-                  { value: "1", label: "Administrador" },
-                  { value: "2", label: "Balconista" },
-                  { value: "3", label: "Gerência" },
-                  { value: "4", label: "Técnicos" },
-                ]}
-              />
-            </Grid.Col>
-            <Grid.Col xs={12} md={6}>
               <DatePicker
                 placeholder="Data de nascimento"
                 locale="pt-BR"
@@ -260,7 +215,6 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                 maxLength={100}
                 value={values.birthDate}
                 error={touched.birthDate && errors.birthDate}
-                onKeyDown={(value) => console.log(value)}
                 onChange={(value) => {
                   return action.setFieldValue("birthDate", value);
                 }}
@@ -268,35 +222,7 @@ export const UserEditForm = ({ user }: UserEditProps) => {
               />
             </Grid.Col>
           </Grid>
-          <Collapse in={showUserCredentials}>
-            <Grid>
-              <Grid.Col span={12}>
-                <Title order={3} mt={20}>
-                  Credenciais de usuário
-                </Title>
-              </Grid.Col>
-              <Grid.Col xs={12} md={4}>
-                <TextInput
-                  placeholder="Nome de usuário"
-                  label="Nome de usuário"
-                  name="employeeUser.username"
-                  id="employeeUser.username"
-                  value={values.employeeUser?.username}
-                  onChange={action.handleChange}
-                  error={
-                    touched.employeeUser?.username &&
-                    errors.employeeUser?.username
-                  }
-                  withAsterisk
-                />
-              </Grid.Col>
-            </Grid>
-          </Collapse>
-          {showCreateUserCredentials && (
-            <Space h={300} sx={{ position: "relative" }} />
-          )}
           <Grid sx={{ position: "relative" }}>
-            {showCreateUserCredentials && <Overlay blur={2} color="dark" />}
             <Grid.Col span={12}>
               <Title order={3} mt={20}>
                 Endereço
@@ -365,14 +291,6 @@ export const UserEditForm = ({ user }: UserEditProps) => {
           </Grid>
         </Paper>
       </form>
-      {showCreateUserCredentials && (
-        <CreateUserCredentials
-          open={showCreateUserCredentials}
-          employeeId={user.id}
-          onCancel={handleCancelCredentials}
-          role={parseInt(currentRole)}
-        />
-      )}
     </Stack>
   );
 };

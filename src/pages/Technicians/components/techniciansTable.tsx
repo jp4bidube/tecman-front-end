@@ -18,7 +18,6 @@ export const TechniciansTable = ({
   confirmInactivation,
   isFetching,
 }: UsersTableProps) => {
-  console.log(technicians);
   const navigate = useNavigate();
   const store = useStore();
   const { sort, order } = store.techniciansFilter;

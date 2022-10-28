@@ -16,7 +16,6 @@ export const useToggleDisableUser = () => {
           color: "teal",
           autoClose: true,
         });
-        console.log(queryClient);
       },
       onError: () => {
         showNotification({

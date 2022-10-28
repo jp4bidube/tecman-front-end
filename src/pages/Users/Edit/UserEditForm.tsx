@@ -259,7 +259,6 @@ export const UserEditForm = ({ user }: UserEditProps) => {
                 maxLength={100}
                 value={values.birthDate}
                 error={touched.birthDate && errors.birthDate}
-                onKeyDown={(value) => console.log(value)}
                 onChange={(value) => {
                   return action.setFieldValue("birthDate", value);
                 }}
