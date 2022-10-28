@@ -1,35 +1,32 @@
+import { useCreateTechnicians } from "@/services/features/technicians/hooks/useCreateTechnicians";
 import { toBase64 } from "@/utils/fileToB64";
 import {
   Avatar,
   Button,
-  Collapse,
   Divider,
   FileButton,
   Grid,
   Group,
   InputBase,
   Paper,
-  PasswordInput,
-  Select,
   Stack,
   Text,
   TextInput,
   Title,
 } from "@mantine/core";
-import { getIn, useFormik } from "formik";
+import { DatePicker } from "@mantine/dates";
+import cep from "cep-promise";
+import "dayjs/locale/pt-BR";
+import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { TbDeviceFloppy, TbUpload } from "react-icons/tb";
 import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
-import cep from "cep-promise";
 import { validationSchema } from "./validationSchema";
-import { useCreateUser } from "@/services/features/users/hooks/useCreateUser";
-import "dayjs/locale/pt-BR";
-import { DatePicker } from "@mantine/dates";
 
 export const TechniciansCreateForm = () => {
   const navigate = useNavigate();
-  const mutation = useCreateUser();
+  const mutation = useCreateTechnicians();
 
   const formik = useFormik({
     initialValues: {
@@ -37,9 +34,9 @@ export const TechniciansCreateForm = () => {
       phoneNumber: "",
       cpf: "",
       email: "",
-      avatar_url: "",
+      avatarUrl: "",
       birthDate: null,
-      role: "",
+      role: 4,
       address: {
         street: "",
         cep: "",
@@ -48,29 +45,25 @@ export const TechniciansCreateForm = () => {
         complement: "",
       },
       employeeUser: {
-        login: true,
+        login: false,
         username: "",
         password: "",
       },
-      confirmPassword: "" || undefined,
     },
     validationSchema,
     onSubmit: (values) => {
       let payload = { ...values };
-      delete payload.confirmPassword;
-      mutation.mutate({ ...payload, role: +payload.role });
+      mutation.mutate(payload);
     },
   });
 
   const { values, errors, touched, ...action } = formik;
-  const currentRole = getIn(values, "role");
   const [avatar, setAvatar] = useState<File | null>(null);
-  const [showUserCredentials, setShowUserCredentials] = useState(false);
 
   const changeImg = async () => {
     if (avatar) {
       const b64 = await toBase64(avatar);
-      formik.setFieldValue("avatar_url", b64);
+      formik.setFieldValue("avatarUrl", b64);
     }
   };
 
@@ -83,16 +76,6 @@ export const TechniciansCreateForm = () => {
   useEffect(() => {
     changeImg();
   }, [avatar, changeImg]);
-
-  useEffect(() => {
-    if (currentRole !== "" && currentRole !== "4") {
-      action.setFieldValue("employeeUser.login", true);
-      setShowUserCredentials(true);
-    } else {
-      action.setFieldValue("employeeUser.login", false);
-      setShowUserCredentials(false);
-    }
-  }, [currentRole]);
 
   return (
     <Stack>
@@ -113,7 +96,7 @@ export const TechniciansCreateForm = () => {
                   <Button
                     radius="xl"
                     variant="outline"
-                    onClick={() => navigate("/users")}
+                    onClick={() => navigate("/technicians")}
                   >
                     Cancelar
                   </Button>
@@ -126,7 +109,7 @@ export const TechniciansCreateForm = () => {
                   color="cyan"
                   radius="xl"
                   size="lg"
-                  src={values.avatar_url}
+                  src={values.avatarUrl}
                 >
                   {values.name?.toUpperCase().substring(0, 2)}
                 </Avatar>
@@ -205,22 +188,6 @@ export const TechniciansCreateForm = () => {
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
-              <Select
-                label="Tipo de Perfil"
-                placeholder="selecione um Perfil"
-                value={values.role}
-                onChange={(value) => action.setFieldValue("role", value)}
-                error={touched.role && errors.role}
-                withAsterisk
-                data={[
-                  { value: "1", label: "Administrador" },
-                  { value: "2", label: "Balconista" },
-                  { value: "3", label: "Gerência" },
-                  { value: "4", label: "Técnicos" },
-                ]}
-              />
-            </Grid.Col>
-            <Grid.Col xs={12} md={6}>
               <DatePicker
                 placeholder="Data de nascimento"
                 locale="pt-BR"
@@ -233,57 +200,6 @@ export const TechniciansCreateForm = () => {
               />
             </Grid.Col>
           </Grid>
-          <Collapse in={showUserCredentials}>
-            <Grid>
-              <Grid.Col span={12}>
-                <Title order={3} mt={20}>
-                  Credenciais de usuário
-                </Title>
-              </Grid.Col>
-              <Grid.Col xs={12} md={4}>
-                <TextInput
-                  placeholder="Nome de usuário"
-                  label="Nome de usuário"
-                  name="employeeUser.username"
-                  id="employeeUser.username"
-                  value={values.employeeUser?.username}
-                  onChange={action.handleChange}
-                  error={
-                    touched.employeeUser?.username &&
-                    errors.employeeUser?.username
-                  }
-                  withAsterisk
-                />
-              </Grid.Col>
-              <Grid.Col xs={12} md={4}>
-                <PasswordInput
-                  placeholder="Senha"
-                  label="Senha"
-                  name="employeeUser.password"
-                  id="employeeUser.password"
-                  value={values.employeeUser?.password}
-                  onChange={action.handleChange}
-                  error={
-                    touched.employeeUser?.password &&
-                    errors.employeeUser?.password
-                  }
-                  withAsterisk
-                />
-              </Grid.Col>
-              <Grid.Col xs={12} md={4}>
-                <PasswordInput
-                  placeholder="Confirmar Senha"
-                  label="Confirmar Senha"
-                  name="confirmPassword"
-                  id="confirmPassword"
-                  value={values.confirmPassword}
-                  onChange={action.handleChange}
-                  error={touched.confirmPassword && errors.confirmPassword}
-                  withAsterisk
-                />
-              </Grid.Col>
-            </Grid>
-          </Collapse>
           <Grid>
             <Grid.Col span={12}>
               <Title order={3} mt={20}>

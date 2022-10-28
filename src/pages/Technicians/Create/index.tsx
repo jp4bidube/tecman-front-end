@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { IoBuildOutline } from "react-icons/io5";
 import { TechniciansCreateForm } from "./TechniciansCreateForm";
 
-export const UserCreate = () => {
+export const TechnicianCreate = () => {
   const store = useStore();
 
   useEffect(

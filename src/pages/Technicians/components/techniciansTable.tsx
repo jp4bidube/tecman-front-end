@@ -1,37 +1,31 @@
 import { Th } from "@/components/Th";
 import useStore from "@/store";
-import { User } from "@/types/user";
-import { Badge, Group, Table, ThemeIcon, Title, Tooltip } from "@mantine/core";
+import { Badge, Group, Table, ThemeIcon, Tooltip } from "@mantine/core";
 
-import {
-  TbChevronDown,
-  TbChevronUp,
-  TbEdit,
-  TbSelector,
-  TbUser,
-  TbUserOff,
-} from "react-icons/tb";
+import { TbEdit, TbUser, TbUserOff } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { TechniciansTableSkeleton } from "../List/TechniciansTableSkeleton";
+import { User } from "@/types/user";
 
 type UsersTableProps = {
-  users: User[] | undefined;
-  confirmInactivation: (id: number, user: User) => void;
+  technicians: User[] | undefined;
+  confirmInactivation: (id: number, technician: User) => void;
   isFetching: boolean;
 };
 
 export const TechniciansTable = ({
-  users,
+  technicians,
   confirmInactivation,
   isFetching,
 }: UsersTableProps) => {
+  console.log(technicians);
   const navigate = useNavigate();
   const store = useStore();
-  const { sort, order } = store.usersFilter;
+  const { sort, order } = store.techniciansFilter;
 
   const handleSort = (column: string) => {
-    store.setUsersFilter({
-      ...store.usersFilter,
+    store.setTechniciansFilter({
+      ...store.techniciansFilter,
       sort: column,
       order: order === "desc" ? "asc" : "desc",
     });
@@ -64,22 +58,24 @@ export const TechniciansTable = ({
         {isFetching ? (
           <TechniciansTableSkeleton />
         ) : (
-          users &&
-          users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
+          technicians &&
+          technicians.map((technician) => (
+            <tr key={technician.id}>
+              <td>{technician.name}</td>
+              <td>{technician.email}</td>
               <td>
-                <Badge color="tecman">{user.role.role}</Badge>
+                <Badge color="tecman">{technician.role.role}</Badge>
               </td>
-              <td>{user.cpf}</td>
+              <td>{technician.cpf}</td>
               <td>
                 <Badge
                   color={
-                    user.employeeStatus.status === "Ativo" ? "teal" : "red"
+                    technician.employeeStatus.status === "Ativo"
+                      ? "teal"
+                      : "red"
                   }
                 >
-                  {user.employeeStatus.status}
+                  {technician.employeeStatus.status}
                 </Badge>
               </td>
               <td>
@@ -88,18 +84,22 @@ export const TechniciansTable = ({
                     <ThemeIcon
                       variant="light"
                       sx={{ cursor: "pointer" }}
-                      onClick={() => navigate(`/users/${user.id}/edit`)}
+                      onClick={() =>
+                        navigate(`/technicians/${technician.id}/edit`)
+                      }
                     >
                       <TbEdit />
                     </ThemeIcon>
                   </Tooltip>
-                  {user.employeeStatus.status === "Ativo" ? (
+                  {technician.employeeStatus.status === "Ativo" ? (
                     <Tooltip label="Desativar usuário" withArrow>
                       <ThemeIcon
                         color="red"
                         variant="light"
                         sx={{ cursor: "pointer" }}
-                        onClick={() => confirmInactivation(user.id, user)}
+                        onClick={() =>
+                          confirmInactivation(technician.id, technician)
+                        }
                       >
                         <TbUserOff />
                       </ThemeIcon>
@@ -110,7 +110,9 @@ export const TechniciansTable = ({
                         color="teal"
                         variant="light"
                         sx={{ cursor: "pointer" }}
-                        onClick={() => confirmInactivation(user.id, user)}
+                        onClick={() =>
+                          confirmInactivation(technician.id, technician)
+                        }
                       >
                         <TbUser />
                       </ThemeIcon>

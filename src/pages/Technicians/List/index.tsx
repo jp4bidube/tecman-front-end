@@ -1,5 +1,5 @@
 import { PaginationSkeleton } from "@/components/PaginationSkeleton";
-import { useFetchUsers } from "@/services/features/users/hooks/useFetchUsers";
+import { useFetchTechnicians } from "@/services/features/technicians/hooks/useFetchTechnicians";
 import { useToggleDisableUser } from "@/services/features/users/hooks/useToggleDisableUser";
 import useStore from "@/store";
 import { User } from "@/types/user";
@@ -24,31 +24,35 @@ import { TechniciansTableSkeleton } from "./TechniciansTableSkeleton";
 
 export const TechniciansList = () => {
   const store = useStore();
-  const { page, order, search, sort } = store.usersFilter;
-  const { data, isFetching, isLoading } = useFetchUsers(
-    page,
-    order,
-    sort,
-    search
+  const { search } = store.techniciansFilter;
+
+  const { data, isFetching, isLoading } = useFetchTechnicians(
+    store.techniciansFilter
   );
+
   const [keySearch, setKeySearch] = useState(search);
 
   const mutation = useToggleDisableUser();
 
   const handleSearch = () => {
-    store.setUsersFilter({ ...store.usersFilter, search: keySearch, page: 1 });
+    store.setTechniciansFilter({
+      ...store.techniciansFilter,
+      search: keySearch,
+      page: 1,
+    });
   };
 
   const handleClear = () => {
     setKeySearch("");
-    store.setUsersFilter({ ...store.usersFilter, search: "" });
+    store.setTechniciansFilter({ ...store.techniciansFilter, search: "" });
   };
+
   const handleToggleDisableUser = async (id: number) => {
     mutation.mutate(id);
   };
 
   useEffect(() => {
-    store.setUsersFilter({
+    store.setTechniciansFilter({
       page: 1,
       order: "desc",
       search: "",
@@ -56,21 +60,21 @@ export const TechniciansList = () => {
     });
   }, []);
 
-  const openInactiveUserModal = (id: number, user: User) => {
+  const openInactiveTechModal = (id: number, user: User) => {
     openConfirmModal({
       title: (
         <Title order={4}>
           {user.employeeStatus.status === "Ativo"
-            ? "Desativar usuário"
-            : "Ativar usuário"}
+            ? "Desativar Técnico"
+            : "Ativar Técnico"}
         </Title>
       ),
       centered: true,
       children: (
         <Text size="sm">
           {user.employeeStatus.status === "Ativo"
-            ? "Tem certeza de que deseja desativar esse usuário? Esta ação impedirá o usuário de realizar login na aplicação."
-            : "Ao ativar o usuário será capaz de realizar login."}
+            ? "Tem certeza de que deseja desativar esse Técnico?"
+            : "Ao ativar o técnico será capaz de ser vinculado a uma OS."}
         </Text>
       ),
       labels: { confirm: "Confirmar", cancel: "Cancelar" },
@@ -115,8 +119,8 @@ export const TechniciansList = () => {
           <MediaQuery largerThan="md" styles={{ display: "none" }}>
             <div>
               <TechniciansCards
-                users={data?.users}
-                confirmInactivation={openInactiveUserModal}
+                technicians={data?.technicians}
+                confirmInactivation={openInactiveTechModal}
               />
             </div>
           </MediaQuery>
@@ -126,8 +130,8 @@ export const TechniciansList = () => {
                 <TechniciansTableSkeleton />
               ) : (
                 <TechniciansTable
-                  users={data?.users}
-                  confirmInactivation={openInactiveUserModal}
+                  technicians={data?.technicians}
+                  confirmInactivation={openInactiveTechModal}
                   isFetching={isFetching}
                 />
               )}
@@ -140,7 +144,7 @@ export const TechniciansList = () => {
               <PaginationSkeleton />
             ) : (
               <Pagination
-                page={store.usersFilter.page}
+                page={store.techniciansFilter.page}
                 total={data?.total ? Math.ceil(data.total / 10) : 1}
                 onChange={(page) => store.setPage(page)}
                 radius="xl"

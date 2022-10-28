@@ -9,15 +9,16 @@ export const useToggleDisableUser = () => {
     {
       onSuccess: async () => {
         queryClient.invalidateQueries("fetchUsers");
+        queryClient.invalidateQueries("fetchTechnicians");
         showNotification({
           title: "Sucesso",
-          message: "Usuário atualizado com sucesso",
+          message: "Registro atualizado com sucesso",
           color: "teal",
           autoClose: true,
         });
         console.log(queryClient);
       },
-      onError: (err) => {
+      onError: () => {
         showNotification({
           title: "Erro",
           message: "Erro inesperado",

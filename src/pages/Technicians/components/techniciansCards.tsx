@@ -14,12 +14,12 @@ import { TbChevronDown, TbChevronUp, TbEdit, TbUserOff } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
 type UsersCardsProps = {
-  users: User[] | undefined;
+  technicians: User[] | undefined;
   confirmInactivation: (id: number, user: User) => void;
 };
 
 export const TechniciansCards = ({
-  users,
+  technicians,
   confirmInactivation,
 }: UsersCardsProps) => {
   const navigate = useNavigate();
@@ -36,9 +36,16 @@ export const TechniciansCards = ({
 
   return (
     <>
-      {users &&
-        users.map((user) => (
-          <Card shadow="sm" p="lg" radius="md" withBorder mb="lg" key={user.id}>
+      {technicians &&
+        technicians.map((technician) => (
+          <Card
+            shadow="sm"
+            p="lg"
+            radius="md"
+            withBorder
+            mb="lg"
+            key={technician.id}
+          >
             <Group position="apart" mt="md" mb="xs">
               <Text weight={500}>Situação</Text>
               <Badge color="teal" variant="light">
@@ -59,19 +66,19 @@ export const TechniciansCards = ({
                 </Tooltip>
               </Group>
               <Text size="sm" color="dimmed">
-                {user.name}
+                {technician.name}
               </Text>
             </Group>
             <Group position="apart" mt="md" mb="xs">
               <Text weight={500}>E-mail</Text>
               <Text size="sm" color="dimmed">
-                {user.email}
+                {technician.email}
               </Text>
             </Group>
             <Group position="apart" mt="md" mb="xs">
               <Text weight={500}>Documento</Text>
               <Text size="sm" color="dimmed">
-                {user.cpf}
+                {technician.cpf}
               </Text>
             </Group>
             <Card.Section withBorder inheritPadding py="xs">
@@ -79,7 +86,9 @@ export const TechniciansCards = ({
                 <Tooltip label="Editar" withArrow>
                   <Button
                     variant="light"
-                    onClick={() => navigate(`/users/${user.id}/edit`)}
+                    onClick={() =>
+                      navigate(`/technicians/${technician.id}/edit`)
+                    }
                     leftIcon={<TbEdit />}
                   >
                     <Text>Editar</Text>
@@ -89,7 +98,9 @@ export const TechniciansCards = ({
                   <Button
                     color="red"
                     variant="light"
-                    onClick={() => confirmInactivation(user.id, user)}
+                    onClick={() =>
+                      confirmInactivation(technician.id, technician)
+                    }
                     leftIcon={<TbUserOff />}
                   >
                     <Text>Desativar</Text>

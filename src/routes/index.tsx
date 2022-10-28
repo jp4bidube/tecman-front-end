@@ -8,6 +8,8 @@ import { ServiceOrders } from "@/pages/ServiceOrders";
 import { ServiceOrdersCreate } from "@/pages/ServiceOrders/Create";
 import { ServiceOrdersOverView } from "@/pages/ServiceOrders/OverView";
 import { Technicians } from "@/pages/Technicians";
+import { TechnicianCreate } from "@/pages/Technicians/Create";
+import { TechnicianEdit } from "@/pages/Technicians/Edit";
 import { UserCreate } from "@/pages/Users/Create";
 import { UserEdit } from "@/pages/Users/Edit";
 import { Layout } from "@/theme/Layout";
@@ -27,8 +29,8 @@ export const MainRoutes = () => {
             <Route path="/users/:id/edit" element={<UserEdit />} />
             <Route path="/users/create" element={<UserCreate />} />
             <Route path="/technicians" element={<Technicians />} />
-            <Route path="/technicians/:id/edit" element={<UserEdit />} />
-            <Route path="/technicians/create" element={<UserCreate />} />
+            <Route path="/technicians/:id/edit" element={<TechnicianEdit />} />
+            <Route path="/technicians/create" element={<TechnicianCreate />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/clients/create" element={<ClientCreate />} />
             <Route path="/clients/:id/edit" element={<ClientEdit />} />
@@ -41,11 +43,6 @@ export const MainRoutes = () => {
               path="/service-orders/:id/over-view"
               element={<ServiceOrdersOverView />}
             />
-            {/* <Route path="/clients/:id/overview" element={<ClientOverview />} />
-            <Route path="/guarantees" element={<Guarantees />} />
-
-            <Route path="/users/:id/overview" element={<UserOverview />} />
-            <Route path="/employees" element={<Employees />} /> */}
             <Route path="*" element={<NotFound />} />
           </Route>
         </Route>

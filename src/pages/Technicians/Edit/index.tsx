@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { UserEditForm } from "./UserEditForm";
 import { UserEditFormSkeleton } from "./UserEditFormSkeleton";
 
-export const UserEdit = () => {
+export const TechnicianEdit = () => {
   const params = useParams();
   const store = useStore();
 

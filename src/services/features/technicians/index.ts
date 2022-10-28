@@ -1,5 +1,7 @@
 import { api } from "@/services/api";
+import { Filter } from "@/types/common";
 import { TechniciansSelect } from "@/types/thechnicians";
+import { User } from "@/types/user";
 
 class TechniciansService {
   async fetchTechniciansSelect(): Promise<TechniciansSelect[]> {
@@ -9,6 +11,26 @@ class TechniciansService {
       value: t.id,
       label: t.name,
     }));
+  }
+
+  async fetchTechnicians({ order, page, search, sort }: Filter): Promise<{
+    technicians: User[];
+    total: number;
+  }> {
+    const { data, headers } = await api.get("/Tecnic", {
+      params: {
+        limit: "5",
+        offset: page - 1,
+        order,
+        sort,
+        search,
+      },
+    });
+
+    return {
+      technicians: data.result,
+      total: Number(headers["x-total-count"]),
+    };
   }
 }
 
