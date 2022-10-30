@@ -32,7 +32,6 @@ import {
 } from "react-icons/tb";
 import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
-import { ClientAddressList } from "../components/ClientAddressList";
 import { equipmentsList } from "../constants/equipaments";
 import { validationSchema } from "./validationSchema";
 import { useCreateOS } from "@/services/features/serviceOrders/hooks/useCreateOS";
@@ -441,12 +440,6 @@ export const OSCreateForm = () => {
           </Paper>
         </form>
       </FormikProvider>
-      <ClientAddressList
-        opened={openChangeAddress}
-        setOpened={setOpenChangeAddress}
-        adresses={client?.address}
-        onChange={handleChangeAdress}
-      />
     </Stack>
   );
 };

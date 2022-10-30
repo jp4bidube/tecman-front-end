@@ -5,6 +5,7 @@ import { createClientsSlice, ClientsSlice } from "./Clients";
 import { createThemeSlice, ThemeSlice } from "./ThemeSlice";
 import { createUsersSlice, UsersSlice } from "./Users";
 import { createTechniciansSlice, TechniciansSlice } from "./Technicians";
+import { OSSlice, createOSSlice } from "./ServiceOrdersSlice";
 
 const useStore = create<
   ThemeSlice &
@@ -12,7 +13,8 @@ const useStore = create<
     UsersSlice &
     AuthSlice &
     ClientsSlice &
-    TechniciansSlice
+    TechniciansSlice &
+    OSSlice
 >()((...a) => ({
   ...createBreadCrumbSlice(...a),
   ...createThemeSlice(...a),
@@ -20,6 +22,7 @@ const useStore = create<
   ...createAuthSlice(...a),
   ...createClientsSlice(...a),
   ...createTechniciansSlice(...a),
+  ...createOSSlice(...a),
 }));
 
 export default useStore;

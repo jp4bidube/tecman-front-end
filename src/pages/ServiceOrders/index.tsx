@@ -3,6 +3,7 @@ import { Button, Group, Stack, Tooltip } from "@mantine/core";
 import { useEffect } from "react";
 import { TbAd2, TbPlus } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import { ServiceOrdersList } from "./List";
 
 export const ServiceOrders: React.FC = () => {
   const store = useStore();
@@ -31,6 +32,7 @@ export const ServiceOrders: React.FC = () => {
           </Button>
         </Tooltip>
       </Group>
+      <ServiceOrdersList />
     </Stack>
   );
 };

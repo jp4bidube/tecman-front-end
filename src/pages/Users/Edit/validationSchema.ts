@@ -18,6 +18,11 @@ export const validationSchema = yup.object({
     is: (roleValue: string) => roleValue !== "" && roleValue !== "4",
     then: employeeUserSchema,
   }),
+  address: yup.object({
+    street: yup.string().required("O campo é obrigatório"),
+    number: yup.string().required("O campo é obrigatório"),
+    district: yup.string().required("O campo é obrigatório"),
+  }),
 });
 
 export const validationCredentialsSchema = yup.object({

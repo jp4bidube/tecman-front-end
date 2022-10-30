@@ -319,6 +319,7 @@ export const UserCreateForm = () => {
                 value={values.address?.street}
                 onChange={action.handleChange}
                 error={touched.address?.street && errors.address?.street}
+                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={2}>
@@ -330,6 +331,7 @@ export const UserCreateForm = () => {
                 value={values.address?.number}
                 onChange={action.handleChange}
                 error={touched.address?.number && errors.address?.number}
+                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
@@ -341,6 +343,7 @@ export const UserCreateForm = () => {
                 value={values.address?.district}
                 onChange={action.handleChange}
                 error={touched.address?.district && errors.address?.district}
+                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
