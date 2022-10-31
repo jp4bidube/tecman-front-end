@@ -57,7 +57,10 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
             <Title order={4}>Número O.S</Title>
             <Badge size="xl">{data?.id}</Badge>
           </Group>
-          <Badge size="lg" color="orange">
+          <Badge
+            size="lg"
+            color={data?.orderServiceStatus.id === 1 ? "orange" : "teal"}
+          >
             {data?.orderServiceStatus?.status}
           </Badge>
 

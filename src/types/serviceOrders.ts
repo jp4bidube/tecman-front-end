@@ -78,7 +78,7 @@ export interface ServiceOrders {
   datePayment: Date | null;
   absence1: Date | null;
   absence2: Date | null;
-  serviceExecuted: null;
+  serviceExecuted: string | null;
 }
 
 export interface Client {

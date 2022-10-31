@@ -17,7 +17,12 @@ export const OSOverViewForm = ({
   return (
     <Stack style={{ maxHeight: "90vh", overflow: "hidden" }}>
       <Top data={data!} handleFinishOS={handleFinishOS} />
-      <ScrollArea.Autosize maxHeight="79vh" type="scroll" scrollbarSize={8}>
+      <ScrollArea.Autosize
+        maxHeight="79vh"
+        type="scroll"
+        scrollHideDelay={200}
+        scrollbarSize={8}
+      >
         <Grid>
           <Grid.Col xs={6}>
             <ClientSection data={data!} />
@@ -37,7 +42,7 @@ export const OSOverViewForm = ({
               label="Defeito"
               name="defect"
               id="defect"
-              value="Não liga a geladeira"
+              value={data.defect}
               autosize
               minRows={2}
               readOnly
@@ -47,9 +52,8 @@ export const OSOverViewForm = ({
             <Textarea
               placeholder="Descreva o serviço executado"
               label="Serviço executado"
-              name="defect"
-              id="defect"
-              disabled
+              value={data?.serviceExecuted!}
+              disabled={!data?.serviceExecuted}
               autosize
               minRows={2}
             />

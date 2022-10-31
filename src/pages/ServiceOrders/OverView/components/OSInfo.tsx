@@ -26,18 +26,32 @@ export const OSInfo = ({ data }: OSInfoProps) => {
           <Title order={5}>Técnico</Title>
           <Text size="sm">{data?.tecnic?.name} </Text>
         </Group>
-        <Group>
-          <Title order={5}>Orçamento</Title>
-          <Text size="sm">
-            <Badge size="lg" color="teal">
-              R$ 120.50
-            </Badge>
-          </Text>
-        </Group>
+        {data?.orderServiceStatus.id === 2 && (
+          <Group>
+            <Title order={6}>Orçamento</Title>
+            <Text size="sm">
+              <Badge size="sm" color="orange">
+                {`R$ ${data.budget}`}
+              </Badge>
+            </Text>
+          </Group>
+        )}
       </Group>
-      <Group mt={5}>
-        <Title order={5}>Atendente</Title>
-        <Text size="sm">{data?.createdBy}</Text>
+      <Group mt={5} position="apart">
+        <Group>
+          <Title order={5}>Atendente</Title>
+          <Text size="sm">{data?.createdBy}</Text>
+        </Group>
+        {data?.orderServiceStatus.id === 2 && (
+          <Group>
+            <Title order={5}>Valor Recebido</Title>
+            <Text size="sm">
+              <Badge size="lg" color="teal">
+                {`R$ ${data.amountReceived}`}
+              </Badge>
+            </Text>
+          </Group>
+        )}
       </Group>
       <Group mt={5}>
         <Title order={5}>Data de criação</Title>

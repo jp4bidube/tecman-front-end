@@ -1,7 +1,11 @@
 import { api } from "@/services/api";
 import { Filter } from "@/types/common";
 import { ResponseOK } from "@/types/responseOk";
-import { ServiceOrders, ServiceOrdersCreate } from "@/types/serviceOrders";
+import {
+  ServiceOrderFinish,
+  ServiceOrders,
+  ServiceOrdersCreate,
+} from "@/types/serviceOrders";
 
 class ServiceOrdersService {
   async createServiceOrder(payload: ServiceOrdersCreate): Promise<ResponseOK> {
@@ -34,6 +38,21 @@ class ServiceOrdersService {
       serviceOrders: data.result,
       total: Number(headers["x-total-count"]),
     };
+  }
+
+  async finishServiceOrder(
+    payload: Omit<ServiceOrderFinish, "id">,
+    id: number
+  ): Promise<ResponseOK> {
+    const { data } = await api.patch<ResponseOK>(`/OrderService/${id}`, {
+      ...payload,
+      equipments: payload.equipments.map((eq) => ({
+        ...eq,
+        mounthsWarranty: eq.mounthsWarranty.toString(),
+      })),
+    });
+
+    return data;
   }
 }
 

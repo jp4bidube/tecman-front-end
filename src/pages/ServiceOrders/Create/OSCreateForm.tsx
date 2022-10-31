@@ -162,6 +162,7 @@ export const OSCreateForm = () => {
               maxHeight="79vh"
               type="scroll"
               scrollbarSize={8}
+              scrollHideDelay={150}
             >
               <Grid>
                 <Grid.Col xs={12} md={4}>
