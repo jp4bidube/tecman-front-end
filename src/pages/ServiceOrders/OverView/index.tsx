@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useStore from "@/store";
 import {
+  Drawer,
   Paper,
   Tabs,
   Text,
@@ -10,11 +11,18 @@ import {
 } from "@mantine/core";
 import { TbAd2, TbFileText } from "react-icons/tb";
 import { OSOverViewForm } from "./OSOverViewForm";
+import { useParams } from "react-router-dom";
+import { useFetchOSById } from "@/services/features/serviceOrders/hooks/useFetchOSById";
+import { FinishOSForm } from "./components/FinishOS";
 
 export const ServiceOrdersOverView = () => {
   const store = useStore();
   const theme = useMantineTheme();
   const [activeTab, setActiveTab] = useState<string | null>("service-orders");
+  const [opened, setOpened] = useState<boolean>(false);
+
+  const { id } = useParams();
+  const { data, isFetching } = useFetchOSById(id || "");
 
   useEffect(
     () =>
@@ -79,7 +87,12 @@ export const ServiceOrdersOverView = () => {
           </Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="service-orders" pt="xl">
-          <OSOverViewForm />
+          {!isFetching && (
+            <OSOverViewForm handleFinishOS={setOpened} data={data!} />
+          )}
+          {!isFetching && (
+            <FinishOSForm opened={opened} setOpened={setOpened} os={data!} />
+          )}
         </Tabs.Panel>
         <Tabs.Panel value="guarantees" pt="xl">
           <h1>test</h1>

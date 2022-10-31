@@ -13,31 +13,11 @@ export interface ServiceOrdersCreate {
 
 export interface ServiceOrder {
   id: number;
-  clientId: number;
-  tecnicId: number;
-  street: string;
-  cep: string;
-  number: string;
-  district: string;
-  complement: string;
-  observacao: string;
-  defect: string;
-  devices: Device[];
-}
-
-export interface Device {
-  type: string;
-  brand: string;
-  model: string;
-}
-
-export interface ServiceOrders {
   client: Client;
-  createdBy: CreatedBy;
-  tecnic: CreatedBy;
-  orderServiceStatus: EStatus;
-  lazyLoader: LazyLoader;
-  id: number;
+  createdBy: string;
+  tecnic: Tecnic;
+  equipments: Equipment[];
+  orderServiceStatus: OrderServiceStatus;
   dateCreated: Date;
   street: string;
   cep: string;
@@ -46,14 +26,58 @@ export interface ServiceOrders {
   complement: string;
   observacao: string;
   device_qtd: string;
-  pieceSold: null;
+  pieceSold: boolean | null;
   defect: string;
-  clientPiece: null;
-  budget: null;
-  amountReceived: null;
-  datePayment: null;
-  absence1: null;
-  absence2: null;
+  clientPiece: boolean | null;
+  budget: number | null;
+  amountReceived: number | null;
+  datePayment: Date | null;
+  absence1: Date | null;
+  absence2: Date | null;
+  serviceExecuted: null;
+}
+
+export interface Device {
+  type: string;
+  brand: string;
+  model: string;
+}
+
+export interface ServiceOrderFinish {
+  id: number;
+  tecnicId: number;
+  serviceExecuted: string;
+  pieceSold: boolean;
+  clientPiece: boolean;
+  budget: number;
+  amountReceived: number;
+  datePayment: Date;
+  equipments: Equipment[];
+}
+
+export interface ServiceOrders {
+  id: number;
+  client: Client;
+  createdBy: string;
+  tecnic: Tecnic;
+  equipments: Equipment[];
+  orderServiceStatus: OrderServiceStatus;
+  dateCreated: Date;
+  street: string;
+  cep: string;
+  number: string;
+  district: string;
+  complement: string;
+  observacao: string;
+  device_qtd: string;
+  pieceSold: boolean | null;
+  defect: string;
+  clientPiece: boolean | null;
+  budget: number | null;
+  amountReceived: number | null;
+  datePayment: Date | null;
+  absence1: Date | null;
+  absence2: Date | null;
   serviceExecuted: null;
 }
 
@@ -65,29 +89,21 @@ export interface Client {
   email: string;
 }
 
-export interface CreatedBy {
+export interface Equipment {
   id: number;
-  name: string;
-  phoneNumber: string;
-  cpf: string;
-  email: string;
-  birthDate: Date;
-  registrationDate: Date;
-  deactivationDate: null;
-  role: Role;
-  address: null;
-  employeeStatus: EStatus;
-  avatarUrl: null;
+  type: string;
+  brand: string;
+  model: string;
+  mounthsWarranty: number;
+  warrantyPeriod: Date | null;
 }
 
-export interface EStatus {
+export interface OrderServiceStatus {
   id: number;
   status: string;
 }
 
-export interface Role {
+export interface Tecnic {
   id: number;
-  role: string;
+  name: string;
 }
-
-export interface LazyLoader {}

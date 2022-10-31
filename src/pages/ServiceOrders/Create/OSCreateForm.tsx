@@ -7,6 +7,7 @@ import {
   ActionIcon,
   Box,
   Button,
+  Divider,
   Grid,
   Group,
   InputBase,
@@ -16,8 +17,10 @@ import {
   Select,
   SelectItem,
   Stack,
+  Text,
   Textarea,
   TextInput,
+  ThemeIcon,
   Title,
 } from "@mantine/core";
 import cep from "cep-promise";
@@ -35,6 +38,7 @@ import { useNavigate } from "react-router-dom";
 import { equipmentsList } from "../constants/equipaments";
 import { validationSchema } from "./validationSchema";
 import { useCreateOS } from "@/services/features/serviceOrders/hooks/useCreateOS";
+import { ClientAddressList } from "../components/ClientAddressList";
 
 type Equipment = {
   type: string;
@@ -190,6 +194,32 @@ export const OSCreateForm = () => {
                     </Button>
                   </Box>
                 </Grid.Col>
+                {client && (
+                  <Grid.Col span={12}>
+                    <Group>
+                      <ThemeIcon variant="light">
+                        <TbUserCircle size={14} />
+                      </ThemeIcon>
+                      <Title order={5}>Cliente</Title>
+                      <Text size="sm">
+                        {client?.name}{" "}
+                        <Text
+                          sx={(theme) => ({
+                            color:
+                              theme.colorScheme === "dark"
+                                ? theme.colors.gray[4]
+                                : theme.colors.gray[7],
+                          })}
+                          component="span"
+                          weight="bold"
+                        >
+                          - {client?.phoneNumber}
+                        </Text>
+                      </Text>
+                    </Group>
+                  </Grid.Col>
+                )}
+
                 <Grid.Col span={12}>
                   <Group position="left" mt={20}>
                     <Title order={3}>Endereço</Title>
@@ -440,6 +470,12 @@ export const OSCreateForm = () => {
           </Paper>
         </form>
       </FormikProvider>
+      <ClientAddressList
+        opened={openChangeAddress}
+        setOpened={setOpenChangeAddress}
+        adresses={client?.address}
+        onChange={handleChangeAdress}
+      />
     </Stack>
   );
 };

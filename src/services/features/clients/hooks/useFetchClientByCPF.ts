@@ -14,7 +14,7 @@ export const useFetchClientByCPF = () => {
       onError: ({ data }: AxiosResponse<ResponseError>) => {
         showNotification({
           title: "Erro",
-          message: data.message,
+          message: "Cliente não encontrado",
           color: "red",
           autoClose: true,
         });
