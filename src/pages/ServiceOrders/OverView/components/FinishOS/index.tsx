@@ -1,5 +1,9 @@
 import { QuantityInput } from "@/components/QuantityInput";
-import { ServiceOrder, ServiceOrderFinish } from "@/types/serviceOrders";
+import {
+  ServiceOrder,
+  ServiceOrderFinish,
+  ServiceOrders,
+} from "@/types/serviceOrders";
 import {
   Button,
   Checkbox,
@@ -26,7 +30,7 @@ import { useFinishOS } from "@/services/features/serviceOrders/hooks/useFinishOS
 type FinishOSFormProps = {
   opened: boolean;
   setOpened: (value: boolean) => void;
-  os: ServiceOrder;
+  os: ServiceOrders;
 };
 
 export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
@@ -107,7 +111,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
             scrollbarSize={8}
             scrollHideDelay={150}
           >
-            <Grid>
+            <Grid mt={10}>
               <Grid.Col xs={6}>
                 <Input.Wrapper
                   label="Valor do Orçamento"
@@ -121,7 +125,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                     value={values?.budget}
                     onChange={action?.handleChange}
                     icon={<TbCurrencyDollar size={14} />}
-                    invalid={errors?.budget ? true : false}
+                    invalid={touched?.budget && errors?.budget ? true : false}
                   />
                 </Input.Wrapper>
               </Grid.Col>
@@ -150,7 +154,11 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                     value={values?.amountReceived}
                     onChange={action?.handleChange}
                     icon={<TbCurrencyDollar size={14} />}
-                    invalid={errors?.amountReceived ? true : false}
+                    invalid={
+                      touched?.amountReceived && errors?.amountReceived
+                        ? true
+                        : false
+                    }
                   />
                 </Input.Wrapper>
               </Grid.Col>
@@ -166,7 +174,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                   />
                 </Input.Wrapper>
               </Grid.Col>
-              <Grid.Col xs={6}>
+              <Grid.Col xs={12} md={6}>
                 <Textarea
                   placeholder="Descreva o serviço executado"
                   label="Serviço executado"
@@ -203,7 +211,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
               {values?.equipments?.length > 0 &&
                 values?.equipments?.map((equip, index) => (
                   <>
-                    <Grid.Col span={4}>
+                    <Grid.Col xs={12} md={4}>
                       <Select
                         withAsterisk
                         label="Equipamento"
@@ -225,7 +233,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                         clearable
                       />
                     </Grid.Col>
-                    <Grid.Col span={4}>
+                    <Grid.Col xs={6} md={4}>
                       <TextInput
                         withAsterisk
                         placeholder="Marca"
@@ -242,7 +250,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                         onChange={action.handleChange}
                       />
                     </Grid.Col>
-                    <Grid.Col span={4}>
+                    <Grid.Col xs={6} md={4}>
                       <TextInput
                         withAsterisk
                         placeholder="Modelo"
@@ -259,12 +267,12 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                         onChange={formik.handleChange}
                       />
                     </Grid.Col>
-                    <Grid.Col span={4}>
+                    <Grid.Col xs={12} md={4}>
                       <Input.Wrapper label="Quantidade de Meses em garantia">
                         <QuantityInput formik={formik} index={index} />
                       </Input.Wrapper>
                     </Grid.Col>
-                    <Grid.Col span={4}>
+                    <Grid.Col xs={12} md={4}>
                       <DatePicker
                         placeholder="Data de termino da garantia"
                         locale="pt-BR"

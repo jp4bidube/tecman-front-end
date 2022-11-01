@@ -27,12 +27,12 @@ export const Layout = () => {
 
   return (
     <AppShell
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
+      navbarOffsetBreakpoint="lg"
+      asideOffsetBreakpoint="xs"
       navbar={
         <Navbar
           p="md"
-          hiddenBreakpoint="sm"
+          hiddenBreakpoint="lg"
           sx={{ transition: "500ms" }}
           hidden
           width={{ sm: 250, lg: 300 }}
@@ -75,7 +75,7 @@ export const Layout = () => {
       </Drawer>
       <Group position="apart" sx={{ marginBottom: "2rem" }}>
         <Group spacing={-20}>
-          <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+          <MediaQuery largerThan="lg" styles={{ display: "none" }}>
             <Burger
               opened={isMenuOpen}
               onClick={() => setIsMenuOpen(!isMenuOpen)}

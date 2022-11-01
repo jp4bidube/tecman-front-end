@@ -40,6 +40,32 @@ class ServiceOrdersService {
     };
   }
 
+  async fetchServiceOrderByClientId(
+    clientId: number,
+    { order, page, search, sort }: Filter
+  ): Promise<{
+    serviceOrders: ServiceOrders[];
+    total: number;
+  }> {
+    const { data, headers } = await api.get(
+      `/OrderService/cliente/${clientId}`,
+      {
+        params: {
+          limit: "5",
+          offset: page - 1,
+          order,
+          sort,
+          search,
+        },
+      }
+    );
+
+    return {
+      serviceOrders: data.result,
+      total: Number(headers["x-total-count"]),
+    };
+  }
+
   async finishServiceOrder(
     payload: Omit<ServiceOrderFinish, "id">,
     id: number

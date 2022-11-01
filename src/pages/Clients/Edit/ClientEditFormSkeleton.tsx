@@ -31,16 +31,16 @@ export const ClientEditFormSkeleton = () => {
           <Grid.Col span={12}>
             <Skeleton height={25} radius="sm" mt={40} width="30%" />
           </Grid.Col>
-          <Grid.Col span={6}>
+          <Grid.Col span={5}>
+            <Skeleton height={205} radius="sm" />
+          </Grid.Col>
+          <Grid.Col span={5}>
+            <Skeleton height={205} radius="sm" />
+          </Grid.Col>
+          <Grid.Col span={5}>
             <Skeleton height={25} radius="sm" />
           </Grid.Col>
-          <Grid.Col span={6}>
-            <Skeleton height={25} radius="sm" />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <Skeleton height={25} radius="sm" />
-          </Grid.Col>
-          <Grid.Col span={6}>
+          <Grid.Col span={5}>
             <Skeleton height={25} radius="sm" />
           </Grid.Col>
         </Grid>

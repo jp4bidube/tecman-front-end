@@ -30,12 +30,13 @@ export const OSOverViewForm = ({
           <Grid.Col xs={6}>
             <OSInfo data={data!} />
           </Grid.Col>
-          <Grid.Col>
+          <Grid.Col xs={6}>
             <Group my={10}>
               <Title order={4}>Equipamentos</Title>
             </Group>
             <Equipaments data={data?.equipments!} />
           </Grid.Col>
+          <Grid.Col span={6}></Grid.Col>
           <Grid.Col span={6}>
             <Textarea
               placeholder="Descreva o defeito apresentado"

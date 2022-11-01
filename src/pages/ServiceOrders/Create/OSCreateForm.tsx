@@ -379,6 +379,7 @@ export const OSCreateForm = () => {
                                 )
                               }
                               data={equipmentsList}
+                              searchable
                             />
                           </Grid.Col>
                           <Grid.Col xs={12} md={4}>
