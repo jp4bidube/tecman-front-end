@@ -316,7 +316,7 @@ export const OSCreateForm = () => {
                 <Grid.Col xs={12} md={4}>
                   <Select
                     label="Selecione um técnico"
-                    placeholder="selecione um técnico"
+                    placeholder="Selecione um técnico"
                     value={formik.values.tecnicId}
                     error={
                       formik?.touched?.tecnicId && formik?.errors?.tecnicId
@@ -364,7 +364,7 @@ export const OSCreateForm = () => {
                             <Select
                               withAsterisk
                               label="Equipamento"
-                              placeholder="selecione um equipamento"
+                              placeholder="Selecione um equipamento"
                               value={formik.values.devices[index].type}
                               error={
                                 formik?.touched?.devices &&

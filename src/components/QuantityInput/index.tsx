@@ -115,7 +115,7 @@ export function QuantityInput({
       >
         <TbMinus size={16} />
       </ActionIcon>
-      <Text>
+      <Text size="sm">
         <NumberInput
           variant="unstyled"
           min={min}
@@ -128,8 +128,8 @@ export function QuantityInput({
           hidden
         />
         {formik.values?.equipments[index]?.mounthsWarranty! < 2
-          ? `${formik.values?.equipments[index]?.mounthsWarranty!} Mês`
-          : `${formik.values?.equipments[index]?.mounthsWarranty!} Meses`}
+          ? `${formik.values?.equipments[index]?.mounthsWarranty!} mês`
+          : `${formik.values?.equipments[index]?.mounthsWarranty!} meses`}
       </Text>
       <ActionIcon<"button">
         size={28}

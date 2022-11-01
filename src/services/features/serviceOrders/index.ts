@@ -26,7 +26,7 @@ class ServiceOrdersService {
   }> {
     const { data, headers } = await api.get("/OrderService", {
       params: {
-        limit: "5",
+        limit: "10",
         offset: page - 1,
         order,
         sort,
@@ -51,7 +51,7 @@ class ServiceOrdersService {
       `/OrderService/cliente/${clientId}`,
       {
         params: {
-          limit: "5",
+          limit: "10",
           offset: page - 1,
           order,
           sort,

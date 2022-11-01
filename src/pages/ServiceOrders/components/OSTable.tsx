@@ -4,7 +4,7 @@ import { Badge, Center, Group, Table, ThemeIcon, Tooltip } from "@mantine/core";
 
 import { ServiceOrders } from "@/types/serviceOrders";
 import { User } from "@/types/user";
-import { TbEdit, TbUser, TbUserOff } from "react-icons/tb";
+import { TbEdit, TbSearch, TbUser, TbUserOff } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { OSTableSkeleton } from "../List/OSTableSkeleton";
 
@@ -69,7 +69,7 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
               <td>{new Date(os.dateCreated).toLocaleDateString("pt-BR")}</td>
               <td>
                 <Group>
-                  <Tooltip label="Editar" withArrow>
+                  <Tooltip label="Visualizar" withArrow>
                     <ThemeIcon
                       variant="light"
                       sx={{ cursor: "pointer" }}
@@ -77,7 +77,7 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
                         navigate(`/service-orders/${os.id}/over-view`)
                       }
                     >
-                      <TbEdit />
+                      <TbSearch />
                     </ThemeIcon>
                   </Tooltip>
                 </Group>

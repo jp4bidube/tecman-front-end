@@ -72,7 +72,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
       closeOnClickOutside={false}
       onClose={() => {}}
       position="right"
-      title={<Title>Finalizar Ordem de serviço</Title>}
+      title={<Title>Finalizar Ordem de Serviço</Title>}
       padding="xl"
       size="70%"
       overlayColor={
@@ -215,7 +215,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                       <Select
                         withAsterisk
                         label="Equipamento"
-                        placeholder="selecione um equipamento"
+                        placeholder="Selecione um equipamento"
                         value={values?.equipments[index]?.type}
                         error={
                           touched?.equipments &&
@@ -268,15 +268,15 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                       />
                     </Grid.Col>
                     <Grid.Col xs={12} md={4}>
-                      <Input.Wrapper label="Quantidade de Meses em garantia">
+                      <Input.Wrapper label="Quantidade de meses em garantia">
                         <QuantityInput formik={formik} index={index} />
                       </Input.Wrapper>
                     </Grid.Col>
                     <Grid.Col xs={12} md={4}>
                       <DatePicker
-                        placeholder="Data de termino da garantia"
+                        placeholder="Data de término da garantia"
                         locale="pt-BR"
-                        label="Data de termino da garantia"
+                        label="Data de término da garantia"
                         value={values?.equipments[index]?.warrantyPeriod}
                         error={
                           touched?.equipments &&
