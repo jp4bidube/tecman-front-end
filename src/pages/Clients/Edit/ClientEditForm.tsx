@@ -123,7 +123,6 @@ export const ClientEditForm = ({ client }: ClientEditFormProps) => {
               value={values.email}
               onChange={action.handleChange}
               error={touched.email && errors.email}
-              withAsterisk
             />
           </Grid.Col>
           <Grid.Col xs={12} md={6}>
@@ -136,7 +135,6 @@ export const ClientEditForm = ({ client }: ClientEditFormProps) => {
               value={values.cpf}
               onChange={action.handleChange}
               error={touched.cpf && errors.cpf}
-              withAsterisk
               mask="999.999.999-99"
             />
           </Grid.Col>

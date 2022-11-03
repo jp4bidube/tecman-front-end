@@ -98,9 +98,11 @@ export const ClientAddressItem = ({
     >
       <form onSubmit={action.handleSubmit}>
         <Group position="apart" mt="sm" grow>
-          <Text weight={500}>CEP</Text>
+          <Text component="label" weight={500} size="sm">
+            CEP
+          </Text>
           {isEditing ? (
-            <Text size="sm" color="dimmed" lineClamp={1}>
+            <Text size="sm" lineClamp={1}>
               {data.address.cep}
             </Text>
           ) : (
@@ -119,9 +121,11 @@ export const ClientAddressItem = ({
           )}
         </Group>
         <Group position="apart" mt="sm" grow>
-          <Text weight={500}>Rua</Text>
+          <Text component="label" weight={500} size="sm">
+            Rua
+          </Text>
           {isEditing ? (
-            <Text size="sm" color="dimmed" lineClamp={1}>
+            <Text size="sm" lineClamp={1}>
               {data.address.street}
             </Text>
           ) : (
@@ -137,9 +141,11 @@ export const ClientAddressItem = ({
           )}
         </Group>
         <Group position="apart" mt="sm" grow>
-          <Text weight={500}>Número</Text>
+          <Text component="label" weight={500} size="sm">
+            Número
+          </Text>
           {isEditing ? (
-            <Text size="sm" color="dimmed" lineClamp={1}>
+            <Text size="sm" lineClamp={1}>
               {data.address.number}
             </Text>
           ) : (
@@ -155,9 +161,11 @@ export const ClientAddressItem = ({
           )}
         </Group>
         <Group position="apart" mt="sm" grow>
-          <Text weight={500}>Bairro</Text>
+          <Text component="label" weight={500} size="sm">
+            Bairro
+          </Text>
           {isEditing ? (
-            <Text size="sm" color="dimmed" lineClamp={1}>
+            <Text size="sm" lineClamp={1}>
               {data.address.district}
             </Text>
           ) : (
@@ -173,9 +181,11 @@ export const ClientAddressItem = ({
           )}
         </Group>
         <Group position="apart" mt="sm" grow>
-          <Text weight={500}>Complemento</Text>
+          <Text component="label" weight={500} size="sm">
+            Complemento
+          </Text>
           {isEditing ? (
-            <Text size="sm" color="dimmed" lineClamp={1}>
+            <Text size="sm" lineClamp={1}>
               {data.address.complement}
             </Text>
           ) : (

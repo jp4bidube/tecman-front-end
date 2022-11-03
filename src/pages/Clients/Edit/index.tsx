@@ -19,8 +19,8 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { TbAd2, TbSearch, TbUsers } from "react-icons/tb";
-import { useParams } from "react-router-dom";
+import { TbAd2, TbPlus, TbSearch, TbUsers } from "react-icons/tb";
+import { useNavigate, useParams } from "react-router-dom";
 import { ClientsOSTable } from "../components/clientsOSTable";
 import { ClientEditForm } from "./ClientEditForm";
 import { ClientEditFormSkeleton } from "./ClientEditFormSkeleton";
@@ -29,6 +29,7 @@ export const ClientEdit = () => {
   const theme = useMantineTheme();
   const params = useParams();
   const store = useStore();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string | null>("client");
   const { data, isFetching, isLoading } = useFetchClientById(params.id || "");
   const clientId = data?.id;
@@ -143,6 +144,21 @@ export const ClientEdit = () => {
                 </Button>
                 <Button variant="light" radius="xl" onClick={handleClear}>
                   Limpar
+                </Button>
+              </Group>
+            </Grid.Col>
+            <Grid.Col xs={12} md={4}>
+              <Group position="right">
+                <Button
+                  radius="xl"
+                  onClick={() =>
+                    navigate("/service-orders/create", {
+                      state: { client: data },
+                    })
+                  }
+                  leftIcon={<TbPlus size={20} />}
+                >
+                  Cadastrar OS
                 </Button>
               </Group>
             </Grid.Col>

@@ -111,7 +111,7 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
                 </Menu.Item>
                 <Menu.Item
                   icon={<TbArrowLeft size={16} color={menuIconColor} />}
-                  onClick={() => navigate("/service-orders")}
+                  onClick={() => navigate(-1)}
                 >
                   Voltar
                 </Menu.Item>

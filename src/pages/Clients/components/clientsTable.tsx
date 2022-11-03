@@ -44,11 +44,14 @@ export const ClientsTable = ({ clients }: ClientsTableProps) => {
           <th>
             <Group
               sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("email")}
+              onClick={() => handleSort("street")}
             >
-              E-mail
-              <ThemeIcon variant="light" color={sort === "email" ? "" : "gray"}>
-                {sort === "email" && order === "asc" ? (
+              Endereço
+              <ThemeIcon
+                variant="light"
+                color={sort === "street" ? "" : "gray"}
+              >
+                {sort === "street" && order === "asc" ? (
                   <TbChevronUp size={15} />
                 ) : (
                   <TbChevronDown size={15} />
@@ -94,7 +97,7 @@ export const ClientsTable = ({ clients }: ClientsTableProps) => {
           clients.map((client) => (
             <tr key={client.id}>
               <td>{client.name}</td>
-              <td>{client.email}</td>
+              <td></td>
               <td>{client.cpf}</td>
               <td>{client.phoneNumber}</td>
               <td>

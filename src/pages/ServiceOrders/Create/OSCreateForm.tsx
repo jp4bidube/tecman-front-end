@@ -1,13 +1,12 @@
-import { useMemo } from "react";
 import { useCreateClient } from "@/services/features/clients/hooks/useCreateClient";
 import { useFetchClientByCPF } from "@/services/features/clients/hooks/useFetchClientByCPF";
+import { useCreateOS } from "@/services/features/serviceOrders/hooks/useCreateOS";
 import { useTechniciansSelect } from "@/services/features/technicians/hooks/useTechniciansSelect";
 import { Client } from "@/types/clients";
 import {
   ActionIcon,
   Box,
   Button,
-  Divider,
   Grid,
   Group,
   InputBase,
@@ -15,7 +14,6 @@ import {
   Paper,
   ScrollArea,
   Select,
-  SelectItem,
   Stack,
   Text,
   Textarea,
@@ -24,8 +22,8 @@ import {
   Title,
 } from "@mantine/core";
 import cep from "cep-promise";
-import { FieldArray, FormikProvider, useFormik, getIn } from "formik";
-import { useState } from "react";
+import { FieldArray, FormikProvider, getIn, useFormik } from "formik";
+import { useEffect, useState } from "react";
 import {
   TbArrowUpRight,
   TbDeviceFloppy,
@@ -34,11 +32,10 @@ import {
   TbUserCircle,
 } from "react-icons/tb";
 import InputMask from "react-input-mask";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ClientAddressList } from "../components/ClientAddressList";
 import { equipmentsList } from "../constants/equipaments";
 import { validationSchema } from "./validationSchema";
-import { useCreateOS } from "@/services/features/serviceOrders/hooks/useCreateOS";
-import { ClientAddressList } from "../components/ClientAddressList";
 
 type Equipment = {
   type: string;
@@ -49,6 +46,9 @@ type Equipment = {
 export const OSCreateForm = () => {
   const navigate = useNavigate();
   const mutation = useCreateClient();
+  const location = useLocation();
+  const state = location?.state as { client: Client };
+
   const [openChangeAddress, setOpenChangeAddress] = useState(false);
   const [lockAdress, setLockAdress] = useState(true);
   const [client, setClient] = useState<Client | null>(null);
@@ -57,14 +57,20 @@ export const OSCreateForm = () => {
   const createOSMutation = useCreateOS();
   const { data, isFetching } = useTechniciansSelect();
 
+  useEffect(() => {
+    if (state?.client) {
+      setClient(state?.client);
+    }
+  }, [state]);
+
   const formik = useFormik({
     initialValues: {
-      cpf: "",
-      street: "",
-      cep: "",
-      number: "",
-      district: "",
-      complement: "",
+      cpf: state?.client?.cpf || "",
+      street: state?.client?.address[0]?.address?.street || "",
+      cep: state?.client?.address[0]?.address?.cep || "",
+      number: state?.client?.address[0]?.address?.number || "",
+      district: state?.client?.address[0]?.address?.district || "",
+      complement: state?.client?.address[0]?.address?.complement || "",
       tecnicId: "",
       defect: "",
       observacao: "",
@@ -150,7 +156,7 @@ export const OSCreateForm = () => {
                     <Button
                       radius="xl"
                       variant="outline"
-                      onClick={() => navigate("/service-orders")}
+                      onClick={() => navigate(-1)}
                     >
                       Cancelar
                     </Button>

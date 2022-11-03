@@ -43,14 +43,10 @@ export const ClientsCards = ({ clients }: ClientsCardsProps) => {
             key={client.id}
           >
             <Group position="apart" mt="md" mb="xs">
-              <Text weight={500}>Situação</Text>
-              <Badge color="teal" variant="light">
-                Ativo
-              </Badge>
-            </Group>
-            <Group position="apart" mt="md" mb="xs">
               <Group sx={{ cursor: "pointer" }}>
-                <Text weight={500}>Nome</Text>
+                <Text weight={500} size="sm">
+                  Nome
+                </Text>
                 <Tooltip label="Ordenado por nome" withArrow>
                   <ThemeIcon variant="light">
                     {sort === "name" && order === "asc" ? (
@@ -66,19 +62,23 @@ export const ClientsCards = ({ clients }: ClientsCardsProps) => {
               </Text>
             </Group>
             <Group position="apart" mt="md" mb="xs">
-              <Text weight={500}>E-mail</Text>
-              <Text size="sm" color="dimmed">
-                {client.email}
+              <Text weight={500} size="sm">
+                Endereço
               </Text>
+              <Text size="sm" color="dimmed"></Text>
             </Group>
             <Group position="apart" mt="md" mb="xs">
-              <Text weight={500}>Documento</Text>
+              <Text weight={500} size="sm">
+                Documento
+              </Text>
               <Text size="sm" color="dimmed">
                 {client.cpf}
               </Text>
             </Group>
             <Group position="apart" mt="md" mb="xs">
-              <Text weight={500}>Telefone</Text>
+              <Text weight={500} size="sm">
+                Telefone
+              </Text>
               <Text size="sm" color="dimmed">
                 {client.phoneNumber}
               </Text>

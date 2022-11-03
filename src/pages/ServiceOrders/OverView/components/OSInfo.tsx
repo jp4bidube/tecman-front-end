@@ -7,7 +7,7 @@ type OSInfoProps = {
 
 export const OSInfo = ({ data }: OSInfoProps) => {
   return (
-    <Card withBorder p="lg" radius="md">
+    <Card withBorder p="lg" radius="sm">
       <Card.Section
         px="lg"
         py="xs"
@@ -22,15 +22,18 @@ export const OSInfo = ({ data }: OSInfoProps) => {
         <Title order={4}>Informações OS</Title>
       </Card.Section>
       <Group mt={10} position="apart">
-        <Group>
-          <Text size="sm" color="gray.7">
-            Data de criação:{" "}
+        <Group spacing="xs">
+          <Text size="sm" weight={500} component="label">
+            Data de criação:
+          </Text>
+          <Text size="sm">
+            {" "}
             {new Date(data?.dateCreated || "").toLocaleDateString("pt-BR")}
           </Text>
         </Group>
         {data?.orderServiceStatus.id === 2 && (
-          <Group>
-            <Text size="sm" color="gray.7">
+          <Group spacing="xs">
+            <Text size="sm" weight={500} component="label">
               Orçamento:
             </Text>
             <Badge size="md" color="orange">
@@ -40,14 +43,15 @@ export const OSInfo = ({ data }: OSInfoProps) => {
         )}
       </Group>
       <Group mt={5} position="apart">
-        <Group>
-          <Text size="sm" color="gray.7">
-            Atendente: {data?.createdBy}
+        <Group spacing="xs">
+          <Text size="sm" weight={500} component="label">
+            Atendente:
           </Text>
+          <Text size="sm">{data?.createdBy}</Text>
         </Group>
         {data?.orderServiceStatus.id === 2 && (
-          <Group>
-            <Text size="sm" color="gray.7">
+          <Group spacing="xs">
+            <Text size="sm" weight={500} component="label">
               Valor Recebido:
             </Text>
             <Badge size="md" color="teal">
@@ -56,12 +60,18 @@ export const OSInfo = ({ data }: OSInfoProps) => {
           </Group>
         )}
       </Group>
-      <Group mt={15}>
-        <Text size="sm" color="gray.7">
-          Técnico: {data?.tecnic?.name}
+      <Group mt={15} spacing="xs">
+        <Text size="sm" weight={500} component="label">
+          Técnico:
         </Text>
+        <Text size="sm">{data?.tecnic?.name}</Text>
       </Group>
-      <Group mt={25}></Group>
+      <Group mt={5}>
+        <Text size="sm" weight={500} component="label">
+          Período:
+        </Text>
+        <Text size="sm">Tarde</Text>
+      </Group>
     </Card>
   );
 };
