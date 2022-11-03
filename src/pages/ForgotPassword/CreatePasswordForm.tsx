@@ -1,7 +1,17 @@
 import { useUpdateUserPassword } from "@/services/features/users/hooks/useUpdateUserPassword";
 import useStore from "@/store";
-import { Button, Loader, PasswordInput, Stack, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Group,
+  Loader,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { useFormik } from "formik";
+import { TbCopy } from "react-icons/tb";
 import { validationSchemaNewPassword } from "./validationSchema";
 
 export const CreatePasswordForm = () => {
@@ -44,6 +54,8 @@ export const CreatePasswordForm = () => {
           Cadastre sua nova senha
         </Text>
 
+        <TextInput label="Usuário" value={username} disabled />
+
         <PasswordInput
           placeholder="Senha"
           label="Senha"
@@ -52,7 +64,6 @@ export const CreatePasswordForm = () => {
           value={values?.password}
           onChange={action.handleChange}
           error={touched?.password && errors?.password}
-          withAsterisk
         />
 
         <PasswordInput
@@ -63,7 +74,6 @@ export const CreatePasswordForm = () => {
           value={values.confirmPassword}
           onChange={action.handleChange}
           error={touched.confirmPassword && errors.confirmPassword}
-          withAsterisk
         />
 
         <Button

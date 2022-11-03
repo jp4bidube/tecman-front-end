@@ -138,7 +138,7 @@ export function MainLinks() {
         >
           <MainLink
             icon={<TbUserCircle size={16} />}
-            label="Funcionários"
+            label="Usuários"
             path="/users"
           />
           <MainLink

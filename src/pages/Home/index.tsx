@@ -18,6 +18,7 @@ import {
   TbUserCircle,
   TbUsers,
 } from "react-icons/tb";
+import { IoBuildOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 export const Home: React.FC = () => {
@@ -116,17 +117,16 @@ export const Home: React.FC = () => {
                   : theme.colors.tecman[6],
             },
           }}
+          onClick={() => navigate("/users")}
           withBorder
         >
           <Center>
             <Stack align="center" mt={15}>
               <ActionIcon variant="transparent" color="primary" size="xl">
-                <TbFileText size={90} />
+                <TbUserCircle size={90} />
               </ActionIcon>
-              <Title order={3}>Garantias</Title>
-              <Text size="sm">
-                Cadastre garantias para os serviços realizados.
-              </Text>
+              <Title order={3}>Usuários</Title>
+              <Text size="sm">Gerencie usuários do sistema.</Text>
             </Stack>
           </Center>
         </Paper>
@@ -146,17 +146,17 @@ export const Home: React.FC = () => {
                   : theme.colors.tecman[6],
             },
           }}
-          onClick={() => navigate("/users")}
           withBorder
+          onClick={() => navigate("/technicians")}
         >
           <Center>
             <Stack align="center" mt={15}>
               <ActionIcon variant="transparent" color="primary" size="xl">
-                <TbUserCircle size={90} />
+                <IoBuildOutline size={90} />
               </ActionIcon>
-              <Title order={3}>Funcionários</Title>
+              <Title order={3}>Técnicos</Title>
               <Text size="sm">
-                Gerencie funcionários cadastrados e inclua novos.
+                Consulte a listagem dos técnicos e inclua novos.
               </Text>
             </Stack>
           </Center>
