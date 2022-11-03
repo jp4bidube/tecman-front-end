@@ -107,8 +107,6 @@ export function QuantityInput({
     <div className={classes.wrapper}>
       <ActionIcon<"button">
         size={28}
-        variant="filled"
-        color="tecman"
         onClick={handleDecrement}
         disabled={formik.values?.equipments[index]?.mounthsWarranty <= min}
         onMouseDown={(event) => event.preventDefault()}
@@ -136,8 +134,6 @@ export function QuantityInput({
         onClick={handleIncrement}
         disabled={formik.values?.equipments[index]?.mounthsWarranty === max}
         onMouseDown={(event) => event.preventDefault()}
-        variant="filled"
-        color="tecman"
       >
         <TbPlus size={16} />
       </ActionIcon>

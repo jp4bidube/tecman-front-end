@@ -90,7 +90,7 @@ export const ServiceOrdersOverView = () => {
           {!isFetching && (
             <OSOverViewForm handleFinishOS={setOpened} data={data!} />
           )}
-          {!isFetching && (
+          {!isFetching && opened && (
             <FinishOSForm opened={opened} setOpened={setOpened} os={data!} />
           )}
         </Tabs.Panel>

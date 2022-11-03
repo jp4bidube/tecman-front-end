@@ -13,7 +13,7 @@ export const createBreadCrumbSlice: StateCreator<BreadCrumbSlice> = (set) => ({
   breadcrumb: {
     name: "Home",
     path: "/",
-    icon: <TbHome size={25} />,
+    icon: <TbHome size={20} />,
   },
   setNewBreadcrumbs(breadcrumb) {
     set((state) => ({

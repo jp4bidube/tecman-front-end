@@ -29,7 +29,9 @@ export const Breadcrumbs = () => {
           }}
         >
           <ThemeIcon variant="light">{icon}</ThemeIcon>{" "}
-          <Title size="h4">{name}</Title>
+          <Text size="sm" color="dimmed">
+            {name}
+          </Text>
         </Group>
         {subhead && (
           <Text size="sm" color="dimmed">

@@ -74,7 +74,9 @@ class ServiceOrdersService {
       ...payload,
       equipments: payload.equipments.map((eq) => ({
         ...eq,
-        mounthsWarranty: eq.mounthsWarranty.toString(),
+        mounthsWarranty: eq?.mounthsWarranty
+          ? eq?.mounthsWarranty?.toString()
+          : null,
       })),
     });
 

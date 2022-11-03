@@ -53,6 +53,7 @@ export interface ServiceOrderFinish {
   amountReceived: number;
   datePayment: Date;
   equipments: Equipment[];
+  hasWarranty?: string;
 }
 
 export interface ServiceOrders {
@@ -94,7 +95,7 @@ export interface Equipment {
   type: string;
   brand: string;
   model: string;
-  mounthsWarranty: number;
+  mounthsWarranty: number | null;
   warrantyPeriod: Date | null;
 }
 

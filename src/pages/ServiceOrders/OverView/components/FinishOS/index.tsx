@@ -1,9 +1,8 @@
 import { QuantityInput } from "@/components/QuantityInput";
-import {
-  ServiceOrder,
-  ServiceOrderFinish,
-  ServiceOrders,
-} from "@/types/serviceOrders";
+import { equipmentsList } from "@/pages/ServiceOrders/constants/equipaments";
+import { useFinishOS } from "@/services/features/serviceOrders/hooks/useFinishOS";
+import { useTechniciansSelect } from "@/services/features/technicians/hooks/useTechniciansSelect";
+import { ServiceOrderFinish, ServiceOrders } from "@/types/serviceOrders";
 import {
   Button,
   Checkbox,
@@ -21,13 +20,11 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import { FormikProvider, getIn, useFormik } from "formik";
-import { TbCurrencyDollar, TbDeviceFloppy } from "react-icons/tb";
 import { setMonth } from "date-fns";
-import { equipmentsList } from "@/pages/ServiceOrders/constants/equipaments";
+import { FormikProvider, getIn, useFormik } from "formik";
+import { useEffect } from "react";
+import { TbCurrencyDollar, TbDeviceFloppy } from "react-icons/tb";
 import { validationSchema } from "./validationSchema";
-import { useFinishOS } from "@/services/features/serviceOrders/hooks/useFinishOS";
-import { useTechniciansSelect } from "@/services/features/technicians/hooks/useTechniciansSelect";
 
 type FinishOSFormProps = {
   opened: boolean;
@@ -37,36 +34,48 @@ type FinishOSFormProps = {
 
 export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
   const theme = useMantineTheme();
-
   const mutation = useFinishOS();
   const { data, isFetching } = useTechniciansSelect();
-
+  console.log(os);
   const formik = useFormik({
     initialValues: {
-      tecnicId: os.tecnic.id.toString(),
+      tecnicId: os.tecnic.id || "",
       amountReceived: os.amountReceived ? os.amountReceived! : null,
       budget: os.budget ? os.budget : null,
       clientPiece: os.clientPiece ? os.clientPiece : false,
       pieceSold: os.pieceSold ? os.pieceSold : false,
       serviceExecuted: os.serviceExecuted ? os.serviceExecuted : "",
-      datePayment: os.datePayment ? os.datePayment : new Date(),
-      equipments: os.equipments
-        ? os.equipments.map((equip) => ({
-            ...equip,
-            mounthsWarranty: 1,
-            warrantyPeriod: setMonth(new Date(), new Date().getMonth() + 1),
-          }))
-        : [],
+      datePayment: os.datePayment ? os.datePayment : null,
+      equipments: os.equipments,
+      hasWarranty: "",
     } as Omit<ServiceOrderFinish, "id">,
     validationSchema,
     onSubmit: async (values) => {
-      const res = await mutation.mutateAsync({ id: os.id, payload: values });
+      let payload = { ...values };
+      delete payload.hasWarranty;
+
+      const res = await mutation.mutateAsync({ id: os.id, payload });
       if (res) {
         setOpened(false);
       }
     },
   });
   const { values, errors, touched, ...action } = formik;
+  const currentWarranty = getIn(values, "hasWarranty");
+
+  useEffect(() => {
+    if (currentWarranty === "sim") {
+      action.setFieldValue("equipments.0.mounthsWarranty", 1);
+      action.setFieldValue(
+        "equipments.0.warrantyPeriod",
+        setMonth(new Date(), new Date().getMonth() + 1)
+      );
+    } else {
+      action.setFieldValue("equipments.0.mounthsWarranty", null);
+      action.setFieldValue("equipments.0.warrantyPeriod", null);
+    }
+  }, [currentWarranty]);
+  console.log(errors);
   return (
     <Drawer
       opened={opened}
@@ -168,7 +177,6 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                   onChange={(value) =>
                     action.setFieldValue(`datePayment`, value)
                   }
-                  withAsterisk
                 />
               </Grid.Col>
 
@@ -224,8 +232,9 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                   />
                 </Input.Wrapper>
               </Grid.Col>
-              <Grid.Col xs={12} mt={20}>
-                <Title order={4}>Equipamentos</Title>
+              <Grid.Col xs={12} md={4}></Grid.Col>
+              <Grid.Col span={12} my={20}>
+                <Divider />
               </Grid.Col>
               {values?.equipments?.length > 0 &&
                 values?.equipments?.map((equip, index) => (
@@ -287,35 +296,55 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                       />
                     </Grid.Col>
                     <Grid.Col xs={12} md={4}>
-                      <Input.Wrapper label="Quantidade de meses em garantia">
-                        <QuantityInput formik={formik} index={index} />
-                      </Input.Wrapper>
-                    </Grid.Col>
-                    <Grid.Col xs={12} md={4}>
-                      <DatePicker
-                        placeholder="Data de término da garantia"
-                        locale="pt-BR"
-                        label="Data de término da garantia"
-                        value={values?.equipments[index]?.warrantyPeriod}
-                        error={
-                          touched?.equipments &&
-                          touched?.equipments[index]?.warrantyPeriod &&
-                          errors?.equipments &&
-                          getIn(errors, `equipments.${index}.warrantyPeriod`)
-                        }
+                      <Select
+                        label="Garantia"
+                        placeholder="Selecione garantia"
+                        value={values?.hasWarranty}
+                        error={touched?.hasWarranty && errors?.hasWarranty}
                         onChange={(value) =>
-                          action.setFieldValue(
-                            `equipments.${index}.warrantyPeriod`,
-                            value
-                          )
+                          formik.setFieldValue("hasWarranty", value)
                         }
-                        disabled
+                        data={[
+                          { value: "não", label: "Sem garantia" },
+                          { value: "sim", label: "Com garantia" },
+                        ]}
                         withAsterisk
+                        clearable
                       />
                     </Grid.Col>
-                    <Grid.Col span={12} m={10}>
-                      <Divider />
-                    </Grid.Col>
+                    {currentWarranty === "sim" ? (
+                      <>
+                        <Grid.Col xs={12} md={4}>
+                          <Input.Wrapper label="Tempo de garantia">
+                            <QuantityInput formik={formik} index={index} />
+                          </Input.Wrapper>
+                        </Grid.Col>
+                        <Grid.Col xs={12} md={4}>
+                          <DatePicker
+                            placeholder="Término da garantia"
+                            locale="pt-BR"
+                            label="Data de término da garantia"
+                            value={values?.equipments[index]?.warrantyPeriod}
+                            error={
+                              touched?.equipments &&
+                              touched?.equipments[index]?.warrantyPeriod &&
+                              errors?.equipments &&
+                              getIn(
+                                errors,
+                                `equipments.${index}.warrantyPeriod`
+                              )
+                            }
+                            onChange={(value) =>
+                              action.setFieldValue(
+                                `equipments.${index}.warrantyPeriod`,
+                                value
+                              )
+                            }
+                            disabled
+                          />
+                        </Grid.Col>
+                      </>
+                    ) : null}
                   </>
                 ))}
             </Grid>

@@ -346,7 +346,7 @@ export const OSCreateForm = () => {
                       <Grid.Col span={12}>
                         <Group position="left" mt={25}>
                           <Title order={3}>Detalhes do equipamento</Title>
-                          <Group>
+                          {/* <Group>
                             <Button
                               variant="light"
                               radius="xl"
@@ -361,7 +361,7 @@ export const OSCreateForm = () => {
                             >
                               Adicionar
                             </Button>
-                          </Group>
+                          </Group> */}
                         </Group>
                       </Grid.Col>
                       {formik.values.devices.map((_, index) => (
