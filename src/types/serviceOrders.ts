@@ -45,7 +45,7 @@ export interface Device {
 
 export interface ServiceOrderFinish {
   id: number;
-  tecnicId: number;
+  tecnicId: string;
   serviceExecuted: string;
   pieceSold: boolean;
   clientPiece: boolean;

@@ -19,46 +19,49 @@ export const OSInfo = ({ data }: OSInfoProps) => {
               : theme.colors.gray[0],
         })}
       >
-        <Title order={4}>Informações da OS</Title>
+        <Title order={4}>Informações OS</Title>
       </Card.Section>
       <Group mt={10} position="apart">
         <Group>
-          <Title order={5}>Técnico</Title>
-          <Text size="sm">{data?.tecnic?.name} </Text>
+          <Text size="sm" color="gray.7">
+            Data de criação:{" "}
+            {new Date(data?.dateCreated || "").toLocaleDateString("pt-BR")}
+          </Text>
         </Group>
         {data?.orderServiceStatus.id === 2 && (
           <Group>
-            <Title order={6}>Orçamento</Title>
-            <Text size="sm">
-              <Badge size="sm" color="orange">
-                {`R$ ${data.budget}`}
-              </Badge>
+            <Text size="sm" color="gray.7">
+              Orçamento:
             </Text>
+            <Badge size="md" color="orange">
+              {`R$ ${data.budget}`}
+            </Badge>
           </Group>
         )}
       </Group>
       <Group mt={5} position="apart">
         <Group>
-          <Title order={5}>Atendente</Title>
-          <Text size="sm">{data?.createdBy}</Text>
+          <Text size="sm" color="gray.7">
+            Atendente: {data?.createdBy}
+          </Text>
         </Group>
         {data?.orderServiceStatus.id === 2 && (
           <Group>
-            <Title order={5}>Valor Recebido</Title>
-            <Text size="sm">
-              <Badge size="lg" color="teal">
-                {`R$ ${data.amountReceived}`}
-              </Badge>
+            <Text size="sm" color="gray.7">
+              Valor Recebido:
             </Text>
+            <Badge size="md" color="teal">
+              {`R$ ${data.amountReceived}`}
+            </Badge>
           </Group>
         )}
       </Group>
-      <Group mt={5}>
-        <Title order={5}>Data de criação</Title>
-        <Text size="sm">
-          {new Date(data?.dateCreated || "").toLocaleDateString("pt-BR")}
+      <Group mt={15}>
+        <Text size="sm" color="gray.7">
+          Técnico: {data?.tecnic?.name}
         </Text>
       </Group>
+      <Group mt={25}></Group>
     </Card>
   );
 };

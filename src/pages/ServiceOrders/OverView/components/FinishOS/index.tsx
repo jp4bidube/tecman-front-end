@@ -12,6 +12,7 @@ import {
   Grid,
   Group,
   Input,
+  Loader,
   ScrollArea,
   Select,
   Textarea,
@@ -26,6 +27,7 @@ import { setMonth } from "date-fns";
 import { equipmentsList } from "@/pages/ServiceOrders/constants/equipaments";
 import { validationSchema } from "./validationSchema";
 import { useFinishOS } from "@/services/features/serviceOrders/hooks/useFinishOS";
+import { useTechniciansSelect } from "@/services/features/technicians/hooks/useTechniciansSelect";
 
 type FinishOSFormProps = {
   opened: boolean;
@@ -37,10 +39,11 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
   const theme = useMantineTheme();
 
   const mutation = useFinishOS();
+  const { data, isFetching } = useTechniciansSelect();
 
   const formik = useFormik({
     initialValues: {
-      tecnicId: os.tecnic.id,
+      tecnicId: os.tecnic.id.toString(),
       amountReceived: os.amountReceived ? os.amountReceived! : null,
       budget: os.budget ? os.budget : null,
       clientPiece: os.clientPiece ? os.clientPiece : false,
@@ -112,7 +115,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
             scrollHideDelay={150}
           >
             <Grid mt={10}>
-              <Grid.Col xs={6}>
+              <Grid.Col xs={12} md={4}>
                 <Input.Wrapper
                   label="Valor do Orçamento"
                   error={touched?.budget && errors?.budget}
@@ -129,19 +132,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                   />
                 </Input.Wrapper>
               </Grid.Col>
-              <Grid.Col xs={6}>
-                <Input.Wrapper label="Venda de Peças">
-                  <Checkbox
-                    label="Houve venda de peça durante a execução do serviço"
-                    mt={5}
-                    checked={values?.pieceSold}
-                    id="pieceSold"
-                    name="pieceSold"
-                    onChange={action?.handleChange}
-                  />
-                </Input.Wrapper>
-              </Grid.Col>
-              <Grid.Col xs={6}>
+              <Grid.Col xs={12} md={4}>
                 <Input.Wrapper
                   label="Valor do Recebido"
                   error={touched?.amountReceived && errors?.amountReceived}
@@ -162,32 +153,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                   />
                 </Input.Wrapper>
               </Grid.Col>
-              <Grid.Col xs={6}>
-                <Input.Wrapper label="Historico de Peças">
-                  <Checkbox
-                    label="O cliente ficou com as peças usadas?"
-                    mt={5}
-                    checked={values.clientPiece}
-                    id="clientPiece"
-                    name="clientPiece"
-                    onChange={action.handleChange}
-                  />
-                </Input.Wrapper>
-              </Grid.Col>
-              <Grid.Col xs={12} md={6}>
-                <Textarea
-                  placeholder="Descreva o serviço executado"
-                  label="Serviço executado"
-                  name="serviceExecuted"
-                  id="serviceExecuted"
-                  value={values.serviceExecuted}
-                  error={touched?.serviceExecuted && errors?.serviceExecuted}
-                  onChange={action.handleChange}
-                  autosize
-                  minRows={4}
-                />
-              </Grid.Col>
-              <Grid.Col xs={12} md={6}>
+              <Grid.Col xs={12} md={4}>
                 <DatePicker
                   placeholder="Data de Pagamento"
                   locale="pt-BR"
@@ -205,7 +171,60 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                   withAsterisk
                 />
               </Grid.Col>
-              <Grid.Col xs={12}>
+
+              <Grid.Col xs={12} md={12}>
+                <Textarea
+                  placeholder="Descreva o serviço executado"
+                  label="Serviço executado"
+                  name="serviceExecuted"
+                  id="serviceExecuted"
+                  value={values.serviceExecuted}
+                  error={touched?.serviceExecuted && errors?.serviceExecuted}
+                  onChange={action.handleChange}
+                  autosize
+                  minRows={6}
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={6}>
+                <Select
+                  label="Técnico Responsável"
+                  placeholder="Selecione um técnico"
+                  value={values?.tecnicId}
+                  error={touched?.tecnicId && errors?.tecnicId}
+                  onChange={(value) => formik.setFieldValue("tecnicId", value)}
+                  rightSection={isFetching && <Loader size="xs" />}
+                  data={data ? data : []}
+                  withAsterisk
+                  searchable
+                  clearable
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={6}></Grid.Col>
+              <Grid.Col xs={12} md={4}>
+                <Input.Wrapper label="Venda de Peças">
+                  <Checkbox
+                    label="Houve venda de peça durante a execução do serviço"
+                    mt={5}
+                    checked={values?.pieceSold}
+                    id="pieceSold"
+                    name="pieceSold"
+                    onChange={action?.handleChange}
+                  />
+                </Input.Wrapper>
+              </Grid.Col>
+              <Grid.Col xs={12} md={4}>
+                <Input.Wrapper label="Historico de Peças">
+                  <Checkbox
+                    label="O cliente ficou com as peças usadas?"
+                    mt={5}
+                    checked={values.clientPiece}
+                    id="clientPiece"
+                    name="clientPiece"
+                    onChange={action.handleChange}
+                  />
+                </Input.Wrapper>
+              </Grid.Col>
+              <Grid.Col xs={12} mt={20}>
                 <Title order={4}>Equipamentos</Title>
               </Grid.Col>
               {values?.equipments?.length > 0 &&

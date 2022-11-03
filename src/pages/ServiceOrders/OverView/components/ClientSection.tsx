@@ -1,6 +1,5 @@
 import { ServiceOrders } from "@/types/serviceOrders";
-import { Box, Card, Group, Text, Title } from "@mantine/core";
-import { Section } from "@mantine/core/lib/AppShell/HorizontalSection/Section/Section";
+import { Card, Group, Text, Title } from "@mantine/core";
 
 type ClientSectionProps = {
   data: ServiceOrders;
@@ -23,34 +22,24 @@ export const ClientSection = ({ data }: ClientSectionProps) => {
       </Card.Section>
       <Group mt={10} position="apart">
         <Group>
-          <Title order={5}>Nome</Title>
-          <Text size="sm">
-            {data?.client?.name}{" "}
-            <Text
-              sx={(theme) => ({
-                color:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.gray[4]
-                    : theme.colors.gray[7],
-              })}
-              component="span"
-              weight="bold"
-            >
-              - {data?.client?.cpf}
-            </Text>
+          <Text size="sm" color="gray.7">
+            Nome: {data?.client?.name}
           </Text>
         </Group>
       </Group>
-      <Group mt={5}>
-        <Title order={5}>Endereço</Title>
-        <Text size="sm">
-          {data?.street} - {data?.number}
+      <Group mt={5} noWrap>
+        <Text size="sm" color="gray.7">
+          CPF: {data?.client.cpf}
+        </Text>
+      </Group>
+      <Group mt={15}>
+        <Text size="sm" color="gray.7">
+          Endereço: {data?.street}, {data?.number}
         </Text>
       </Group>
       <Group mt={5}>
-        <Title order={5}>CEP</Title>
-        <Text size="sm">
-          {data?.cep} - {data?.complement}
+        <Text size="sm" color="gray.7">
+          CEP: {data?.cep}
         </Text>
       </Group>
     </Card>
