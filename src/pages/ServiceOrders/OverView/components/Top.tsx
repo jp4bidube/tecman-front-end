@@ -54,8 +54,10 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
       <Grid.Col span={12}>
         <Group position="apart" align="baseline">
           <Group position="left">
-            <Title order={4}>Número O.S</Title>
-            <Badge size="xl">{data?.id}</Badge>
+            <Title order={5}>Número OS: </Title>
+            <Title order={5} color="tecman">
+              {data?.id}
+            </Title>
           </Group>
           <Badge
             size="lg"
