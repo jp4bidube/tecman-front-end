@@ -29,12 +29,18 @@ export const Breadcrumbs = () => {
           }}
         >
           <ThemeIcon variant="light">{icon}</ThemeIcon>{" "}
-          <Text size="sm" color="dimmed">
-            {name}
-          </Text>
+          {subhead ? (
+            <Text size="sm" color="dimmed">
+              {name}
+            </Text>
+          ) : (
+            <Text size="sm" component="label" weight={600}>
+              {name}
+            </Text>
+          )}
         </Group>
         {subhead && (
-          <Text size="sm" color="dimmed">
+          <Text size="sm" component="label" weight={600}>
             {subhead}
           </Text>
         )}

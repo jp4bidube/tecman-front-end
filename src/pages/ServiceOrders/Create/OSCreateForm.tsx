@@ -316,12 +316,12 @@ export const OSCreateForm = () => {
               <Grid>
                 <Grid.Col span={12}>
                   <Group position="left" mt={20}>
-                    <Title order={3}>Técnico</Title>
+                    <Title order={3}>Atendimento</Title>
                   </Group>
                 </Grid.Col>
                 <Grid.Col xs={12} md={4}>
                   <Select
-                    label="Selecione um técnico"
+                    label="Técnico responsável"
                     placeholder="Selecione um técnico"
                     value={formik.values.tecnicId}
                     error={
@@ -332,7 +332,25 @@ export const OSCreateForm = () => {
                     }
                     rightSection={isFetching && <Loader size="xs" />}
                     data={data ? data : []}
-                    withAsterisk
+                    searchable
+                    clearable
+                  />
+                </Grid.Col>
+                <Grid.Col xs={12} md={4}>
+                  <Select
+                    label="Período de atendimento"
+                    placeholder="Selecione período"
+                    value={formik.values.tecnicId}
+                    error={
+                      formik?.touched?.tecnicId && formik?.errors?.tecnicId
+                    }
+                    onChange={(value) =>
+                      formik.setFieldValue("tecnicId", value)
+                    }
+                    data={[
+                      { value: "1", label: "Período da manhã" },
+                      { value: "2", label: "Período da tarde" },
+                    ]}
                     searchable
                     clearable
                   />
