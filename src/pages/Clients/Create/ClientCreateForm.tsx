@@ -53,7 +53,14 @@ export const ClientCreateForm = () => {
 
   return (
     <Stack>
-      <form onSubmit={action.handleSubmit}>
+      <form
+        onSubmit={action.handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+          }
+        }}
+      >
         <Paper withBorder sx={{ padding: "1.5rem" }}>
           <Grid gutter="xl">
             <Grid.Col span={12}>
@@ -146,6 +153,9 @@ export const ClientCreateForm = () => {
                 component={InputMask}
                 value={values.address?.cep}
                 onBlur={(e) => handleSearchCep(e.target.value)}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && handleSearchCep(values.address.cep)
+                }
                 onChange={action.handleChange}
                 error={touched.address?.cep && errors.address?.cep}
                 mask="99.999-999"

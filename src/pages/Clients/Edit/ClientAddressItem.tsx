@@ -96,7 +96,14 @@ export const ClientAddressItem = ({
         display: "inline-block",
       }}
     >
-      <form onSubmit={action.handleSubmit}>
+      <form
+        onSubmit={action.handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+          }
+        }}
+      >
         <Group position="apart" mt="sm" grow>
           <Text component="label" weight={500} size="sm">
             CEP

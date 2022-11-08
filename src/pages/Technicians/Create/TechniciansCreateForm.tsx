@@ -79,7 +79,14 @@ export const TechniciansCreateForm = () => {
 
   return (
     <Stack>
-      <form onSubmit={action.handleSubmit}>
+      <form
+        onSubmit={action.handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+          }
+        }}
+      >
         <Paper withBorder sx={{ padding: "1.5rem" }}>
           <Grid gutter="xl">
             <Grid.Col span={12}>
@@ -156,7 +163,6 @@ export const TechniciansCreateForm = () => {
                 value={values.email}
                 onChange={action.handleChange}
                 error={touched.email && errors.email}
-                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
@@ -169,7 +175,6 @@ export const TechniciansCreateForm = () => {
                 value={values.cpf}
                 onChange={action.handleChange}
                 error={touched.cpf && errors.cpf}
-                withAsterisk
                 mask="999.999.999-99"
               />
             </Grid.Col>
@@ -229,6 +234,7 @@ export const TechniciansCreateForm = () => {
                 value={values.address?.street}
                 onChange={action.handleChange}
                 error={touched.address?.street && errors.address?.street}
+                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={2}>
@@ -240,6 +246,7 @@ export const TechniciansCreateForm = () => {
                 value={values.address?.number}
                 onChange={action.handleChange}
                 error={touched.address?.number && errors.address?.number}
+                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
@@ -251,6 +258,7 @@ export const TechniciansCreateForm = () => {
                 value={values.address?.district}
                 onChange={action.handleChange}
                 error={touched.address?.district && errors.address?.district}
+                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>

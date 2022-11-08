@@ -12,7 +12,7 @@ export const Users: React.FC = () => {
   useEffect(
     () =>
       store.setNewBreadcrumbs({
-        name: "Funcionários",
+        name: "Usuários",
         path: "/users",
         icon: <TbUserCircle size={25} />,
       }),

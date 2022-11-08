@@ -16,7 +16,7 @@ export const UserEdit = () => {
   useEffect(
     () =>
       store.setNewBreadcrumbs({
-        name: "Funcionários",
+        name: "Usuários",
         path: "/users",
         icon: <TbUserCircle size={25} />,
         subhead: `Edição - ${data?.name}`,

@@ -24,7 +24,7 @@ export const useUpdateUser = () => {
         queryClient.invalidateQueries("me");
         showNotification({
           title: "Sucesso",
-          message: "Funcionario atualizado com sucesso",
+          message: "Usuário atualizado com sucesso",
           color: "teal",
           autoClose: true,
         });

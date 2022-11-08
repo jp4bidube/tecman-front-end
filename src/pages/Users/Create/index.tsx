@@ -9,7 +9,7 @@ export const UserCreate = () => {
   useEffect(
     () =>
       store.setNewBreadcrumbs({
-        name: "Funcionários",
+        name: "Usuários",
         path: "/users",
         icon: <TbUserCircle size={25} />,
         subhead: `Cadastro`,

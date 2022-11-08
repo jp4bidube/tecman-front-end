@@ -10,7 +10,6 @@ import {
   Group,
   InputBase,
   Paper,
-  Select,
   Stack,
   Text,
   TextInput,
@@ -175,7 +174,6 @@ export const TechniciansEditForm = ({ user }: TechniciansEditProps) => {
                 value={values.email}
                 onChange={action.handleChange}
                 error={touched.email && errors.email}
-                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
@@ -188,7 +186,6 @@ export const TechniciansEditForm = ({ user }: TechniciansEditProps) => {
                 value={values.cpf}
                 onChange={action.handleChange}
                 error={touched.cpf && errors.cpf}
-                withAsterisk
                 mask="999.999.999-99"
               />
             </Grid.Col>
@@ -251,6 +248,7 @@ export const TechniciansEditForm = ({ user }: TechniciansEditProps) => {
                 value={values.address?.street}
                 onChange={action.handleChange}
                 error={touched.address?.street && errors.address?.street}
+                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={2}>
@@ -262,6 +260,7 @@ export const TechniciansEditForm = ({ user }: TechniciansEditProps) => {
                 value={values.address?.number}
                 onChange={action.handleChange}
                 error={touched.address?.number && errors.address?.number}
+                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
@@ -273,6 +272,7 @@ export const TechniciansEditForm = ({ user }: TechniciansEditProps) => {
                 value={values.address?.district}
                 onChange={action.handleChange}
                 error={touched.address?.district && errors.address?.district}
+                withAsterisk
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>

@@ -59,7 +59,14 @@ export const CreateUserCredentials = ({
           bottom: 230,
         }}
       >
-        <form onSubmit={action.handleSubmit}>
+        <form
+          onSubmit={action.handleSubmit}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }}
+        >
           <Grid>
             <Grid.Col span={12}>
               <Title order={3} mt={20}>

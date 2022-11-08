@@ -37,7 +37,14 @@ export const CreatePasswordForm = () => {
   const { values, errors, touched, ...action } = formik;
 
   return (
-    <form onSubmit={action.handleSubmit}>
+    <form
+      onSubmit={action.handleSubmit}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+        }
+      }}
+    >
       <Stack
         px="xl"
         pb="xl"
