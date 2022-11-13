@@ -6,20 +6,18 @@ type ClientSectionProps = {
 };
 export const ClientSection = ({ data }: ClientSectionProps) => {
   return (
-    <Card withBorder p="lg" radius="md">
-      <Card.Section
-        px="lg"
-        py="xs"
-        withBorder
-        sx={(theme) => ({
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.gray[8]
-              : theme.colors.gray[0],
-        })}
-      >
-        <Title order={4}>Cliente</Title>
-      </Card.Section>
+    <Card
+      withBorder
+      p="md"
+      radius="sm"
+      sx={(theme) => ({
+        backgroundColor:
+          theme.colorScheme === "dark"
+            ? theme.colors.gray[8]
+            : theme.colors.gray[0],
+      })}
+    >
+      <Title order={5}>Cliente</Title>
       <Group mt={10} position="apart">
         <Group spacing="xs">
           <Text size="sm" component="label" weight={500}>

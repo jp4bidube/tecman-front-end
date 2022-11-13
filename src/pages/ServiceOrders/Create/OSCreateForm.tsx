@@ -72,6 +72,7 @@ export const OSCreateForm = () => {
       district: state?.client?.address[0]?.address?.district || "",
       complement: state?.client?.address[0]?.address?.complement || "",
       tecnicId: "",
+      periodAttendance: "",
       defect: "",
       observacao: "",
       devices: [{ type: "", brand: "", model: "" }] as Array<Equipment>,
@@ -81,6 +82,7 @@ export const OSCreateForm = () => {
       let payload = {
         ...values,
         tecnicId: +values.tecnicId,
+        periodAttendance: +values.periodAttendance,
         clientId: client?.id!,
       };
       createOSMutation.mutate(payload);
@@ -340,12 +342,13 @@ export const OSCreateForm = () => {
                   <Select
                     label="Período de atendimento"
                     placeholder="Selecione período"
-                    value={formik.values.tecnicId}
+                    value={formik.values.periodAttendance}
                     error={
-                      formik?.touched?.tecnicId && formik?.errors?.tecnicId
+                      formik?.touched?.periodAttendance &&
+                      formik?.errors?.periodAttendance
                     }
                     onChange={(value) =>
-                      formik.setFieldValue("tecnicId", value)
+                      formik.setFieldValue("periodAttendance", value)
                     }
                     data={[
                       { value: "1", label: "Período da manhã" },

@@ -50,7 +50,7 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
     theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 5 : 6];
 
   return (
-    <Grid gutter="xl" mb={16}>
+    <Grid gutter="xl" mb={8}>
       <Grid.Col span={12}>
         <Group position="apart" align="baseline">
           <Group position="left">

@@ -1,5 +1,16 @@
 import { ServiceOrders } from "@/types/serviceOrders";
-import { Grid, Group, ScrollArea, Stack, Textarea, Title } from "@mantine/core";
+import {
+  Checkbox,
+  Divider,
+  Grid,
+  Group,
+  Input,
+  ScrollArea,
+  Stack,
+  Textarea,
+  Title,
+} from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
 import { ClientSection } from "./components/ClientSection";
 import { Equipaments } from "./components/Equipaments";
 import { OSInfo } from "./components/OSInfo";
@@ -24,41 +35,88 @@ export const OSOverViewForm = ({
         scrollbarSize={8}
       >
         <Grid>
-          <Grid.Col xs={6}>
+          <Grid.Col xs={12} md={6}>
             <ClientSection data={data!} />
           </Grid.Col>
-          <Grid.Col xs={6}>
+          <Grid.Col xs={12} md={6}>
             <OSInfo data={data!} />
           </Grid.Col>
-          <Grid.Col xs={6}>
-            <Group my={10}>
-              <Title order={4}>Equipamentos</Title>
-            </Group>
-            <Equipaments data={data?.equipments!} />
-          </Grid.Col>
-          <Grid.Col span={6}></Grid.Col>
-          <Grid.Col span={6}>
-            <Textarea
-              placeholder="Descreva o defeito apresentado"
-              label="Defeito"
-              name="defect"
-              id="defect"
-              value={data.defect}
-              autosize
-              minRows={2}
-              readOnly
+          <Grid.Col xs={12}>
+            <Divider
+              size="xs"
+              labelPosition="left"
+              label={<Title order={5}>Informações do Equipamento</Title>}
             />
           </Grid.Col>
-          <Grid.Col span={6}>
+          <Equipaments data={data.equipments} />
+          <Grid.Col xs={12} md={6}>
+            <Textarea
+              placeholder="Descreva o defeito apresentado"
+              label="Defeito Reclamado"
+              value={data.defect}
+              variant="filled"
+              readOnly
+              minRows={2}
+            />
+          </Grid.Col>
+          <Grid.Col xs={12} md={6}>
+            <Textarea
+              placeholder="Observações"
+              label="Observações"
+              value={data?.observacao!}
+              variant="filled"
+              readOnly
+              minRows={2}
+            />
+          </Grid.Col>
+          <Grid.Col xs={12} md={6}>
             <Textarea
               placeholder="Descreva o serviço executado"
               label="Serviço executado"
               value={data?.serviceExecuted!}
-              disabled={!data?.serviceExecuted}
-              autosize
+              variant="filled"
+              readOnly
               minRows={2}
             />
           </Grid.Col>
+          <Grid.Col xs={12} md={6}>
+            <Input.Wrapper label="Histórico de Peças">
+              <Checkbox
+                label="Houve venda de peça durante a execução do serviço"
+                mt={5}
+                checked={data?.pieceSold ? data?.pieceSold : false}
+                disabled
+              />
+              <Checkbox
+                label="O cliente ficou com as peças usadas?"
+                mt={15}
+                checked={data?.clientPiece ? data?.clientPiece : false}
+                disabled
+              />
+            </Input.Wrapper>
+          </Grid.Col>
+          {data.absence1 ? (
+            <Grid.Col xs={12} md={6}>
+              <DatePicker
+                placeholder="Ausencia"
+                locale="pt-BR"
+                label="Ausencia"
+                value={data.absence1}
+                disabled
+              />
+            </Grid.Col>
+          ) : null}
+          {data.absence2 ? (
+            <Grid.Col xs={12} md={6}>
+              <DatePicker
+                placeholder="Ausencia"
+                locale="pt-BR"
+                label="Ausencia 2"
+                value={data.absence2}
+                disabled
+              />
+            </Grid.Col>
+          ) : null}
         </Grid>
       </ScrollArea.Autosize>
     </Stack>

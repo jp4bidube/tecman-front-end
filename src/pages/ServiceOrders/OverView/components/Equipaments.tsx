@@ -3,6 +3,7 @@ import {
   Badge,
   Box,
   Chip,
+  Divider,
   Grid,
   Group,
   List,
@@ -17,49 +18,48 @@ type EquipmentsProps = {
 };
 
 export const Equipaments = ({ data }: EquipmentsProps) => {
+  const equipment =
+    data?.length > 0
+      ? data[0]
+      : ({
+          brand: "Brastemp",
+          model: "inverter",
+          type: "Geladeira",
+          mounthsWarranty: 0,
+          warrantyPeriod: new Date(),
+        } as Equipment);
+
   return (
-    <List size="sm" center listStyleType="none">
-      {data &&
-        data.map((equip) => (
-          <List.Item
-            key={equip.id}
-            sx={(theme) => ({
-              borderBottom: `0.5px solid ${
-                theme.colorScheme === "dark"
-                  ? theme.colors.dark[6]
-                  : theme.colors.gray[2]
-              }`,
-              padding: ".8rem",
-              "&:hover": {
-                backgroundColor:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.dark[6]
-                    : theme.colors.gray[0],
-              },
-            })}
-          >
-            <Group position="apart">
-              <Group>
-                <ThemeIcon size={24} radius="xl" variant="light">
-                  <TbBox size={16} />
-                </ThemeIcon>
-                <Title order={5}>{equip.type} -</Title>
-                <Text>{equip.brand}</Text>
-                <Text>{equip.model}</Text>
-              </Group>
-              {equip.warrantyPeriod && (
-                <Group>
-                  <Title order={6}>Garantia</Title>
-                  <Badge>
-                    {equip.mounthsWarranty > 1
-                      ? `${equip.mounthsWarranty} Meses`
-                      : `${equip.mounthsWarranty} Mês`}
-                  </Badge>
-                </Group>
-              )}
+    <>
+      <Grid.Col xs={12} md={6}>
+        <Group position="apart">
+          <Group>
+            <ThemeIcon size={24} radius="xl" variant="light">
+              <TbBox size={16} />
+            </ThemeIcon>
+            <Text size="sm">{equipment.type}</Text>
+            <Divider orientation="vertical" />
+            <Text size="sm" component="label">
+              {equipment.brand}
+            </Text>
+            <Divider orientation="vertical" />
+            <Text size="sm" component="label">
+              {equipment.model}
+            </Text>
+          </Group>
+          {equipment.warrantyPeriod && (
+            <Group>
+              <Text size="sm">Garantia</Text>
+              <Badge>
+                {equipment.mounthsWarranty && equipment?.mounthsWarranty > 1
+                  ? `${equipment.mounthsWarranty} Meses`
+                  : `${equipment.mounthsWarranty} Mês`}
+              </Badge>
             </Group>
-          </List.Item>
-        ))}
-    </List>
+          )}
+        </Group>
+      </Grid.Col>
+      <Grid.Col></Grid.Col>
+    </>
   );
 };

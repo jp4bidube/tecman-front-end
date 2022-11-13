@@ -1,6 +1,7 @@
 export interface ServiceOrdersCreate {
   clientId: number;
   tecnicId: number;
+  periodAttendance: number;
   street: string;
   cep: string;
   number: string;

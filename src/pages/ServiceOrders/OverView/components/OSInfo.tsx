@@ -7,20 +7,18 @@ type OSInfoProps = {
 
 export const OSInfo = ({ data }: OSInfoProps) => {
   return (
-    <Card withBorder p="lg" radius="sm">
-      <Card.Section
-        px="lg"
-        py="xs"
-        withBorder
-        sx={(theme) => ({
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.gray[8]
-              : theme.colors.gray[0],
-        })}
-      >
-        <Title order={4}>Informações OS</Title>
-      </Card.Section>
+    <Card
+      withBorder
+      p="md"
+      radius="sm"
+      sx={(theme) => ({
+        backgroundColor:
+          theme.colorScheme === "dark"
+            ? theme.colors.gray[8]
+            : theme.colors.gray[0],
+      })}
+    >
+      <Title order={5}>Informações OS</Title>
       <Group mt={10} position="apart">
         <Group spacing="xs">
           <Text size="sm" weight={500} component="label">
