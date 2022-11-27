@@ -1,3 +1,4 @@
+import { InputDate } from "@/components/InputDate";
 import { useCreateUser } from "@/services/features/users/hooks/useCreateUser";
 import { toBase64 } from "@/utils/fileToB64";
 import {
@@ -17,7 +18,6 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
 import cep from "cep-promise";
 import "dayjs/locale/pt-BR";
 import { getIn, useFormik } from "formik";
@@ -227,15 +227,12 @@ export const UserCreateForm = () => {
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
-              <DatePicker
+              <InputDate
                 placeholder="Data de nascimento"
-                locale="pt-BR"
                 label="Data de Nascimento"
-                allowFreeInput
                 value={values.birthDate}
-                error={touched.birthDate && errors.birthDate}
-                onChange={(value) => action.setFieldValue("birthDate", value)}
-                withAsterisk
+                name="birthDate"
+                formik={formik}
               />
             </Grid.Col>
           </Grid>

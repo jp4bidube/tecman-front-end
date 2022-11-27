@@ -1,3 +1,4 @@
+import { InputDate } from "@/components/InputDate";
 import { useCreateTechnicians } from "@/services/features/technicians/hooks/useCreateTechnicians";
 import { toBase64 } from "@/utils/fileToB64";
 import {
@@ -193,15 +194,12 @@ export const TechniciansCreateForm = () => {
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
-              <DatePicker
+              <InputDate
                 placeholder="Data de nascimento"
-                locale="pt-BR"
                 label="Data de Nascimento"
-                allowFreeInput
                 value={values.birthDate}
-                error={touched.birthDate && errors.birthDate}
-                onChange={(value) => action.setFieldValue("birthDate", value)}
-                withAsterisk
+                name="birthDate"
+                formik={formik}
               />
             </Grid.Col>
           </Grid>

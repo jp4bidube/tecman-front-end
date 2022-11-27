@@ -58,9 +58,7 @@ export const ForgotPassword = () => {
                 leftIcon={<TbArrowLeft size={25} />}
               ></Button>
             </Link>
-            <Center>
-              <Title order={2}>Esqueceu a senha</Title>
-            </Center>
+            <Title order={2}>Esqueceu a senha</Title>
           </Group>
           <Stack
             p="xl"

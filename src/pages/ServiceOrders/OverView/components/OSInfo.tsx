@@ -8,14 +8,10 @@ type OSInfoProps = {
 export const OSInfo = ({ data }: OSInfoProps) => {
   return (
     <Card
-      withBorder
       p="md"
       radius="sm"
       sx={(theme) => ({
-        backgroundColor:
-          theme.colorScheme === "dark"
-            ? theme.colors.gray[8]
-            : theme.colors.gray[0],
+        backgroundColor: theme.colorScheme === "dark" ? "#2C2E33" : "#f1f3f5",
       })}
     >
       <Title order={5}>Informações OS</Title>
@@ -68,7 +64,7 @@ export const OSInfo = ({ data }: OSInfoProps) => {
         <Text size="sm" weight={500} component="label">
           Período:
         </Text>
-        <Text size="sm">Tarde</Text>
+        <Text size="sm">{data?.periodAttendance}</Text>
       </Group>
     </Card>
   );

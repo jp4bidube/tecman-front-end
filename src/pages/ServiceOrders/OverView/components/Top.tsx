@@ -55,9 +55,9 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
         <Group position="apart" align="baseline">
           <Group position="left">
             <Title order={5}>Número OS: </Title>
-            <Title order={5} color="tecman">
+            <Badge variant="dot" size="lg" color="tecman">
               {data?.id}
-            </Title>
+            </Badge>
           </Group>
           <Badge
             size="lg"
@@ -106,7 +106,10 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
                   </Menu.Item>
                 ) : null}
 
-                <Menu.Item icon={<TbEdit size={16} color={menuIconColor} />}>
+                <Menu.Item
+                  icon={<TbEdit size={16} color={menuIconColor} />}
+                  onClick={() => navigate(`/service-orders/${data?.id}/edit`)}
+                >
                   Editar
                 </Menu.Item>
                 <Menu.Item

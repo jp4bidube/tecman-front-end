@@ -7,9 +7,9 @@ import {
 } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { NotificationsProvider } from "@mantine/notifications";
+import "react-perfect-scrollbar/dist/css/styles.css";
 import useStore from "./store";
 import { GlobalStyle } from "./theme/Global";
-import "react-perfect-scrollbar/dist/css/styles.css";
 
 const App = () => {
   const store = useStore();
@@ -32,6 +32,14 @@ const App = () => {
             Title: {
               defaultProps: {
                 color: store.colorScheme === "dark" ? "dark.0" : "dark.3",
+              },
+            },
+            Paper: {
+              defaultProps: {
+                sx: {
+                  backgroundColor:
+                    store.colorScheme === "dark" ? "dark.9" : "#fafafa",
+                },
               },
             },
           },

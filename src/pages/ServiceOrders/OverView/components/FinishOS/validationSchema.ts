@@ -7,11 +7,9 @@ export const validationSchema = yup.object({
   // datePayment: yup.date().nullable().required("O campo é obrigatório"),
   tecnicId: yup.string().nullable().required("O campo é obrigatório"),
   hasWarranty: yup.string().nullable().required("O campo é obrigatório"),
-  equipments: yup.array().of(
-    yup.object().shape({
-      type: yup.string().nullable().required("O campo é obrigatório"),
-      brand: yup.string().required("O campo é obrigatório"),
-      model: yup.string().required("O campo é obrigatório"),
-    })
-  ),
+  device: yup.object().shape({
+    type: yup.string().nullable().required("O campo é obrigatório"),
+    brand: yup.string().required("O campo é obrigatório"),
+    model: yup.string().required("O campo é obrigatório"),
+  }),
 });

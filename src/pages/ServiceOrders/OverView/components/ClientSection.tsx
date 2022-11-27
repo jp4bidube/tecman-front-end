@@ -7,14 +7,10 @@ type ClientSectionProps = {
 export const ClientSection = ({ data }: ClientSectionProps) => {
   return (
     <Card
-      withBorder
       p="md"
       radius="sm"
       sx={(theme) => ({
-        backgroundColor:
-          theme.colorScheme === "dark"
-            ? theme.colors.gray[8]
-            : theme.colors.gray[0],
+        backgroundColor: theme.colorScheme === "dark" ? "#2C2E33" : "#f1f3f5",
       })}
     >
       <Title order={5}>Cliente</Title>

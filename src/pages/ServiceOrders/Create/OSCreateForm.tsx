@@ -4,7 +4,6 @@ import { useCreateOS } from "@/services/features/serviceOrders/hooks/useCreateOS
 import { useTechniciansSelect } from "@/services/features/technicians/hooks/useTechniciansSelect";
 import { Client } from "@/types/clients";
 import {
-  ActionIcon,
   Box,
   Button,
   Grid,
@@ -22,15 +21,9 @@ import {
   Title,
 } from "@mantine/core";
 import cep from "cep-promise";
-import { FieldArray, FormikProvider, getIn, useFormik } from "formik";
+import { FormikProvider, getIn, useFormik } from "formik";
 import { useEffect, useState } from "react";
-import {
-  TbArrowUpRight,
-  TbDeviceFloppy,
-  TbPlus,
-  TbTrash,
-  TbUserCircle,
-} from "react-icons/tb";
+import { TbArrowUpRight, TbDeviceFloppy, TbUserCircle } from "react-icons/tb";
 import InputMask from "react-input-mask";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ClientAddressList } from "../components/ClientAddressList";
@@ -82,7 +75,6 @@ export const OSCreateForm = () => {
       let payload = {
         ...values,
         tecnicId: +values.tecnicId,
-        periodAttendance: +values.periodAttendance,
         clientId: client?.id!,
       };
       createOSMutation.mutate(payload);
@@ -129,6 +121,8 @@ export const OSCreateForm = () => {
     formik.setFieldValue("complement", changedAdress?.address.complement);
     return setLockAdress(true);
   };
+
+  console.log(formik.errors);
 
   return (
     <Stack style={{ maxHeight: "90vh", overflow: "hidden" }}>
@@ -351,124 +345,70 @@ export const OSCreateForm = () => {
                       formik.setFieldValue("periodAttendance", value)
                     }
                     data={[
-                      { value: "1", label: "Período da manhã" },
-                      { value: "2", label: "Período da tarde" },
+                      { value: "Período da manhã", label: "Período da manhã" },
+                      { value: "Período da tarde", label: "Período da tarde" },
                     ]}
                     searchable
                     clearable
                   />
                 </Grid.Col>
-              </Grid>
-              <Grid>
-                <FieldArray
-                  name="devices"
-                  render={(arrayHelpers) => (
-                    <>
-                      <Grid.Col span={12}>
-                        <Group position="left" mt={25}>
-                          <Title order={3}>Detalhes do equipamento</Title>
-                          {/* <Group>
-                            <Button
-                              variant="light"
-                              radius="xl"
-                              leftIcon={<TbPlus size={20} />}
-                              onClick={() =>
-                                arrayHelpers.push({
-                                  type: "",
-                                  brand: "",
-                                  model: "",
-                                })
-                              }
-                            >
-                              Adicionar
-                            </Button>
-                          </Group> */}
-                        </Group>
-                      </Grid.Col>
-                      {formik.values.devices.map((_, index) => (
-                        <>
-                          <Grid.Col xs={12} md={4}>
-                            <Select
-                              withAsterisk
-                              label="Equipamento"
-                              placeholder="Selecione um equipamento"
-                              value={formik.values.devices[index].type}
-                              error={
-                                formik?.touched?.devices &&
-                                formik?.touched?.devices[index]?.type &&
-                                formik?.errors?.devices &&
-                                getIn(formik?.errors, `devices.${index}.type`)
-                              }
-                              onChange={(value) =>
-                                formik.setFieldValue(
-                                  `devices.${index}.type`,
-                                  value
-                                )
-                              }
-                              data={equipmentsList}
-                              searchable
-                            />
-                          </Grid.Col>
-                          <Grid.Col xs={12} md={4}>
-                            <TextInput
-                              withAsterisk
-                              placeholder="Marca"
-                              label="Marca"
-                              name={`devices.${index}.brand`}
-                              id={`devices.${index}.brand`}
-                              value={formik.values.devices[index]?.brand}
-                              error={
-                                formik?.touched?.devices &&
-                                formik?.touched?.devices[index]?.brand &&
-                                formik?.errors?.devices &&
-                                getIn(formik.errors, `devices.${index}.brand`)
-                              }
-                              onChange={formik.handleChange}
-                            />
-                          </Grid.Col>
-                          <Grid.Col
-                            xs={12}
-                            md={
-                              index !== 0 && formik.values.devices.length > 1
-                                ? 3.5
-                                : 4
-                            }
-                          >
-                            <TextInput
-                              withAsterisk
-                              placeholder="Modelo"
-                              label="Modelo"
-                              name={`devices.${index}.model`}
-                              id={`devices.${index}.model`}
-                              value={formik.values.devices[index].model}
-                              error={
-                                formik?.touched?.devices &&
-                                formik?.touched?.devices[index]?.model &&
-                                formik?.errors?.devices &&
-                                getIn(formik?.errors, `devices.${index}.model`)
-                              }
-                              onChange={formik.handleChange}
-                            />
-                          </Grid.Col>
-                          {index !== 0 && formik.values.devices.length > 1 && (
-                            <Grid.Col xs={12} md={0.5}>
-                              <Box mt={28}>
-                                <ActionIcon
-                                  variant="light"
-                                  color="red"
-                                  onClick={() => arrayHelpers.remove(index)}
-                                >
-                                  <TbTrash size={20} />
-                                </ActionIcon>
-                              </Box>
-                            </Grid.Col>
-                          )}
-                        </>
-                      ))}
-                    </>
-                  )}
-                />
-                <Grid.Col span={6}>
+                <Grid.Col span={12}>
+                  <Title order={3}>Detalhes do equipamento</Title>
+                </Grid.Col>
+                <Grid.Col xs={12} md={4}>
+                  <Select
+                    withAsterisk
+                    label="Equipamento"
+                    placeholder="Selecione um equipamento"
+                    value={formik.values.devices[0].type}
+                    error={
+                      formik?.touched?.devices &&
+                      formik?.touched?.devices[0]?.type &&
+                      formik?.errors?.devices &&
+                      getIn(formik?.errors, `devices.0.type`)
+                    }
+                    onChange={(value) =>
+                      formik.setFieldValue(`devices.0.type`, value)
+                    }
+                    data={equipmentsList}
+                    searchable
+                  />
+                </Grid.Col>
+                <Grid.Col xs={12} md={4}>
+                  <TextInput
+                    withAsterisk
+                    placeholder="Marca"
+                    label="Marca"
+                    name={`devices.0.brand`}
+                    id={`devices.0.brand`}
+                    value={formik.values.devices[0]?.brand}
+                    error={
+                      formik?.touched?.devices &&
+                      formik?.touched?.devices[0]?.brand &&
+                      formik?.errors?.devices &&
+                      getIn(formik.errors, `devices.0.brand`)
+                    }
+                    onChange={formik.handleChange}
+                  />
+                </Grid.Col>
+                <Grid.Col xs={12} md={4}>
+                  <TextInput
+                    withAsterisk
+                    placeholder="Modelo"
+                    label="Modelo"
+                    name={`devices.0.model`}
+                    id={`devices.0.model`}
+                    value={formik.values.devices[0].model}
+                    error={
+                      formik?.touched?.devices &&
+                      formik?.touched?.devices[0]?.model &&
+                      formik?.errors?.devices &&
+                      getIn(formik?.errors, `devices.0.model`)
+                    }
+                    onChange={formik.handleChange}
+                  />
+                </Grid.Col>
+                <Grid.Col xs={12} md={6}>
                   <Textarea
                     placeholder="Descreva o defeito apresentado"
                     label="Defeito"
@@ -482,7 +422,7 @@ export const OSCreateForm = () => {
                     minRows={2}
                   />
                 </Grid.Col>
-                <Grid.Col span={6}>
+                <Grid.Col xs={12} md={6}>
                   <Textarea
                     placeholder="Observações"
                     label="Observações"

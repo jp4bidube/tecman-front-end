@@ -1,24 +1,18 @@
 import { ClientAddress } from "@/types/clients";
 import {
-  ActionIcon,
-  Box,
   Button,
-  Center,
-  Chip,
+  Checkbox,
+  createStyles,
   Divider,
   Group,
   List,
   Modal,
-  Paper,
   ScrollArea,
-  Stack,
   Text,
   Title,
-  useMantineTheme,
+  UnstyledButton,
 } from "@mantine/core";
 import { useState } from "react";
-import { TbUserCircle } from "react-icons/tb";
-import PerfectScrollbar from "react-perfect-scrollbar";
 
 type ClientAddressListProps = {
   opened: boolean;
@@ -32,65 +26,59 @@ type AdreessItemProps = {
   selected: string;
 };
 
+const useStyles = createStyles((theme, { checked }: { checked: boolean }) => ({
+  button: {
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
+    transition: "background-color 150ms ease, border-color 150ms ease",
+    border: `1px solid ${
+      checked
+        ? theme.fn.variant({ variant: "outline", color: theme.primaryColor })
+            .border
+        : theme.colorScheme === "dark"
+        ? theme.colors.dark[8]
+        : theme.colors.gray[3]
+    }`,
+    borderRadius: theme.radius.sm,
+    padding: theme.spacing.sm,
+    backgroundColor: checked
+      ? theme.fn.variant({ variant: "light", color: theme.primaryColor })
+          .background
+      : theme.colorScheme === "dark"
+      ? theme.colors.dark[8]
+      : theme.white,
+  },
+}));
+
 const AdreessItem = ({ data, onSelect, selected }: AdreessItemProps) => {
-  const theme = useMantineTheme();
+  const { classes, cx } = useStyles({
+    checked: selected === data.id ? true : false,
+  });
   return (
-    <Paper
-      shadow="xs"
-      py="xs"
-      px="xl"
-      radius="lg"
-      sx={{
-        minHeight: 100,
-        cursor: "pointer",
-        flexWrap: "nowrap",
-        borderColor:
-          selected === data.id
-            ? theme.colorScheme === "dark"
-              ? theme.colors.tecman[3]
-              : theme.colors.tecman[6]
-            : "default",
-        backgroundColor:
-          selected === data.id
-            ? theme.colorScheme === "dark"
-              ? "rgba(28, 46, 74, 0.2)"
-              : "rgba(236, 241, 248, 1);"
-            : "default",
-        ":hover": {
-          borderColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.tecman[3]
-              : theme.colors.tecman[6],
-        },
-      }}
+    <UnstyledButton
       onClick={() => onSelect(data.id)}
-      withBorder
+      className={cx(classes.button)}
     >
-      <Group mt="sm" grow>
-        <Text weight={500}>CEP</Text>
-        <Text size="sm" color="dimmed" lineClamp={1}>
-          {data.address.cep}
+      <Checkbox
+        checked={selected === data.id ? true : false}
+        onChange={() => {}}
+        tabIndex={-1}
+        size="md"
+        mr="xl"
+        styles={{ input: { cursor: "pointer" } }}
+      />
+
+      <div>
+        <Text weight={500} mb={7} sx={{ lineHeight: 1 }}>
+          {data.address.street}, {data.address.number}
         </Text>
-      </Group>
-      <Group mt="sm" grow>
-        <Text weight={500}>Rua</Text>
-        <Text size="sm" color="dimmed" lineClamp={1}>
-          {`${data.address.street}🔹${data.address.number}`}
-        </Text>
-      </Group>
-      <Group mt="sm" grow>
-        <Text weight={500}>Bairro</Text>
-        <Text size="sm" color="dimmed" lineClamp={1}>
-          {data.address.district}
-        </Text>
-      </Group>
-      <Group mt="sm" grow>
-        <Text weight={500}>Complemento</Text>
-        <Text size="sm" color="dimmed" lineClamp={1}>
+        <Text size="sm" color="dimmed">
+          {data.address.cep} - {data.address.district},{" "}
           {data.address.complement}
         </Text>
-      </Group>
-    </Paper>
+      </div>
+    </UnstyledButton>
   );
 };
 
@@ -100,8 +88,10 @@ export const ClientAddressList = ({
   adresses,
   onChange,
 }: ClientAddressListProps) => {
-  const theme = useMantineTheme();
   const [selectedItem, setSelectedItem] = useState("");
+  const { classes, cx } = useStyles({
+    checked: selectedItem === "other" ? true : false,
+  });
 
   const handleSelectItem = (id: string) => setSelectedItem(id);
 
@@ -133,7 +123,29 @@ export const ClientAddressList = ({
               </List.Item>
             ))}
           <List.Item>
-            <Paper
+            <UnstyledButton
+              onClick={() => setSelectedItem("other")}
+              className={cx(classes.button)}
+            >
+              <Checkbox
+                checked={selectedItem === "other" ? true : false}
+                onChange={() => {}}
+                tabIndex={-1}
+                size="md"
+                mr="xl"
+                styles={{ input: { cursor: "pointer" } }}
+              />
+
+              <div>
+                <Text weight={500} mb={7} sx={{ lineHeight: 1 }}>
+                  Usar outro endereço
+                </Text>
+                <Text size="sm" color="dimmed">
+                  Liberar campos para cadastrar outro endereço.
+                </Text>
+              </div>
+            </UnstyledButton>
+            {/* <Paper
               shadow="xs"
               py="xs"
               px="xl"
@@ -172,7 +184,7 @@ export const ClientAddressList = ({
                   </Text>
                 </Stack>
               </Center>
-            </Paper>
+            </Paper> */}
           </List.Item>
         </List>
       </ScrollArea>

@@ -1,3 +1,4 @@
+import { InputDate } from "@/components/InputDate";
 import { QuantityInput } from "@/components/QuantityInput";
 import { equipmentsList } from "@/pages/ServiceOrders/constants/equipaments";
 import { useFinishOS } from "@/services/features/serviceOrders/hooks/useFinishOS";
@@ -36,23 +37,27 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
   const theme = useMantineTheme();
   const mutation = useFinishOS();
   const { data, isFetching } = useTechniciansSelect();
-  console.log(os);
+
   const formik = useFormik({
     initialValues: {
-      tecnicId: os.tecnic.id || "",
-      amountReceived: os.amountReceived ? os.amountReceived! : null,
-      budget: os.budget ? os.budget : null,
+      tecnicId: os.tecnic.id + "" || "",
+      amountReceived: os.amountReceived ? os.amountReceived! : "",
+      budget: os.budget ? os.budget : "",
       clientPiece: os.clientPiece ? os.clientPiece : false,
       pieceSold: os.pieceSold ? os.pieceSold : false,
       serviceExecuted: os.serviceExecuted ? os.serviceExecuted : "",
       datePayment: os.datePayment ? os.datePayment : null,
-      equipments: os.equipments,
-      hasWarranty: "",
-    } as Omit<ServiceOrderFinish, "id">,
+      hasWarranty: "" || undefined,
+      device: os.equipments[0] || null,
+    },
     validationSchema,
     onSubmit: async (values) => {
-      let payload = { ...values };
+      let payload = { ...values, equipments: [values.device] } as Omit<
+        ServiceOrderFinish,
+        "id"
+      >;
       delete payload.hasWarranty;
+      delete payload.device;
 
       const res = await mutation.mutateAsync({ id: os.id, payload });
       if (res) {
@@ -65,17 +70,16 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
 
   useEffect(() => {
     if (currentWarranty === "sim") {
-      action.setFieldValue("equipments.0.mounthsWarranty", 1);
+      action.setFieldValue("device.mounthsWarranty", 1);
       action.setFieldValue(
-        "equipments.0.warrantyPeriod",
+        "device.warrantyPeriod",
         setMonth(new Date(), new Date().getMonth() + 1)
       );
     } else {
-      action.setFieldValue("equipments.0.mounthsWarranty", null);
-      action.setFieldValue("equipments.0.warrantyPeriod", null);
+      action.setFieldValue("device.mounthsWarranty", null);
+      action.setFieldValue("device.warrantyPeriod", null);
     }
   }, [currentWarranty]);
-  console.log(errors);
   return (
     <Drawer
       opened={opened}
@@ -163,20 +167,12 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                 </Input.Wrapper>
               </Grid.Col>
               <Grid.Col xs={12} md={4}>
-                <DatePicker
+                <InputDate
                   placeholder="Data de Pagamento"
-                  locale="pt-BR"
                   label="Data de Pagamento"
-                  allowFreeInput
                   value={values?.datePayment}
-                  error={
-                    touched?.datePayment &&
-                    errors?.datePayment &&
-                    getIn(errors, `datePayment`)
-                  }
-                  onChange={(value) =>
-                    action.setFieldValue(`datePayment`, value)
-                  }
+                  name="datePayment"
+                  formik={formik}
                 />
               </Grid.Col>
 
@@ -236,117 +232,92 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
               <Grid.Col span={12} my={20}>
                 <Divider />
               </Grid.Col>
-              {values?.equipments?.length > 0 &&
-                values?.equipments?.map((equip, index) => (
-                  <>
-                    <Grid.Col xs={12} md={4}>
-                      <Select
-                        withAsterisk
-                        label="Equipamento"
-                        placeholder="Selecione um equipamento"
-                        value={values?.equipments[index]?.type}
-                        error={
-                          touched?.equipments &&
-                          touched?.equipments[index]?.type &&
-                          errors?.equipments &&
-                          getIn(errors, `equipments.${index}.type`)
-                        }
-                        onChange={(value) =>
-                          formik.setFieldValue(
-                            `equipments.${index}.type`,
-                            value
-                          )
-                        }
-                        data={equipmentsList}
-                        clearable
+
+              <Grid.Col xs={12} md={4}>
+                <Select
+                  withAsterisk
+                  label="Equipamento"
+                  placeholder="Selecione um equipamento"
+                  value={values?.device?.type}
+                  error={touched?.device?.type && errors?.device?.type}
+                  onChange={(value) =>
+                    formik.setFieldValue("device.type", value)
+                  }
+                  data={equipmentsList}
+                  clearable
+                />
+              </Grid.Col>
+              <Grid.Col xs={6} md={4}>
+                <TextInput
+                  withAsterisk
+                  placeholder="Marca"
+                  label="Marca"
+                  name={"device.brand"}
+                  id={"device.brand"}
+                  value={values?.device?.brand}
+                  error={touched?.device?.brand && errors?.device?.brand}
+                  onChange={action.handleChange}
+                />
+              </Grid.Col>
+              <Grid.Col xs={6} md={4}>
+                <TextInput
+                  withAsterisk
+                  placeholder="Modelo"
+                  label="Modelo"
+                  name={"device.model"}
+                  id={"device.model"}
+                  value={values?.device?.model}
+                  error={touched?.device?.model && errors?.device?.model}
+                  onChange={formik.handleChange}
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={4}>
+                <Select
+                  label="Garantia"
+                  placeholder="Selecione garantia"
+                  value={values?.hasWarranty}
+                  error={touched?.hasWarranty && errors?.hasWarranty}
+                  onChange={(value) =>
+                    formik.setFieldValue("hasWarranty", value)
+                  }
+                  data={[
+                    { value: "não", label: "Sem garantia" },
+                    { value: "sim", label: "Com garantia" },
+                  ]}
+                  withAsterisk
+                  clearable
+                />
+              </Grid.Col>
+              {currentWarranty === "sim" ? (
+                <>
+                  <Grid.Col xs={12} md={4}>
+                    <Input.Wrapper label="Tempo de garantia">
+                      <QuantityInput
+                        formik={formik}
+                        objName="device"
+                        name="device.mounthsWarranty"
+                        dateInputName="device.warrantyPeriod"
                       />
-                    </Grid.Col>
-                    <Grid.Col xs={6} md={4}>
-                      <TextInput
-                        withAsterisk
-                        placeholder="Marca"
-                        label="Marca"
-                        name={`equipments.${index}.brand`}
-                        id={`equipments.${index}.brand`}
-                        value={values?.equipments[index]?.brand}
-                        error={
-                          touched?.equipments &&
-                          touched?.equipments[index]?.brand &&
-                          errors?.equipments &&
-                          getIn(errors, `equipments.${index}.brand`)
-                        }
-                        onChange={action.handleChange}
-                      />
-                    </Grid.Col>
-                    <Grid.Col xs={6} md={4}>
-                      <TextInput
-                        withAsterisk
-                        placeholder="Modelo"
-                        label="Modelo"
-                        name={`equipments.${index}.model`}
-                        id={`equipments.${index}.model`}
-                        value={values?.equipments[index]?.model}
-                        error={
-                          touched?.equipments &&
-                          touched?.equipments[index]?.model &&
-                          errors?.equipments &&
-                          getIn(errors, `equipments.${index}.model`)
-                        }
-                        onChange={formik.handleChange}
-                      />
-                    </Grid.Col>
-                    <Grid.Col xs={12} md={4}>
-                      <Select
-                        label="Garantia"
-                        placeholder="Selecione garantia"
-                        value={values?.hasWarranty}
-                        error={touched?.hasWarranty && errors?.hasWarranty}
-                        onChange={(value) =>
-                          formik.setFieldValue("hasWarranty", value)
-                        }
-                        data={[
-                          { value: "não", label: "Sem garantia" },
-                          { value: "sim", label: "Com garantia" },
-                        ]}
-                        withAsterisk
-                        clearable
-                      />
-                    </Grid.Col>
-                    {currentWarranty === "sim" ? (
-                      <>
-                        <Grid.Col xs={12} md={4}>
-                          <Input.Wrapper label="Tempo de garantia">
-                            <QuantityInput formik={formik} index={index} />
-                          </Input.Wrapper>
-                        </Grid.Col>
-                        <Grid.Col xs={12} md={4}>
-                          <DatePicker
-                            placeholder="Término da garantia"
-                            locale="pt-BR"
-                            label="Data de término da garantia"
-                            value={values?.equipments[index]?.warrantyPeriod}
-                            error={
-                              touched?.equipments &&
-                              touched?.equipments[index]?.warrantyPeriod &&
-                              errors?.equipments &&
-                              getIn(
-                                errors,
-                                `equipments.${index}.warrantyPeriod`
-                              )
-                            }
-                            onChange={(value) =>
-                              action.setFieldValue(
-                                `equipments.${index}.warrantyPeriod`,
-                                value
-                              )
-                            }
-                            disabled
-                          />
-                        </Grid.Col>
-                      </>
-                    ) : null}
-                  </>
-                ))}
+                    </Input.Wrapper>
+                  </Grid.Col>
+                  <Grid.Col xs={12} md={4}>
+                    <DatePicker
+                      placeholder="Término da garantia"
+                      locale="pt-BR"
+                      label="Data de término da garantia"
+                      value={values?.device?.warrantyPeriod || new Date()}
+                      error={
+                        touched?.device?.warrantyPeriod &&
+                        errors?.device?.warrantyPeriod
+                      }
+                      onChange={(value) =>
+                        action.setFieldValue("device.warrantyPeriod", value)
+                      }
+                      disabled
+                    />
+                  </Grid.Col>
+                </>
+              ) : null}
             </Grid>
           </ScrollArea.Autosize>
         </form>

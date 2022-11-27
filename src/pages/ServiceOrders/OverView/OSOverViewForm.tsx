@@ -3,7 +3,6 @@ import {
   Checkbox,
   Divider,
   Grid,
-  Group,
   Input,
   ScrollArea,
   Stack,
@@ -101,6 +100,7 @@ export const OSOverViewForm = ({
                 placeholder="Ausencia"
                 locale="pt-BR"
                 label="Ausencia"
+                inputFormat="DD/MM/YYYY"
                 value={data.absence1}
                 disabled
               />
@@ -111,6 +111,7 @@ export const OSOverViewForm = ({
               <DatePicker
                 placeholder="Ausencia"
                 locale="pt-BR"
+                inputFormat="DD/MM/YYYY"
                 label="Ausencia 2"
                 value={data.absence2}
                 disabled

@@ -43,7 +43,7 @@ export const Home: React.FC = () => {
         <Paper
           shadow="xs"
           p="md"
-          radius="lg"
+          radius="md"
           sx={{
             minHeight: 250,
             cursor: "pointer",
@@ -74,7 +74,7 @@ export const Home: React.FC = () => {
         <Paper
           shadow="xs"
           p="md"
-          radius="lg"
+          radius="md"
           sx={{
             minHeight: 250,
             cursor: "pointer",
@@ -106,7 +106,7 @@ export const Home: React.FC = () => {
         <Paper
           shadow="xs"
           p="md"
-          radius="lg"
+          radius="md"
           sx={{
             minHeight: 250,
             cursor: "pointer",
@@ -135,7 +135,7 @@ export const Home: React.FC = () => {
         <Paper
           shadow="xs"
           p="md"
-          radius="lg"
+          radius="md"
           sx={{
             minHeight: 250,
             cursor: "pointer",

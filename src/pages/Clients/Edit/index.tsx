@@ -179,7 +179,7 @@ export const ClientEdit = () => {
                     page={store.serviceOrdersFilter.page}
                     total={
                       clientOS?.data?.total
-                        ? Math.ceil(clientOS?.data.total / 5)
+                        ? Math.ceil(clientOS?.data.total / 10)
                         : 1
                     }
                     onChange={(page) => store.setServiceOrdersPage(page)}

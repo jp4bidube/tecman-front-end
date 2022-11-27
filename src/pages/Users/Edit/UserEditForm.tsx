@@ -1,6 +1,6 @@
+import { InputDate } from "@/components/InputDate";
 import { useUpdateUser } from "@/services/features/users/hooks/useUpdateUser";
 import { EditUserPayload, User } from "@/types/user";
-import { maskDate } from "@/utils/getRandomColor";
 import { toBase64 } from "@/utils/fileToB64";
 import {
   Avatar,
@@ -20,9 +20,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
 import cep from "cep-promise";
-import "dayjs/locale/pt-BR";
 import { getIn, useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { TbDeviceFloppy, TbUpload } from "react-icons/tb";
@@ -251,17 +249,13 @@ export const UserEditForm = ({ user }: UserEditProps) => {
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
-              <DatePicker
+              <InputDate
                 placeholder="Data de nascimento"
-                locale="pt-BR"
                 label="Data de Nascimento"
-                allowFreeInput
                 maxLength={100}
                 value={values.birthDate}
-                error={touched.birthDate && errors.birthDate}
-                onChange={(value) => {
-                  return action.setFieldValue("birthDate", value);
-                }}
+                name="birthDate"
+                formik={formik}
                 withAsterisk
               />
             </Grid.Col>

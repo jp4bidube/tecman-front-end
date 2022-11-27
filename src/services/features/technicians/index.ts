@@ -8,7 +8,7 @@ class TechniciansService {
     const { data } = await api.get("/Tecnic/ListTenicSelect");
 
     return data.result.map((t: { id: string; name: string }) => ({
-      value: t.id,
+      value: t.id.toString(),
       label: t.name,
     }));
   }

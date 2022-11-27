@@ -53,53 +53,42 @@ const useStyles = createStyles((theme) => ({
 interface QuantityInputProps {
   min?: number;
   max?: number;
-  index: number;
   formik: any;
+  name: string;
+  dateInputName: string;
+  objName: string;
 }
 
 export function QuantityInput({
   min = 1,
   max = 24,
   formik,
-  index,
+  name,
+  objName,
+  dateInputName,
 }: QuantityInputProps) {
   const { classes } = useStyles();
   const handlers = useRef<NumberInputHandlers>(null);
 
   const handleIncrement = () => {
+    formik.setFieldValue(name, formik.values?.[objName]?.mounthsWarranty + 1);
     formik.setFieldValue(
-      `equipments.${index}.mounthsWarranty`,
-      formik.values?.equipments[index]?.mounthsWarranty + 1
-    );
-    formik.setFieldValue(
-      `equipments.${index}.warrantyPeriod`,
+      dateInputName,
       setMonth(
-        formik.values?.equipments[index]?.warrantyPeriod,
-        formik.values?.equipments[index]?.warrantyPeriod.getMonth() + 1
+        formik.values?.[objName]?.warrantyPeriod,
+        formik.values?.[objName]?.warrantyPeriod.getMonth() + 1
       )
     );
   };
 
   const handleDecrement = () => {
+    formik.setFieldValue(name, formik.values?.[objName]?.mounthsWarranty - 1);
     formik.setFieldValue(
-      `equipments.${index}.mounthsWarranty`,
-      formik.values?.equipments[index]?.mounthsWarranty - 1
-    );
-    formik.setFieldValue(
-      `equipments.${index}.warrantyPeriod`,
+      dateInputName,
       setMonth(
-        formik.values?.equipments[index]?.warrantyPeriod,
-        formik.values?.equipments[index]?.warrantyPeriod.getMonth() - 1
+        formik.values?.[objName]?.warrantyPeriod,
+        formik.values?.[objName]?.warrantyPeriod.getMonth() - 1
       )
-    );
-  };
-
-  const manageMonths = (increment: boolean, numOfMonths: number) => {
-    return setMonth(
-      new Date(),
-      increment
-        ? new Date().getMonth() + numOfMonths
-        : new Date().getMonth() - numOfMonths
     );
   };
 
@@ -108,7 +97,7 @@ export function QuantityInput({
       <ActionIcon<"button">
         size={28}
         onClick={handleDecrement}
-        disabled={formik.values?.equipments[index]?.mounthsWarranty <= min}
+        disabled={formik.values?.[objName]?.mounthsWarranty <= min}
         onMouseDown={(event) => event.preventDefault()}
       >
         <TbMinus size={16} />
@@ -118,21 +107,19 @@ export function QuantityInput({
           variant="unstyled"
           min={min}
           max={max}
-          value={Number.parseInt(
-            formik.values?.equipments[index]?.mounthsWarranty!
-          )}
+          value={Number.parseInt(formik.values?.[objName]?.mounthsWarranty!)}
           handlersRef={handlers}
           onChange={formik.handleChange}
           hidden
         />
-        {formik.values?.equipments[index]?.mounthsWarranty! < 2
-          ? `${formik.values?.equipments[index]?.mounthsWarranty!} mês`
-          : `${formik.values?.equipments[index]?.mounthsWarranty!} meses`}
+        {formik.values?.[objName]?.mounthsWarranty! < 2
+          ? `${formik.values?.[objName]?.mounthsWarranty!} mês`
+          : `${formik.values?.[objName]?.mounthsWarranty!} meses`}
       </Text>
       <ActionIcon<"button">
         size={28}
         onClick={handleIncrement}
-        disabled={formik.values?.equipments[index]?.mounthsWarranty === max}
+        disabled={formik.values?.[objName]?.mounthsWarranty === max}
         onMouseDown={(event) => event.preventDefault()}
       >
         <TbPlus size={16} />

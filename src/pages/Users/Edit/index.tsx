@@ -1,9 +1,8 @@
 import { useUserById } from "@/services/features/users/hooks/useUserById";
 import useStore from "@/store";
-import { User } from "@/types/user";
 import { useEffect } from "react";
 import { TbUserCircle } from "react-icons/tb";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { UserEditForm } from "./UserEditForm";
 import { UserEditFormSkeleton } from "./UserEditFormSkeleton";
 

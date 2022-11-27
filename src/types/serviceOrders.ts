@@ -1,15 +1,42 @@
 export interface ServiceOrdersCreate {
   clientId: number;
   tecnicId: number;
-  periodAttendance: number;
   street: string;
+  cep: string;
+  number: string;
+  district: string;
+  complement: string;
+  periodAttendance: string;
+  observacao: string;
+  defect: string;
+  devices: Array<Device>;
+}
+
+export interface ServiceOrdersEdit {
+  id: number;
+  tecnicId: number | string;
+  serviceExecuted: string;
+  pieceSold: boolean;
+  clientPiece: boolean;
+  budget: number;
+  amountReceived: number;
+  datePayment: Date | null;
+  clientId: number;
+  street: string;
+  periodAttendance: string;
   cep: string;
   number: string;
   district: string;
   complement: string;
   observacao: string;
   defect: string;
-  devices: Device[];
+  device: Device;
+  absence1?: Date | null;
+  absence1Hour?: Date | null;
+  absence2?: Date | null;
+  absence2Hour?: Date | null;
+  hasWarranty?: string;
+  status?: number;
 }
 
 export interface ServiceOrder {
@@ -39,9 +66,12 @@ export interface ServiceOrder {
 }
 
 export interface Device {
+  id?: number;
   type: string;
   brand: string;
   model: string;
+  mounthsWarranty?: number | null;
+  warrantyPeriod?: Date | null;
 }
 
 export interface ServiceOrderFinish {
@@ -55,6 +85,7 @@ export interface ServiceOrderFinish {
   datePayment: Date;
   equipments: Equipment[];
   hasWarranty?: string;
+  device?: Device;
 }
 
 export interface ServiceOrders {
@@ -73,6 +104,7 @@ export interface ServiceOrders {
   observacao: string;
   device_qtd: string;
   pieceSold: boolean | null;
+  periodAttendance: string;
   defect: string;
   clientPiece: boolean | null;
   budget: number | null;
