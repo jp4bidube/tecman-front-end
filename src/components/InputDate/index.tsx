@@ -11,7 +11,7 @@ interface DatePickerProps extends DatePickerBaseSharedProps {
   formik: any;
 }
 const maskDate = (value: string) => {
-  let dataString = value.split("/");
+  let dataString = value?.split("/");
   /* Define a data com os valores separados */
   return new Date(+dataString[2], +dataString[1] - 1, +dataString[0]);
 };
@@ -32,7 +32,7 @@ export const InputDate = ({
       value={value}
       inputFormat="DD/MM/YYYY"
       dateParser={(dateString) =>
-        dateString !== ""
+        dateString !== "" || dateString !== null
           ? new Date(
               maskDate(
                 dateString

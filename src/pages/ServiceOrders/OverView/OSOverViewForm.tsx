@@ -68,32 +68,37 @@ export const OSOverViewForm = ({
               minRows={2}
             />
           </Grid.Col>
-          <Grid.Col xs={12} md={6}>
-            <Textarea
-              placeholder="Descreva o serviço executado"
-              label="Serviço executado"
-              value={data?.serviceExecuted!}
-              variant="filled"
-              readOnly
-              minRows={2}
-            />
-          </Grid.Col>
-          <Grid.Col xs={12} md={6}>
-            <Input.Wrapper label="Histórico de Peças">
-              <Checkbox
-                label="Houve venda de peça durante a execução do serviço"
-                mt={5}
-                checked={data?.pieceSold ? data?.pieceSold : false}
-                disabled
-              />
-              <Checkbox
-                label="O cliente ficou com as peças usadas?"
-                mt={15}
-                checked={data?.clientPiece ? data?.clientPiece : false}
-                disabled
-              />
-            </Input.Wrapper>
-          </Grid.Col>
+          {data.orderServiceStatus.id === 2 ? (
+            <>
+              <Grid.Col xs={12} md={6}>
+                <Textarea
+                  placeholder="Descreva o serviço executado"
+                  label="Serviço executado"
+                  value={data?.serviceExecuted!}
+                  variant="filled"
+                  readOnly
+                  minRows={2}
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={6}>
+                <Input.Wrapper label="Histórico de Peças">
+                  <Checkbox
+                    label="Houve venda de peça durante a execução do serviço"
+                    mt={5}
+                    checked={data?.pieceSold ? data?.pieceSold : false}
+                    disabled
+                  />
+                  <Checkbox
+                    label="O cliente ficou com as peças usadas?"
+                    mt={15}
+                    checked={data?.clientPiece ? data?.clientPiece : false}
+                    disabled
+                  />
+                </Input.Wrapper>
+              </Grid.Col>
+            </>
+          ) : null}
+
           {data.absence1 ? (
             <Grid.Col xs={12} md={6}>
               <DatePicker

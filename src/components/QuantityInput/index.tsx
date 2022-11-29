@@ -57,6 +57,7 @@ interface QuantityInputProps {
   name: string;
   dateInputName: string;
   objName: string;
+  disabled?: boolean;
 }
 
 export function QuantityInput({
@@ -66,6 +67,7 @@ export function QuantityInput({
   name,
   objName,
   dateInputName,
+  disabled = false,
 }: QuantityInputProps) {
   const { classes } = useStyles();
   const handlers = useRef<NumberInputHandlers>(null);
@@ -97,7 +99,7 @@ export function QuantityInput({
       <ActionIcon<"button">
         size={28}
         onClick={handleDecrement}
-        disabled={formik.values?.[objName]?.mounthsWarranty <= min}
+        disabled={!disabled || formik.values?.[objName]?.mounthsWarranty <= min}
         onMouseDown={(event) => event.preventDefault()}
       >
         <TbMinus size={16} />
@@ -111,6 +113,7 @@ export function QuantityInput({
           handlersRef={handlers}
           onChange={formik.handleChange}
           hidden
+          disabled={!disabled}
         />
         {formik.values?.[objName]?.mounthsWarranty! < 2
           ? `${formik.values?.[objName]?.mounthsWarranty!} mês`
@@ -119,7 +122,9 @@ export function QuantityInput({
       <ActionIcon<"button">
         size={28}
         onClick={handleIncrement}
-        disabled={formik.values?.[objName]?.mounthsWarranty === max}
+        disabled={
+          !disabled || formik.values?.[objName]?.mounthsWarranty === max
+        }
         onMouseDown={(event) => event.preventDefault()}
       >
         <TbPlus size={16} />

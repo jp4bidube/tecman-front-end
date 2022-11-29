@@ -46,7 +46,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
       clientPiece: os.clientPiece ? os.clientPiece : false,
       pieceSold: os.pieceSold ? os.pieceSold : false,
       serviceExecuted: os.serviceExecuted ? os.serviceExecuted : "",
-      datePayment: os.datePayment ? os.datePayment : null,
+      datePayment: os.datePayment ? new Date(os.datePayment) : null,
       hasWarranty: "" || undefined,
       device: os.equipments[0] || null,
     },
@@ -297,6 +297,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                         objName="device"
                         name="device.mounthsWarranty"
                         dateInputName="device.warrantyPeriod"
+                        disabled
                       />
                     </Input.Wrapper>
                   </Grid.Col>

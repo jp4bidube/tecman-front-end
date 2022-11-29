@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { TbMoonStars, TbSun } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
-import logo from "../../../assets/logo.svg";
+import logo from "../../../assets/logo.webp";
 
 export function Brand() {
   const navigate = useNavigate();

@@ -60,11 +60,23 @@ export const OSInfo = ({ data }: OSInfoProps) => {
         </Text>
         <Text size="sm">{data?.tecnic?.name}</Text>
       </Group>
-      <Group mt={5}>
-        <Text size="sm" weight={500} component="label">
-          Período:
-        </Text>
-        <Text size="sm">{data?.periodAttendance}</Text>
+      <Group mt={5} position="apart">
+        <Group>
+          <Text size="sm" weight={500} component="label">
+            Período:
+          </Text>
+          <Text size="sm">{data?.periodAttendance}</Text>
+        </Group>
+        {data?.datePayment ? (
+          <Group>
+            <Text size="sm" weight={500} component="label">
+              Data de Pagamento:
+            </Text>
+            <Text size="sm">
+              {new Date(data?.datePayment || "").toLocaleDateString("pt-BR")}
+            </Text>
+          </Group>
+        ) : null}
       </Group>
     </Card>
   );

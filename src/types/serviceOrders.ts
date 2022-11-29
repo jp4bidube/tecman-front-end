@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface ServiceOrdersCreate {
   clientId: number;
   tecnicId: number;
@@ -140,4 +142,21 @@ export interface OrderServiceStatus {
 export interface Tecnic {
   id: number;
   name: string;
+}
+
+export interface WarrantyVisit {
+  clientePiece: boolean;
+  dateVisit: Date;
+  serviceExecuted: string;
+  equipmentId: number;
+  employeeId: number;
+}
+
+export interface WarrantyVisitItem {
+  id: number;
+  clientePiece: boolean;
+  dateVisit: Date;
+  serviceExecuted: string;
+  equipment: Equipment;
+  employee: User;
 }

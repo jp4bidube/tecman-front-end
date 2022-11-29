@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useFetchOSById } from "@/services/features/serviceOrders/hooks/useFetchOSById";
 import useStore from "@/store";
 import {
-  Drawer,
   Paper,
   Tabs,
   Text,
@@ -9,11 +8,12 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core";
+import { useEffect, useState } from "react";
 import { TbAd2, TbFileText } from "react-icons/tb";
-import { OSOverViewForm } from "./OSOverViewForm";
 import { useParams } from "react-router-dom";
-import { useFetchOSById } from "@/services/features/serviceOrders/hooks/useFetchOSById";
 import { FinishOSForm } from "./components/FinishOS";
+import Guarantees from "./components/Guarantees";
+import { OSOverViewForm } from "./OSOverViewForm";
 
 export const ServiceOrdersOverView = () => {
   const store = useStore();
@@ -62,29 +62,31 @@ export const ServiceOrdersOverView = () => {
               <Text>Ordens de Serviço</Text>
             )}
           </Tabs.Tab>
-          <Tabs.Tab
-            value="guarantees"
-            icon={
-              activeTab === "guarantees" ? (
-                <ThemeIcon variant="light">
+          {!isFetching && data!.orderServiceStatus.id === 2 ? (
+            <Tabs.Tab
+              value="guarantees"
+              icon={
+                activeTab === "guarantees" ? (
+                  <ThemeIcon variant="light">
+                    <TbFileText size={20} />
+                  </ThemeIcon>
+                ) : (
                   <TbFileText size={20} />
-                </ThemeIcon>
+                )
+              }
+            >
+              {activeTab === "guarantees" ? (
+                <Title
+                  order={5}
+                  color={theme.colorScheme === "dark" ? "tecman.3" : "tecman.6"}
+                >
+                  Garantias
+                </Title>
               ) : (
-                <TbFileText size={20} />
-              )
-            }
-          >
-            {activeTab === "guarantees" ? (
-              <Title
-                order={5}
-                color={theme.colorScheme === "dark" ? "tecman.3" : "tecman.6"}
-              >
-                Garantias
-              </Title>
-            ) : (
-              <Text>Garantias</Text>
-            )}
-          </Tabs.Tab>
+                <Text>Garantias</Text>
+              )}
+            </Tabs.Tab>
+          ) : null}
         </Tabs.List>
         <Tabs.Panel value="service-orders" pt="xl">
           {!isFetching && (
@@ -94,9 +96,11 @@ export const ServiceOrdersOverView = () => {
             <FinishOSForm opened={opened} setOpened={setOpened} os={data!} />
           )}
         </Tabs.Panel>
-        <Tabs.Panel value="guarantees" pt="xl">
-          <h1>test</h1>
-        </Tabs.Panel>
+        {!isFetching && data!.orderServiceStatus.id === 2 ? (
+          <Tabs.Panel value="guarantees" pt="xl">
+            <Guarantees os={data!} />
+          </Tabs.Panel>
+        ) : null}
       </Tabs>
     </Paper>
   );

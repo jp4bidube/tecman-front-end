@@ -1,4 +1,4 @@
-import logo from "@/assets/logo.svg";
+import logo from "@/assets/logo.webp";
 import { useIsAuth } from "@/hooks/useAuth";
 import { useSignIn } from "@/services/features/auth/hooks/SignIn";
 import {

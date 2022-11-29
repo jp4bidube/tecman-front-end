@@ -1,0 +1,190 @@
+@page {
+  size: auto; /* auto is the initial value */
+  margin: 0mm; /* this affects the margin in the printer settings */
+}
+
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+}
+
+h3 {
+  margin: 0;
+}
+
+h6 {
+  margin: 1rem;
+}
+
+.header-grid {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.left-data-section {
+  padding: 0.5rem 0;
+}
+
+.left-data-section p {
+  text-align: center;
+}
+
+.left-data-section,
+.header-title,
+.header-infos-build,
+.os,
+.orcamento,
+.data-client,
+.data-equipment,
+.servico,
+.payment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-infos-build span {
+  font-size: 11px;
+}
+
+#os-title,
+#orcamento-title,
+#servico-title,
+#payment-title {
+  margin: 0.98rem 0;
+  font-size: 15px;
+}
+
+.header-subtitle {
+  padding-top: 1rem;
+}
+
+.header-subtitle span,
+.header-infos-build span {
+  line-height: 15px;
+  font-size: 10px;
+}
+
+.header-type-payment {
+  margin: 1rem 0;
+}
+
+.border {
+  border: 1px solid #c7c7c7;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+
+.grid-item {
+  padding: 1rem;
+}
+
+.blue-info {
+  color: #333;
+}
+
+.grid-orcamento .grid-container {
+  grid-template-columns: 2fr 1fr 5fr 2fr;
+}
+
+.grid-orcamento .grid-container.total {
+  grid-template-columns: 8fr 2fr;
+}
+
+.grid-container.details {
+  grid-template-columns: 1fr 1fr;
+  margin-top: 1rem;
+}
+
+.payment-infos .grid-container {
+  grid-template-columns: 7fr 3fr;
+}
+
+.grid-orcamento .grid-item {
+  padding: 0;
+}
+
+.cells .grid-item {
+  padding: 0.7rem;
+}
+
+.data-client,
+.data-equipment {
+  align-items: flex-start;
+  padding: 1rem 0;
+}
+
+.data-client div {
+  display: flex;
+}
+
+.data-client div span {
+  margin-right: 5px;
+  line-height: 15px;
+}
+
+.servico-container,
+.garantia {
+  width: auto;
+}
+
+.number-os-title,
+.date-os-title,
+.technician-os-title,
+.period-os-title,
+.info-client-title,
+.equipment-details-title {
+  font-weight: bold;
+}
+
+.grid-item.signature {
+  padding: 0.5rem;
+}
+.servico-content {
+  margin-left: 1rem;
+  padding: 3rem;
+}
+
+hr {
+  width: 8rem;
+}
+
+.hr {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.checkbox {
+  display: flex;
+  padding: 0.5rem;
+  gap: 1rem;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+}
+.check > span {
+  margin-left: 0.5rem;
+}
+
+.borderBottomNone {
+  border: 1px solid #c7c7c7;
+  border-bottom: none;
+}
+
+.borderLeftNone {
+  border: 1px solid #c7c7c7;
+  border-left: none;
+}
+
+.borderleftBottomNone {
+  border: 1px solid #c7c7c7;
+  border-left: none;
+  border-bottom: none;
+}

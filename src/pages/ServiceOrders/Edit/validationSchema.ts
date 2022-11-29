@@ -30,11 +30,6 @@ export const validationSchema = yup.object({
     .when("status", (status, field) =>
       status === 2 ? field.required("O campo é obrigatório") : field
     ),
-  observacao: yup
-    .string()
-    .when("status", (status, field) =>
-      status === 2 ? field.required("O campo é obrigatório") : field
-    ),
   absence1Hour: yup
     .mixed()
     .when("absence1", (absence1, field) =>

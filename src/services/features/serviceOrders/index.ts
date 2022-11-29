@@ -5,6 +5,9 @@ import {
   ServiceOrderFinish,
   ServiceOrders,
   ServiceOrdersCreate,
+  ServiceOrdersEdit,
+  WarrantyVisit,
+  WarrantyVisitItem,
 } from "@/types/serviceOrders";
 
 class ServiceOrdersService {
@@ -79,6 +82,29 @@ class ServiceOrdersService {
           : null,
       })),
     });
+
+    return data;
+  }
+
+  async editServiceOrder(payload: ServiceOrdersEdit): Promise<ResponseOK> {
+    const { data } = await api.put<ResponseOK>(`/OrderService/`, payload);
+
+    return data;
+  }
+
+  async fetchOSGarantees(equipmentId: number): Promise<WarrantyVisitItem[]> {
+    const { data } = await api.get<ResponseOK>(
+      `/OrderService/equipment-warrant/${equipmentId}`
+    );
+
+    return data.result;
+  }
+
+  async createWarrantyVisit(payload: WarrantyVisit): Promise<ResponseOK> {
+    const { data } = await api.post<ResponseOK>(
+      "/OrderService/CreateVisit",
+      payload
+    );
 
     return data;
   }

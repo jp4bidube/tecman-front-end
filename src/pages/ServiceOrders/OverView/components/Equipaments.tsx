@@ -31,7 +31,7 @@ export const Equipaments = ({ data }: EquipmentsProps) => {
 
   return (
     <>
-      <Grid.Col xs={12} md={6}>
+      <Grid.Col xs={12} md={7}>
         <Group position="apart">
           <Group>
             <ThemeIcon size={24} radius="xl" variant="light">
@@ -59,7 +59,7 @@ export const Equipaments = ({ data }: EquipmentsProps) => {
           )}
         </Group>
       </Grid.Col>
-      <Grid.Col></Grid.Col>
+      <Grid.Col xs={12} md={5}></Grid.Col>
     </>
   );
 };
