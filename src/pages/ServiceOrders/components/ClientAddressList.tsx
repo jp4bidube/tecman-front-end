@@ -30,7 +30,7 @@ const useStyles = createStyles((theme, { checked }: { checked: boolean }) => ({
   button: {
     display: "flex",
     alignItems: "center",
-    width: "100%",
+    width: "43rem",
     transition: "background-color 150ms ease, border-color 150ms ease",
     border: `1px solid ${
       checked
@@ -111,10 +111,10 @@ export const ClientAddressList = ({
       title={<Title order={3}>Alterar endereço padrão</Title>}
     >
       <ScrollArea style={{ height: "30rem", padding: "0 2rem" }}>
-        <List spacing="xs" size="sm" center listStyleType="none">
+        <List spacing="xs" size="xl" center listStyleType="none">
           {adresses?.length! > 0 &&
             adresses!.map((address) => (
-              <List.Item key={address.id}>
+              <List.Item key={address.id} sx={{ width: "100%" }}>
                 <AdreessItem
                   data={address}
                   onSelect={handleSelectItem}
@@ -145,46 +145,6 @@ export const ClientAddressList = ({
                 </Text>
               </div>
             </UnstyledButton>
-            {/* <Paper
-              shadow="xs"
-              py="xs"
-              px="xl"
-              radius="lg"
-              sx={{
-                minHeight: 90,
-                cursor: "pointer",
-                flexWrap: "nowrap",
-                borderColor:
-                  selectedItem === "other"
-                    ? theme.colorScheme === "dark"
-                      ? theme.colors.tecman[3]
-                      : theme.colors.tecman[6]
-                    : "default",
-                backgroundColor:
-                  selectedItem === "other"
-                    ? theme.colorScheme === "dark"
-                      ? "rgba(28, 46, 74, 0.2)"
-                      : "rgba(236, 241, 248, 1);"
-                    : "default",
-                ":hover": {
-                  borderColor:
-                    theme.colorScheme === "dark"
-                      ? theme.colors.tecman[3]
-                      : theme.colors.tecman[6],
-                },
-              }}
-              onClick={() => setSelectedItem("other")}
-              withBorder
-            >
-              <Center>
-                <Stack align="center" mt={15}>
-                  <Title order={5}>Usar outro endereço</Title>
-                  <Text size="xs">
-                    Liberar campos para cadastrar outro endereço.
-                  </Text>
-                </Stack>
-              </Center>
-            </Paper> */}
           </List.Item>
         </List>
       </ScrollArea>

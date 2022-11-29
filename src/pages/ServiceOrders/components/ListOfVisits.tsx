@@ -57,7 +57,7 @@ interface ListOfVisitsProps {
 
 export function ListOfVisits({ data }: ListOfVisitsProps) {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState(2);
+  const [active, setActive] = useState<number | null>(null);
   const [activeItem, setActiveItem] = useState<WarrantyVisitItem>(
     {} as WarrantyVisitItem
   );
