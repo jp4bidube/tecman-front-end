@@ -33,6 +33,12 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
           <Th onSort={handleSort} columnName="id" sort={sort} order={order}>
             Número OS
           </Th>
+          <Th onSort={handleSort} columnName="name" sort={sort} order={order}>
+            Nome
+          </Th>
+          <Th onSort={handleSort} columnName="cpf" sort={sort} order={order}>
+            Documento
+          </Th>
           <Th onSort={handleSort} columnName="street" sort={sort} order={order}>
             Endereço
           </Th>
@@ -40,7 +46,12 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
           <Th onSort={handleSort} columnName="status" sort={sort} order={order}>
             Situação
           </Th>
-          <Th onSort={handleSort} columnName="cpf" sort={sort} order={order}>
+          <Th
+            onSort={handleSort}
+            columnName="dateCreated"
+            sort={sort}
+            order={order}
+          >
             Data de criação
           </Th>
           <th style={{ width: "6rem" }}>Açoes</th>
@@ -54,8 +65,10 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
           serviceOrders.map((os) => (
             <tr key={os.id}>
               <td>
-                <Badge>{os.id}</Badge>
+                <Badge variant="dot">{os.id}</Badge>
               </td>
+              <td>{os.client.name}</td>
+              <td>{os.client.cpf}</td>
               <td>
                 {os.street} ,{os.number}
               </td>

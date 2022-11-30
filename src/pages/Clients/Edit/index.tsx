@@ -67,7 +67,7 @@ export const ClientEdit = () => {
 
   return (
     <Paper withBorder sx={{ padding: "1.5rem" }}>
-      <Tabs value={activeTab} onTabChange={setActiveTab}>
+      <Tabs value={activeTab} onTabChange={setActiveTab} variant="outline">
         <Tabs.List>
           <Tabs.Tab
             value="client"
@@ -82,12 +82,11 @@ export const ClientEdit = () => {
             }
           >
             {activeTab === "client" ? (
-              <Title
-                order={5}
+              <Text
                 color={theme.colorScheme === "dark" ? "tecman.3" : "tecman.6"}
               >
                 Clientes
-              </Title>
+              </Text>
             ) : (
               <Text>Clientes</Text>
             )}
@@ -105,12 +104,11 @@ export const ClientEdit = () => {
             }
           >
             {activeTab === "service-orders" ? (
-              <Title
-                order={5}
+              <Text
                 color={theme.colorScheme === "dark" ? "tecman.3" : "tecman.6"}
               >
                 Ordens de Serviço
-              </Title>
+              </Text>
             ) : (
               <Text>Ordens de Serviço</Text>
             )}

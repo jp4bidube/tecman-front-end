@@ -73,7 +73,7 @@ export const Layout = () => {
           </Grid.Col>
         </Grid>
       </Drawer>
-      <Group position="apart" sx={{ marginBottom: ".5rem" }}>
+      <Group position="apart" sx={{ marginBottom: "3rem" }}>
         <Group spacing={-20}>
           <MediaQuery largerThan="lg" styles={{ display: "none" }}>
             <Burger

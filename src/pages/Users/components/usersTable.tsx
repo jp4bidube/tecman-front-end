@@ -1,16 +1,9 @@
 import { Th } from "@/components/Th";
 import useStore from "@/store";
 import { User } from "@/types/user";
-import { Badge, Group, Table, ThemeIcon, Title, Tooltip } from "@mantine/core";
+import { Badge, Flex, Table, ThemeIcon, Tooltip } from "@mantine/core";
 
-import {
-  TbChevronDown,
-  TbChevronUp,
-  TbEdit,
-  TbSelector,
-  TbUser,
-  TbUserOff,
-} from "react-icons/tb";
+import { TbEdit, TbUser, TbUserOff } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { UsersTableSkeleton } from "../List/UserTableSkeleton";
 
@@ -83,7 +76,7 @@ export const UsersTable = ({
                 </Badge>
               </td>
               <td>
-                <Group>
+                <Flex gap={10}>
                   <Tooltip label="Editar" withArrow>
                     <ThemeIcon
                       variant="light"
@@ -116,7 +109,7 @@ export const UsersTable = ({
                       </ThemeIcon>
                     </Tooltip>
                   )}
-                </Group>
+                </Flex>
               </td>
             </tr>
           ))
