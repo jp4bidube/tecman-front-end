@@ -15,10 +15,12 @@ export const TechnicianEdit = () => {
   useEffect(
     () =>
       store.setNewBreadcrumbs({
-        name: "Usuários",
-        path: "/users",
+        name: "Técnicos",
+        path: "/technicians",
         icon: <TbUserCircle size={25} />,
-        subhead: `Edição - ${data?.name}`,
+        subhead: [
+          { name: `Edição - ${data?.name}`, path: "/technicians/edit" },
+        ],
       }),
     [data]
   );

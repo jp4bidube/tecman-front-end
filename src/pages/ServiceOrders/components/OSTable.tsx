@@ -1,6 +1,14 @@
 import { Th } from "@/components/Th";
 import useStore from "@/store";
-import { Badge, Center, Group, Table, ThemeIcon, Tooltip } from "@mantine/core";
+import {
+  Badge,
+  Center,
+  Group,
+  Table,
+  Text,
+  ThemeIcon,
+  Tooltip,
+} from "@mantine/core";
 
 import { ServiceOrders } from "@/types/serviceOrders";
 import { User } from "@/types/user";
@@ -31,20 +39,30 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
       <thead>
         <tr>
           <Th onSort={handleSort} columnName="id" sort={sort} order={order}>
-            Número OS
+            <Text size="xs" tt="capitalize">
+              Número OS
+            </Text>
           </Th>
           <Th onSort={handleSort} columnName="name" sort={sort} order={order}>
-            Nome
+            <Text size="xs" tt="capitalize">
+              Nome
+            </Text>
           </Th>
           <Th onSort={handleSort} columnName="cpf" sort={sort} order={order}>
-            Documento
+            <Text size="xs" tt="capitalize">
+              Documento
+            </Text>
           </Th>
           <Th onSort={handleSort} columnName="street" sort={sort} order={order}>
-            Endereço
+            <Text size="xs" tt="capitalize">
+              Endereço
+            </Text>
           </Th>
 
           <Th onSort={handleSort} columnName="status" sort={sort} order={order}>
-            Situação
+            <Text size="xs" tt="capitalize">
+              Situação
+            </Text>
           </Th>
           <Th
             onSort={handleSort}
@@ -52,9 +70,15 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
             sort={sort}
             order={order}
           >
-            Data de criação
+            <Text size="xs" tt="capitalize">
+              Data de criação
+            </Text>
           </Th>
-          <th style={{ width: "6rem" }}>Açoes</th>
+          <th style={{ width: "6rem" }}>
+            <Text size="xs" tt="capitalize">
+              Açoes
+            </Text>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -67,19 +91,35 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
               <td>
                 <Badge variant="dot">{os.id}</Badge>
               </td>
-              <td>{os.client.name}</td>
-              <td>{os.client.cpf}</td>
               <td>
-                {os.street} ,{os.number}
+                <Text size="xs" tt="capitalize">
+                  {os.client.name}
+                </Text>
+              </td>
+              <td>
+                <Text size="xs" tt="capitalize">
+                  {os.client.cpf}
+                </Text>
+              </td>
+              <td>
+                <Text size="xs" tt="capitalize">
+                  {os.street}, {os.number}
+                </Text>
               </td>
               <td>
                 <Badge
                   color={os.orderServiceStatus.id === 1 ? "orange" : "teal"}
                 >
-                  {os.orderServiceStatus.status}
+                  <Text size="xs" tt="capitalize">
+                    {os.orderServiceStatus.status}
+                  </Text>
                 </Badge>
               </td>
-              <td>{new Date(os.dateCreated).toLocaleDateString("pt-BR")}</td>
+              <td>
+                <Text size="xs" tt="capitalize">
+                  {new Date(os.dateCreated).toLocaleDateString("pt-BR")}
+                </Text>
+              </td>
               <td>
                 <Group>
                   <Tooltip label="Visualizar" withArrow>

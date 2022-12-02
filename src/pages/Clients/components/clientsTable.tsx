@@ -1,6 +1,7 @@
+import { Th } from "@/components/Th";
 import useStore from "@/store";
 import { ClientList } from "@/types/clients";
-import { Group, Table, ThemeIcon, Tooltip } from "@mantine/core";
+import { Group, Table, Text, ThemeIcon, Tooltip } from "@mantine/core";
 
 import { TbChevronDown, TbChevronUp, TbEdit } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
@@ -26,80 +27,62 @@ export const ClientsTable = ({ clients }: ClientsTableProps) => {
     <Table verticalSpacing="sm" striped>
       <thead>
         <tr>
-          <th>
-            <Group
-              sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("name")}
-            >
+          <Th onSort={handleSort} columnName="name" sort={sort} order={order}>
+            <Text size="xs" tt="capitalize">
               Nome
-              <ThemeIcon variant="light" color={sort === "name" ? "" : "gray"}>
-                {sort === "name" && order === "asc" ? (
-                  <TbChevronUp size={15} />
-                ) : (
-                  <TbChevronDown size={15} />
-                )}
-              </ThemeIcon>
-            </Group>
-          </th>
-          <th>
-            <Group
-              sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("street")}
-            >
+            </Text>
+          </Th>
+          <Th onSort={handleSort} columnName="street" sort={sort} order={order}>
+            <Text size="xs" tt="capitalize">
               Endereço
-              <ThemeIcon
-                variant="light"
-                color={sort === "street" ? "" : "gray"}
-              >
-                {sort === "street" && order === "asc" ? (
-                  <TbChevronUp size={15} />
-                ) : (
-                  <TbChevronDown size={15} />
-                )}
-              </ThemeIcon>
-            </Group>
-          </th>
-          <th>
-            <Group sx={{ cursor: "pointer" }} onClick={() => handleSort("cpf")}>
+            </Text>
+          </Th>
+          <Th onSort={handleSort} columnName="cpf" sort={sort} order={order}>
+            <Text size="xs" tt="capitalize">
               Documento
-              <ThemeIcon variant="light" color={sort === "cpf" ? "" : "gray"}>
-                {sort === "cpf" && order === "asc" ? (
-                  <TbChevronUp size={15} />
-                ) : (
-                  <TbChevronDown size={15} />
-                )}
-              </ThemeIcon>
-            </Group>
-          </th>
-          <th>
-            <Group
-              sx={{ cursor: "pointer" }}
-              onClick={() => handleSort("number")}
-            >
+            </Text>
+          </Th>
+          <Th
+            onSort={handleSort}
+            columnName="phoneNumber"
+            sort={sort}
+            order={order}
+          >
+            <Text size="xs" tt="capitalize">
               Telefone
-              <ThemeIcon
-                variant="light"
-                color={sort === "number" ? "" : "gray"}
-              >
-                {sort === "number" && order === "asc" ? (
-                  <TbChevronUp size={15} />
-                ) : (
-                  <TbChevronDown size={15} />
-                )}
-              </ThemeIcon>
-            </Group>
+            </Text>
+          </Th>
+          <th style={{ width: "6rem" }}>
+            <Text size="xs" tt="capitalize">
+              Açoes
+            </Text>
           </th>
-          <th style={{ width: "6rem" }}>Açoes</th>
         </tr>
       </thead>
       <tbody>
         {clients &&
           clients.map((client) => (
             <tr key={client.id}>
-              <td>{client.name}</td>
-              <td></td>
-              <td>{client.cpf}</td>
-              <td>{client.phoneNumber}</td>
+              <td>
+                <Text size="xs" tt="capitalize">
+                  {client.name}
+                </Text>
+              </td>
+              <td>
+                <Text size="xs" tt="capitalize">
+                  {client.district}
+                </Text>
+              </td>
+              <td>
+                <Text size="xs" tt="capitalize">
+                  {client.cpf}
+                </Text>
+              </td>
+              <td>
+                <Text size="xs" tt="capitalize">
+                  {client.phoneNumber}
+                </Text>
+              </td>
               <td>
                 <Group>
                   <Tooltip label="Editar" withArrow>

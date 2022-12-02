@@ -101,7 +101,7 @@ export const TechniciansEditForm = ({ user }: TechniciansEditProps) => {
           <Grid gutter="xl" sx={{ position: "relative" }}>
             <Grid.Col span={12}>
               <Group position="apart">
-                <Title order={3}>Informações básicas</Title>
+                <Title order={4}>Informações básicas</Title>
                 <Group>
                   <Button
                     radius="xl"

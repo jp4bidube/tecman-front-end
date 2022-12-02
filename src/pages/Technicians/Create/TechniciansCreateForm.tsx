@@ -92,7 +92,7 @@ export const TechniciansCreateForm = () => {
           <Grid gutter="xl">
             <Grid.Col span={12}>
               <Group position="apart">
-                <Title order={3}>Informações básicas</Title>
+                <Title order={4}>Informações básicas</Title>
                 <Group>
                   <Button
                     radius="xl"

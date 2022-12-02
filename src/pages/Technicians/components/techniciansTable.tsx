@@ -1,6 +1,14 @@
 import { Th } from "@/components/Th";
 import useStore from "@/store";
-import { Badge, Flex, Group, Table, ThemeIcon, Tooltip } from "@mantine/core";
+import {
+  Badge,
+  Flex,
+  Group,
+  Table,
+  Text,
+  ThemeIcon,
+  Tooltip,
+} from "@mantine/core";
 
 import { TbEdit, TbUser, TbUserOff } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
@@ -35,22 +43,36 @@ export const TechniciansTable = ({
       <thead>
         <tr>
           <Th onSort={handleSort} columnName="name" sort={sort} order={order}>
-            Nome
+            <Text size="xs" tt="capitalize">
+              Nome
+            </Text>
           </Th>
           <Th onSort={handleSort} columnName="email" sort={sort} order={order}>
-            E-mail
+            <Text size="xs" tt="capitalize">
+              E-mail
+            </Text>
           </Th>
 
           <Th onSort={handleSort} columnName="role" sort={sort} order={order}>
-            Perfil
+            <Text size="xs" tt="capitalize">
+              Perfil
+            </Text>
           </Th>
           <Th onSort={handleSort} columnName="cpf" sort={sort} order={order}>
-            Documento
+            <Text size="xs" tt="capitalize">
+              Documento
+            </Text>
           </Th>
           <Th onSort={handleSort} columnName="status" sort={sort} order={order}>
-            Status
+            <Text size="xs" tt="capitalize">
+              Status
+            </Text>
           </Th>
-          <th style={{ width: "6rem" }}>Açoes</th>
+          <th style={{ width: "6rem" }}>
+            <Text size="xs" tt="capitalize">
+              Açoes
+            </Text>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -60,12 +82,29 @@ export const TechniciansTable = ({
           technicians &&
           technicians.map((technician) => (
             <tr key={technician.id}>
-              <td>{technician.name}</td>
-              <td>{technician.email}</td>
               <td>
-                <Badge color="tecman">{technician.role.role}</Badge>
+                <Text size="xs" tt="capitalize">
+                  {technician.name}
+                </Text>
               </td>
-              <td>{technician.cpf}</td>
+              <td>
+                <Text size="xs" tt="lowercase">
+                  {technician.email}
+                </Text>
+              </td>
+              <td>
+                <Badge color="tecman">
+                  <Text size="xs" tt="capitalize">
+                    {technician.role.role}
+                  </Text>
+                </Badge>
+              </td>
+              <td>
+                {" "}
+                <Text size="xs" tt="capitalize">
+                  {technician.cpf}
+                </Text>
+              </td>
               <td>
                 <Badge
                   color={
@@ -74,7 +113,9 @@ export const TechniciansTable = ({
                       : "red"
                   }
                 >
-                  {technician.employeeStatus.status}
+                  <Text size="xs" tt="capitalize">
+                    {technician.employeeStatus.status}
+                  </Text>
                 </Badge>
               </td>
               <td>

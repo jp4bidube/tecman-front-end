@@ -25,7 +25,7 @@ import { FormikProvider, getIn, useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { TbArrowUpRight, TbDeviceFloppy, TbUserCircle } from "react-icons/tb";
 import InputMask from "react-input-mask";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { ClientAddressList } from "../components/ClientAddressList";
 import { equipmentsList } from "../constants/equipaments";
 import { validationSchema } from "./validationSchema";
@@ -39,8 +39,7 @@ type Equipment = {
 export const OSCreateForm = () => {
   const navigate = useNavigate();
   const mutation = useCreateClient();
-  const location = useLocation();
-  const state = location?.state as { client: Client };
+  const clienteData = useOutletContext<Client>();
 
   const [openChangeAddress, setOpenChangeAddress] = useState(false);
   const [lockAdress, setLockAdress] = useState(true);
@@ -51,19 +50,19 @@ export const OSCreateForm = () => {
   const { data, isFetching } = useTechniciansSelect();
 
   useEffect(() => {
-    if (state?.client) {
-      setClient(state?.client);
+    if (clienteData) {
+      setClient(clienteData);
     }
-  }, [state]);
+  }, [clienteData]);
 
   const formik = useFormik({
     initialValues: {
-      cpf: state?.client?.cpf || "",
-      street: state?.client?.address[0]?.address?.street || "",
-      cep: state?.client?.address[0]?.address?.cep || "",
-      number: state?.client?.address[0]?.address?.number || "",
-      district: state?.client?.address[0]?.address?.district || "",
-      complement: state?.client?.address[0]?.address?.complement || "",
+      cpf: clienteData?.cpf || "",
+      street: clienteData?.address[0]?.address?.street || "",
+      cep: clienteData?.address[0]?.address?.cep || "",
+      number: clienteData?.address[0]?.address?.number || "",
+      district: clienteData?.address[0]?.address?.district || "",
+      complement: clienteData?.address[0]?.address?.complement || "",
       tecnicId: "",
       periodAttendance: "",
       defect: "",
@@ -139,7 +138,7 @@ export const OSCreateForm = () => {
             <Grid gutter="xl" mb={16}>
               <Grid.Col span={12}>
                 <Group position="apart">
-                  <Title order={3}>Informações do Cliente</Title>
+                  <Title order={4}>Informações do Cliente</Title>
                   <Group>
                     <Button
                       radius="xl"
@@ -225,7 +224,7 @@ export const OSCreateForm = () => {
 
                 <Grid.Col span={12}>
                   <Group position="left" mt={20}>
-                    <Title order={3}>Endereço</Title>
+                    <Title order={4}>Endereço</Title>
                     {client && (
                       <Group>
                         <Button
@@ -252,7 +251,8 @@ export const OSCreateForm = () => {
                     onChange={formik.handleChange}
                     error={formik.touched.cep && formik.errors.cep}
                     mask="99.999-999"
-                    disabled={lockAdress}
+                    variant={lockAdress ? "filled" : "default"}
+                    readOnly={lockAdress}
                   />
                 </Grid.Col>
                 <Grid.Col xs={12} md={6}>
@@ -265,7 +265,8 @@ export const OSCreateForm = () => {
                     value={formik.values.street}
                     onChange={formik.handleChange}
                     error={formik.touched.street && formik.errors.street}
-                    disabled={lockAdress}
+                    variant={lockAdress ? "filled" : "default"}
+                    readOnly={lockAdress}
                   />
                 </Grid.Col>
                 <Grid.Col xs={12} md={2}>
@@ -278,7 +279,8 @@ export const OSCreateForm = () => {
                     value={formik.values.number}
                     onChange={formik.handleChange}
                     error={formik.touched.number && formik.errors.number}
-                    disabled={lockAdress}
+                    variant={lockAdress ? "filled" : "default"}
+                    readOnly={lockAdress}
                   />
                 </Grid.Col>
                 <Grid.Col xs={12} md={6}>
@@ -291,7 +293,8 @@ export const OSCreateForm = () => {
                     value={formik.values.district}
                     onChange={formik.handleChange}
                     error={formik.touched.district && formik.errors.district}
-                    disabled={lockAdress}
+                    variant={lockAdress ? "filled" : "default"}
+                    readOnly={lockAdress}
                   />
                 </Grid.Col>
                 <Grid.Col xs={12} md={6}>
@@ -305,14 +308,15 @@ export const OSCreateForm = () => {
                     error={
                       formik.touched.complement && formik.errors.complement
                     }
-                    disabled={lockAdress}
+                    variant={lockAdress ? "filled" : "default"}
+                    readOnly={lockAdress}
                   />
                 </Grid.Col>
               </Grid>
               <Grid>
                 <Grid.Col span={12}>
                   <Group position="left" mt={20}>
-                    <Title order={3}>Atendimento</Title>
+                    <Title order={4}>Atendimento</Title>
                   </Group>
                 </Grid.Col>
                 <Grid.Col xs={12} md={4}>
@@ -353,7 +357,7 @@ export const OSCreateForm = () => {
                   />
                 </Grid.Col>
                 <Grid.Col span={12}>
-                  <Title order={3}>Detalhes do equipamento</Title>
+                  <Title order={4}>Detalhes do equipamento</Title>
                 </Grid.Col>
                 <Grid.Col xs={12} md={4}>
                   <Select

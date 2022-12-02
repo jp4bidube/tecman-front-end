@@ -19,7 +19,7 @@ class TechniciansService {
   }> {
     const { data, headers } = await api.get("/Tecnic", {
       params: {
-        limit: "5",
+        limit: "10",
         offset: page - 1,
         order,
         sort,

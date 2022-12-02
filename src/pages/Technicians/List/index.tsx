@@ -146,8 +146,9 @@ export const TechniciansList = () => {
               <Pagination
                 page={store.techniciansFilter.page}
                 total={data?.total ? Math.ceil(data.total / 10) : 1}
-                onChange={(page) => store.setPage(page)}
+                onChange={(page) => store.setTechniciansPage(page)}
                 radius="xl"
+                size="sm"
               />
             )}
           </Stack>

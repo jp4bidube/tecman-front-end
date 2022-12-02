@@ -3,6 +3,7 @@ import {
   Client,
   ClientAddressPayload,
   ClientCreatePayload,
+  ClientList,
   ClientUpdatePayload,
 } from "@/types/clients";
 import { ResponseOK } from "@/types/responseOk";
@@ -25,7 +26,7 @@ class ClientsService {
     sort: string,
     search: string
   ): Promise<{
-    clients: ClientCreatePayload[];
+    clients: ClientList[];
     total: number;
   }> {
     const { data, headers } = await api.get("/Client", {

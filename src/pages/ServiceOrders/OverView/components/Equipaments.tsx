@@ -48,14 +48,24 @@ export const Equipaments = ({ data }: EquipmentsProps) => {
             </Text>
           </Group>
           {equipment.warrantyPeriod && (
-            <Group>
-              <Text size="sm">Garantia</Text>
-              <Badge>
-                {equipment.mounthsWarranty && equipment?.mounthsWarranty > 1
-                  ? `${equipment.mounthsWarranty} Meses`
-                  : `${equipment.mounthsWarranty} Mês`}
-              </Badge>
-            </Group>
+            <>
+              <Group>
+                <Text size="sm">Garantia</Text>
+                <Badge>
+                  {equipment.mounthsWarranty && equipment?.mounthsWarranty > 1
+                    ? `${equipment.mounthsWarranty} Meses`
+                    : `${equipment.mounthsWarranty} Mês`}
+                </Badge>
+              </Group>
+              <Group>
+                <Text size="sm">Término:</Text>
+                <Text size="sm" component="label">
+                  {new Date(equipment.warrantyPeriod!).toLocaleDateString(
+                    "pt-BR"
+                  )}
+                </Text>
+              </Group>
+            </>
           )}
         </Group>
       </Grid.Col>

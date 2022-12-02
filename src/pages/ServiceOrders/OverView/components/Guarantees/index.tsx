@@ -1,20 +1,21 @@
+import { usePermission } from "@/hooks/usePermission";
 import { ListOfVisits } from "@/pages/ServiceOrders/components/ListOfVisits";
 import { useFetchOSGarantees } from "@/services/features/serviceOrders/hooks/useFetchOSGarantees";
 import { ServiceOrders } from "@/types/serviceOrders";
 import {
-  Box,
   Button,
-  Checkbox,
+  Divider,
   Flex,
+  Grid,
   Group,
-  Input,
-  SimpleGrid,
   Text,
-  Textarea,
+  Tooltip,
 } from "@mantine/core";
+import { isBefore } from "date-fns";
 import { useState } from "react";
 import { TbListSearch, TbPlus } from "react-icons/tb";
 import { CreateVisit } from "./CreateVisit";
+import { DeviceInfo } from "./DeviceInfo";
 
 type GuaranteesProps = {
   os: ServiceOrders;
@@ -24,23 +25,60 @@ const Guarantees = ({ os }: GuaranteesProps) => {
   const [openedCreateVisit, setOpenedCreateVisit] = useState(false);
   const equipmentId = os.equipments[0].id;
   const { data, isFetching } = useFetchOSGarantees(equipmentId);
-  console.log(data);
+  const hasPermission = usePermission();
+
+  const allowedCreateVisit = () => {
+    // if (hasPermission) {
+    //   return !hasPermission;
+    // }
+    if (
+      isBefore(
+        new Date("28/03/2023"),
+        new Date(os.equipments[0].warrantyPeriod!)
+      )
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <>
+      <Grid px={20} mb={20}>
+        <Grid.Col>
+          <DeviceInfo data={os} />
+        </Grid.Col>
+      </Grid>
       <Flex justify="space-between" pb={20} px={20}>
         <Group mb="md">
           <TbListSearch size={18} />
-          <Text component="label" size="sm">
-            Todas as visitas
-          </Text>
+          <Divider
+            size="xs"
+            labelPosition="left"
+            label={
+              <Text component="label" size="sm">
+                Todas as visitas
+              </Text>
+            }
+          />
         </Group>
-        <Button
-          leftIcon={<TbPlus size={20} />}
-          radius="xl"
-          onClick={() => setOpenedCreateVisit(true)}
+        <Tooltip
+          label="Você não tem permissão para alterar a garantia"
+          withArrow
+          color="red.4"
+          disabled={!allowedCreateVisit()}
         >
-          Adicionar
-        </Button>
+          <span>
+            <Button
+              leftIcon={<TbPlus size={20} />}
+              radius="xl"
+              onClick={() => setOpenedCreateVisit(true)}
+              disabled={allowedCreateVisit()}
+            >
+              Adicionar
+            </Button>
+          </span>
+        </Tooltip>
       </Flex>
       {!isFetching && data!.length > 0 ? (
         <Flex justify="flex-start" px={20}>

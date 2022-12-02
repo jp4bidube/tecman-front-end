@@ -27,7 +27,7 @@ class UsersService {
   }> {
     const { data, headers } = await api.get("/Employee", {
       params: {
-        limit: "5",
+        limit: "10",
         offset: page - 1,
         order,
         sort,

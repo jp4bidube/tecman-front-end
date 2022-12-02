@@ -108,7 +108,7 @@ export const ClientAddressList = ({
       size="lg"
       radius="md"
       centered
-      title={<Title order={3}>Alterar endereço padrão</Title>}
+      title={<Title order={4}>Alterar endereço padrão</Title>}
     >
       <ScrollArea style={{ height: "30rem", padding: "0 2rem" }}>
         <List spacing="xs" size="xl" center listStyleType="none">

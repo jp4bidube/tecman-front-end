@@ -8,7 +8,6 @@ import {
   MediaQuery,
   Pagination,
   Paper,
-  Skeleton,
   Stack,
   TextInput,
 } from "@mantine/core";
@@ -110,10 +109,11 @@ export const ClientsList = () => {
               <PaginationSkeleton />
             ) : (
               <Pagination
-                page={store.usersFilter.page}
+                page={store.clientsFilter.page}
                 total={data?.total ? Math.ceil(data.total / 10) : 1}
-                onChange={(page) => store.setPage(page)}
+                onChange={(page) => store.setClientsPage(page)}
                 radius="xl"
+                size="sm"
               />
             )}
           </Stack>

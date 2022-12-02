@@ -2,6 +2,7 @@ import { Home, Login, Users } from "@/pages";
 import { Clients } from "@/pages/Clients";
 import { ClientCreate } from "@/pages/Clients/Create";
 import { ClientEdit } from "@/pages/Clients/Edit";
+import { ServiceOrderTab } from "@/pages/Clients/Edit/components/ServiceOrderTab";
 import { ForgotPassword } from "@/pages/ForgotPassword";
 import { NotFound } from "@/pages/NotFound";
 import { ServiceOrders } from "@/pages/ServiceOrders";
@@ -34,7 +35,22 @@ export const MainRoutes = () => {
             <Route path="/technicians/create" element={<TechnicianCreate />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/clients/create" element={<ClientCreate />} />
-            <Route path="/clients/:id/edit" element={<ClientEdit />} />
+            <Route path="/clients/:id/edit" element={<ClientEdit />}>
+              <Route path="service-orders" element={<ServiceOrderTab />} />
+              <Route path="create" element={<ServiceOrdersCreate />} />
+              <Route
+                path="service-orders/create"
+                element={<ServiceOrdersCreate />}
+              />
+              <Route
+                path="service-orders/:osId/over-view"
+                element={<ServiceOrdersOverView />}
+              />
+              <Route
+                path="service-orders/:osId/edit"
+                element={<ServiceOrdersEdit />}
+              />
+            </Route>
             <Route path="/service-orders" element={<ServiceOrders />} />
             <Route
               path="/service-orders/create"

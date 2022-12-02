@@ -83,7 +83,7 @@ export const ClientEditForm = ({ client }: ClientEditFormProps) => {
         <Grid gutter="xl">
           <Grid.Col span={12}>
             <Group position="apart">
-              <Title order={3}>Informações básicas</Title>
+              <Title order={4}>Informações básicas</Title>
               <Group>
                 <Button
                   radius="xl"
@@ -156,7 +156,7 @@ export const ClientEditForm = ({ client }: ClientEditFormProps) => {
         <Grid>
           <Grid.Col span={12} mt={20}>
             <Group>
-              <Title order={3}>Endereço</Title>
+              <Title order={4}>Endereço</Title>
               <Button
                 leftIcon={<TbPlus />}
                 variant="light"

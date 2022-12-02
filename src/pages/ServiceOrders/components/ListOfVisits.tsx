@@ -7,8 +7,10 @@ import {
   Group,
   Input,
   SimpleGrid,
+  Tabs,
   Text,
   Textarea,
+  useMantineTheme,
 } from "@mantine/core";
 import { useState } from "react";
 
@@ -57,10 +59,9 @@ interface ListOfVisitsProps {
 
 export function ListOfVisits({ data }: ListOfVisitsProps) {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState<number | null>(null);
-  const [activeItem, setActiveItem] = useState<WarrantyVisitItem>(
-    {} as WarrantyVisitItem
-  );
+  const [active, setActive] = useState<number | null>(data[0].id);
+  const [activeItem, setActiveItem] = useState<WarrantyVisitItem>(data[0]);
+  const theme = useMantineTheme();
 
   const items = data.map((item) => (
     <Box<"span">
@@ -81,43 +82,101 @@ export function ListOfVisits({ data }: ListOfVisitsProps) {
   ));
 
   return (
-    <>
-      <Box sx={{ width: "30%", marginRight: "3rem" }}>{items}</Box>
-      {active ? (
-        <SimpleGrid cols={2} sx={{ width: "100%" }}>
-          <Box>
-            <Group spacing="xs" mb={10}>
+    <Tabs defaultValue={data[0].id.toString()} orientation="vertical">
+      <Tabs.List>
+        {data.map((item) => (
+          <Tabs.Tab value={item.id.toString()}>
+            <Text size="sm">
+              {new Date(item.dateVisit).toLocaleDateString("pt-BR")}
+            </Text>
+          </Tabs.Tab>
+        ))}
+      </Tabs.List>
+      {data.map((item) => (
+        <Tabs.Panel value={item.id.toString()}>
+          <Grid ml={20}>
+            <Grid.Col>
               <Text size="sm" component="label">
-                Data de criação:
+                Data da Visita:
               </Text>
               <Text size="sm">
-                {" "}
-                {new Date(activeItem.dateVisit).toLocaleDateString("pt-BR")}
+                {new Date(item.dateVisit).toLocaleDateString("pt-BR")}
               </Text>
-            </Group>
-            <Input.Wrapper label="Venda de Peças">
-              <Checkbox
-                label="Houve venda de peça durante a execução do serviço"
-                mt={5}
-                id="pieceSold"
-                checked={activeItem.clientePiece}
-                name="pieceSold"
+            </Grid.Col>
+            <Grid.Col>
+              <Input.Wrapper label="Historico de Peças">
+                <Checkbox
+                  label={
+                    <Text size="sm">O cliente ficou com as peças usadas?</Text>
+                  }
+                  mt={5}
+                  id="pieceSold"
+                  defaultChecked={item.clientePiece}
+                  name="pieceSold"
+                />
+              </Input.Wrapper>
+            </Grid.Col>
+            <Grid.Col>
+              {" "}
+              <Textarea
+                placeholder="Descreva o serviço executado"
+                label="Serviço executado"
+                name="serviceExecuted"
+                id="serviceExecuted"
+                value={item.serviceExecuted}
+                autosize
+                readOnly
+                variant="filled"
+                minRows={6}
               />
-            </Input.Wrapper>
-          </Box>
-          <Box sx={{ width: "100%" }}>
-            <Textarea
-              placeholder="Descreva o serviço executado"
-              label="Serviço executado"
-              name="serviceExecuted"
-              id="serviceExecuted"
-              value={activeItem.serviceExecuted}
-              autosize
-              minRows={6}
-            />
-          </Box>
-        </SimpleGrid>
-      ) : null}
-    </>
+            </Grid.Col>
+          </Grid>
+        </Tabs.Panel>
+      ))}
+    </Tabs>
+    // <>
+    //   <Box sx={{ width: "30%" }}>{items}</Box>
+    //   {active ? (
+    //     <SimpleGrid
+    //       cols={2}
+    //       sx={{
+    //         width: "100%",
+    //       }}
+    //     >
+    //       <Box sx={{ padding: "1rem" }}>
+    //         <Group spacing="xs" mb={10}>
+    //           <Text size="sm" component="label">
+    //             Data da Visita:
+    //           </Text>
+    //           <Text size="sm">
+    //             {" "}
+    //             {new Date(activeItem.dateVisit).toLocaleDateString("pt-BR")}
+    //           </Text>
+    //         </Group>
+    //         <Input.Wrapper label="Historico de Peças">
+    //           <Checkbox
+    //             label="O cliente ficou com as peças usadas?"
+    //             mt={5}
+    //             id="pieceSold"
+    //             checked={activeItem.clientePiece}
+    //             name="pieceSold"
+    //           />
+    //         </Input.Wrapper>
+    //       </Box>
+    //       <Box sx={{ width: "100%", padding: "1rem" }}>
+    //         <Textarea
+    //           placeholder="Descreva o serviço executado"
+    //           label="Serviço executado"
+    //           name="serviceExecuted"
+    //           id="serviceExecuted"
+    //           value={activeItem.serviceExecuted}
+    //           autosize
+    //           disabled
+    //           minRows={6}
+    //         />
+    //       </Box>
+    //     </SimpleGrid>
+    //   ) : null}
+    // </>
   );
 }

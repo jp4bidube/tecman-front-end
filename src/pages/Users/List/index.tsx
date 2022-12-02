@@ -141,9 +141,10 @@ export const UsersList = () => {
             ) : (
               <Pagination
                 page={store.usersFilter.page}
-                total={data?.total ? Math.ceil(data.total / 5) : 1}
+                total={data?.total ? Math.ceil(data.total / 10) : 1}
                 onChange={(page) => store.setUsersPage(page)}
                 radius="xl"
+                size="sm"
               />
             )}
           </Stack>

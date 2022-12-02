@@ -3,11 +3,12 @@ import { ServiceOrdersCreate } from "@/types/serviceOrders";
 import { showNotification } from "@mantine/notifications";
 import { AxiosResponse } from "axios";
 import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { serviceOrdersService } from "..";
 
 export const useCreateOS = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return useMutation(
     async (payload: ServiceOrdersCreate) =>
@@ -20,7 +21,12 @@ export const useCreateOS = () => {
           color: "teal",
           autoClose: true,
         });
-        navigate("/service-orders");
+
+        if (location.pathname.includes("clients")) {
+          return navigate(-1);
+        }
+
+        return navigate("/service-orders");
       },
       onError: ({ data }: AxiosResponse<ResponseError>) => {
         showNotification({

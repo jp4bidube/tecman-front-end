@@ -15,6 +15,7 @@ export const Clients: React.FC = () => {
         name: "Clientes",
         path: "/clients",
         icon: <TbUsers size={25} />,
+        subhead: [],
       }),
     []
   );

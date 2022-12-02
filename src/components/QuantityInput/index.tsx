@@ -6,7 +6,7 @@ import {
   Text,
 } from "@mantine/core";
 import { setMonth } from "date-fns";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { TbMinus, TbPlus } from "react-icons/tb";
 
 const useStyles = createStyles((theme) => ({

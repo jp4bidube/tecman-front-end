@@ -7,9 +7,8 @@ export const useFetchOSByClientId = (id: number, filters: Filter) => {
     ["fetchOSByClientId", filters],
     () => serviceOrdersService.fetchServiceOrderByClientId(id, filters),
     {
-      staleTime: 0,
-      cacheTime: 0,
-      enabled: !!id,
+      staleTime: 1000,
+      cacheTime: 1000,
     }
   );
 };

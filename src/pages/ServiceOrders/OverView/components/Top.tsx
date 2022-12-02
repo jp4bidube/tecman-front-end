@@ -18,7 +18,7 @@ import {
   TbEdit,
   TbPrinter,
 } from "react-icons/tb";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { OSReport } from "./OSReport";
 import { useReactToPrint } from "react-to-print";
 
@@ -45,6 +45,7 @@ const useStyles = createStyles((theme) => ({
 
 export const Top = ({ data, handleFinishOS }: TopProps) => {
   const navigate = useNavigate();
+  const params = useParams();
   const { classes, theme } = useStyles();
   const menuIconColor =
     theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 5 : 6];
@@ -116,7 +117,13 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
 
                   <Menu.Item
                     icon={<TbEdit size={16} color={menuIconColor} />}
-                    onClick={() => navigate(`/service-orders/${data?.id}/edit`)}
+                    onClick={() =>
+                      navigate(
+                        params.osId
+                          ? `/clients/${params.id}/edit/service-orders/${params.osId}/edit`
+                          : `/service-orders/${data?.id}/edit`
+                      )
+                    }
                   >
                     Editar
                   </Menu.Item>

@@ -15,6 +15,7 @@ export const ServiceOrders: React.FC = () => {
         name: "Ordens de Serviço",
         path: "/service-orders",
         icon: <TbAd2 size={25} />,
+        subhead: [],
       }),
     []
   );

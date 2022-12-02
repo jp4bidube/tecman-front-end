@@ -18,7 +18,9 @@ export const UserEdit = () => {
         name: "Usuários",
         path: "/users",
         icon: <TbUserCircle size={25} />,
-        subhead: `Edição - ${data?.name}`,
+        subhead: [
+          { name: `Edição - ${data?.name}`, path: `/users/${params.id}/edit` },
+        ],
       }),
     [data]
   );

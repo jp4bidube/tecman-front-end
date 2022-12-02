@@ -3,18 +3,18 @@ import { StateCreator } from "zustand";
 
 export type ClientsSlice = {
   clientsFilter: ClientsFilter;
-  setPage: (page: number) => void;
+  setClientsPage: (page: number) => void;
   setClientsFilter: (filter: ClientsFilter) => void;
 };
 
 export const createClientsSlice: StateCreator<ClientsSlice> = (set) => ({
   clientsFilter: {
     page: 1,
-    order: "desc",
+    order: "asc",
     search: "",
     sort: "name",
   },
-  setPage(page) {
+  setClientsPage(page) {
     set((state) => ({
       ...state,
       clientsFilter: { ...state.clientsFilter, page: page },

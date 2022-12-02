@@ -1,13 +1,6 @@
 import { useFetchOSById } from "@/services/features/serviceOrders/hooks/useFetchOSById";
 import useStore from "@/store";
-import {
-  Paper,
-  Tabs,
-  Text,
-  ThemeIcon,
-  Title,
-  useMantineTheme,
-} from "@mantine/core";
+import { Paper, Tabs, Text, ThemeIcon, useMantineTheme } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { TbAd2, TbFileText } from "react-icons/tb";
 import { useParams } from "react-router-dom";
@@ -21,8 +14,8 @@ export const ServiceOrdersOverView = () => {
   const [activeTab, setActiveTab] = useState<string | null>("service-orders");
   const [opened, setOpened] = useState<boolean>(false);
 
-  const { id } = useParams();
-  const { data, isFetching } = useFetchOSById(id || "");
+  const { id, osId } = useParams();
+  const { data, isFetching } = useFetchOSById(osId || id || "");
 
   useEffect(
     () =>
@@ -30,14 +23,19 @@ export const ServiceOrdersOverView = () => {
         name: "Ordens de Serviço",
         path: "/service-orders",
         icon: <TbAd2 size={25} />,
-        subhead: `Visão Geral`,
+        subhead: [
+          {
+            name: `Visão Geral - ${osId || id}`,
+            path: `/service-orders/${osId || id}/over-view`,
+          },
+        ],
       }),
     []
   );
 
   return (
     <Paper withBorder p=".3rem 1.5rem 1.5rem">
-      <Tabs value={activeTab} onTabChange={setActiveTab}>
+      <Tabs value={activeTab} onTabChange={setActiveTab} variant="outline">
         <Tabs.List>
           <Tabs.Tab
             value="service-orders"
@@ -52,14 +50,13 @@ export const ServiceOrdersOverView = () => {
             }
           >
             {activeTab === "service-orders" ? (
-              <Title
-                order={5}
+              <Text
                 color={theme.colorScheme === "dark" ? "tecman.3" : "tecman.6"}
               >
-                Ordens de Serviço
-              </Title>
+                Ordem de Serviço
+              </Text>
             ) : (
-              <Text>Ordens de Serviço</Text>
+              <Text>Ordem de Serviço</Text>
             )}
           </Tabs.Tab>
           {!isFetching && data!.orderServiceStatus.id === 2 ? (
@@ -76,14 +73,13 @@ export const ServiceOrdersOverView = () => {
               }
             >
               {activeTab === "guarantees" ? (
-                <Title
-                  order={5}
+                <Text
                   color={theme.colorScheme === "dark" ? "tecman.3" : "tecman.6"}
                 >
-                  Garantias
-                </Title>
+                  Garantia
+                </Text>
               ) : (
-                <Text>Garantias</Text>
+                <Text>Garantia</Text>
               )}
             </Tabs.Tab>
           ) : null}

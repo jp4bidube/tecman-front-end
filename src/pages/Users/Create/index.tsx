@@ -12,7 +12,7 @@ export const UserCreate = () => {
         name: "Usuários",
         path: "/users",
         icon: <TbUserCircle size={25} />,
-        subhead: `Cadastro`,
+        subhead: [{ name: "Cadastro", path: "/users/create" }],
       }),
     []
   );

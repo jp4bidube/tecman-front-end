@@ -12,7 +12,7 @@ export const TechnicianCreate = () => {
         name: "Técnicos",
         path: "/technicians/create",
         icon: <IoBuildOutline size={25} />,
-        subhead: `Cadastro`,
+        subhead: [{ name: "Cadastro", path: "/technicians/edit" }],
       }),
     []
   );

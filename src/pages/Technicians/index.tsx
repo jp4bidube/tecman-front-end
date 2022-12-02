@@ -16,6 +16,7 @@ export const Technicians: React.FC = () => {
         name: "Técnicos",
         path: "/technicians",
         icon: <IoBuildOutline size={25} />,
+        subhead: [],
       }),
     []
   );

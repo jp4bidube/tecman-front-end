@@ -106,6 +106,7 @@ export const ServiceOrdersList = () => {
                 total={data?.total ? Math.ceil(data.total / 10) : 1}
                 onChange={(page) => store.setServiceOrdersPage(page)}
                 radius="xl"
+                size="sm"
               />
             )}
           </Stack>

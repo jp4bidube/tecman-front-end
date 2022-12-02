@@ -1,5 +1,6 @@
 import { InputDate } from "@/components/InputDate";
 import { useCreateWarranty } from "@/services/features/serviceOrders/hooks/useCreateWarranty";
+import { useTechniciansSelect } from "@/services/features/technicians/hooks/useTechniciansSelect";
 import { ServiceOrders } from "@/types/serviceOrders";
 import {
   Button,
@@ -9,6 +10,7 @@ import {
   Grid,
   Input,
   Loader,
+  Select,
   Textarea,
   Title,
   useMantineTheme,
@@ -29,7 +31,7 @@ export const CreateVisit = ({
   serviceOrder,
 }: CreateVisitProps) => {
   const theme = useMantineTheme();
-
+  const { data, isFetching } = useTechniciansSelect();
   const mutation = useCreateWarranty();
 
   const initialValues = {
@@ -37,14 +39,17 @@ export const CreateVisit = ({
     dateVisit: new Date(),
     serviceExecuted: "",
     equipmentId: serviceOrder.equipments[0].id || 0,
-    employeeId: serviceOrder.tecnic.id || 0,
+    employeeId: serviceOrder.tecnic.id + "" || "",
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      const res = await mutation.mutateAsync(values);
+      const res = await mutation.mutateAsync({
+        ...values,
+        employeeId: +values.employeeId,
+      });
       if (res.success) {
         setOpened(false);
       }
@@ -60,7 +65,7 @@ export const CreateVisit = ({
       closeOnClickOutside={false}
       onClose={() => {}}
       position="right"
-      title={<Title order={3}>Criar visita de garantia</Title>}
+      title={<Title order={4}>Criar visita de garantia</Title>}
       padding="xl"
       size="30%"
       overlayColor={
@@ -91,6 +96,20 @@ export const CreateVisit = ({
                 onChange={action.handleChange}
               />
             </Input.Wrapper>
+          </Grid.Col>
+          <Grid.Col xs={12}>
+            <Select
+              label="Técnico Responsável"
+              placeholder="Selecione um técnico"
+              value={values?.employeeId}
+              error={touched?.employeeId && errors?.employeeId}
+              onChange={(value) => formik.setFieldValue("employeeId", value)}
+              rightSection={isFetching && <Loader size="xs" />}
+              data={data ? data : []}
+              withAsterisk
+              searchable
+              clearable
+            />
           </Grid.Col>
           <Grid.Col xs={12}>
             <Textarea
