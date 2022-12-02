@@ -62,6 +62,7 @@ export function NotFound() {
         name: "Página não encontrada",
         path: "/",
         icon: <TbAlertOctagon size={25} />,
+        subhead: [],
       }),
     []
   );
