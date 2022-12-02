@@ -19,7 +19,7 @@ import {
   Title,
 } from "@mantine/core";
 import cep from "cep-promise";
-import "dayjs/locale/pt-BR";
+
 import { getIn, useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { TbDeviceFloppy, TbUpload } from "react-icons/tb";

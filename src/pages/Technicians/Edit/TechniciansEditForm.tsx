@@ -18,7 +18,7 @@ import {
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import cep from "cep-promise";
-import "dayjs/locale/pt-BR";
+
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { TbDeviceFloppy, TbUpload } from "react-icons/tb";

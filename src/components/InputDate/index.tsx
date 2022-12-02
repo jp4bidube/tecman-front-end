@@ -1,6 +1,6 @@
 import { DatePicker, DatePickerBaseSharedProps } from "@mantine/dates";
 import dayjs from "dayjs";
-import "dayjs/locale/pt-BR";
+
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { TbCalendar } from "react-icons/tb";
 dayjs.extend(customParseFormat);
