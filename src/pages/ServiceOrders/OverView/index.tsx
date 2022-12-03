@@ -59,7 +59,10 @@ export const ServiceOrdersOverView = () => {
               <Text>Ordem de Serviço</Text>
             )}
           </Tabs.Tab>
-          {!isFetching && data!.orderServiceStatus.id === 2 ? (
+          {!isFetching &&
+          data!.orderServiceStatus.id === 2 &&
+          data?.equipments &&
+          data?.equipments[0].warrantyPeriod ? (
             <Tabs.Tab
               value="guarantees"
               icon={

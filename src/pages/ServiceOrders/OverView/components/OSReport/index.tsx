@@ -63,24 +63,24 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
             <div className="grid-container">
               <div className="grid-item os-number-cell border">
                 <span className="number-os-title">NÚMERO OS: </span>
-                <span className="number-os blue-info">{data.id}</span>
+                <span className="number-os blue-info">{data?.id}</span>
               </div>
               <div className="grid-item os-date-cell borderLeftNone">
                 <span className="date-os-title">DATA: </span>
                 <span className="date-os blue-info">
-                  {new Date(data.dateCreated).toLocaleDateString("pt-BR")}
+                  {new Date(data?.dateCreated).toLocaleDateString("pt-BR")}
                 </span>
               </div>
               <div className="grid-item os-technician-cell borderLeftNone">
                 <span className="technician-os-title">TÉCNICO: </span>
                 <span className="technician-os blue-info">
-                  {data.tecnic.name}
+                  {data?.tecnic.name}
                 </span>
               </div>
               <div className="grid-item os-period-cell borderLeftNone">
                 <span className="period-os-title">PERÍODO: </span>
                 <span className="period-os blue-info">
-                  {data.periodAttendance}
+                  {data?.periodAttendance}
                 </span>
               </div>
             </div>
@@ -96,19 +96,20 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                   <div>
                     <span className="os-client">Cliente: </span>
                     <span className="blue-info" id="clientName">
-                      {data.client.name}
+                      {data?.client.name}
                     </span>
                   </div>
                   <div>
                     <span className="os-address">Endereço: </span>
                     <span className="blue-info" id="clientAddress">
-                      {data.street}, {data.number}, {data.district}, {data.cep}.
+                      {data?.street}, {data?.number}, {data?.district},{" "}
+                      {data?.cep}.
                     </span>
                   </div>
                   <div>
                     <span className="os-phone">Telefone: </span>
                     <span className="blue-info" id="clientPhone">
-                      {data.client.phoneNumber}
+                      {data?.client.phoneNumber}
                     </span>
                   </div>
                 </div>
@@ -121,21 +122,27 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                   <div>
                     <span className="os-equipment">Equipamento: </span>
                     <span className="blue-info" id="equipment">
-                      {data.equipments[0].type}
+                      {data?.equipments !== null
+                        ? data?.equipments[0].type
+                        : ""}
                     </span>{" "}
                     |<span className="os-brand">Marca: </span>
                     <span className="blue-info" id="brand">
-                      {data.equipments[0].brand}
+                      {data?.equipments !== null
+                        ? data?.equipments[0].brand
+                        : ""}
                     </span>{" "}
                     |<span className="os-model">Modelo: </span>
                     <span className="blue-info" id="model">
-                      {data.equipments[0].model}
+                      {data?.equipments !== null
+                        ? data?.equipments[0].model
+                        : ""}
                     </span>
                   </div>
                   <div>
                     <span className="os-defect">Defeito reclamado: </span>
                     <span className="blue-info" id="defect">
-                      {data.defect}
+                      {data?.defect}
                     </span>
                   </div>
                 </div>

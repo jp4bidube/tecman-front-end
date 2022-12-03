@@ -47,7 +47,7 @@ export const OSOverViewForm = ({
               label={<Title order={5}>Informações do Equipamento</Title>}
             />
           </Grid.Col>
-          <Equipaments data={data.equipments} />
+          {data.equipments ?? <Equipaments data={data.equipments} />}
           <Grid.Col xs={12} md={6}>
             <Textarea
               placeholder="Descreva o defeito apresentado"

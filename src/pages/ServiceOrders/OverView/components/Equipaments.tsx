@@ -19,14 +19,14 @@ type EquipmentsProps = {
 
 export const Equipaments = ({ data }: EquipmentsProps) => {
   const equipment =
-    data?.length > 0
+    data && data?.length > 0
       ? data[0]
       : ({
-          brand: "Brastemp",
-          model: "inverter",
-          type: "Geladeira",
+          brand: "",
+          model: "",
+          type: "",
           mounthsWarranty: 0,
-          warrantyPeriod: new Date(),
+          warrantyPeriod: null,
         } as Equipment);
 
   return (
@@ -37,35 +37,40 @@ export const Equipaments = ({ data }: EquipmentsProps) => {
             <ThemeIcon size={24} radius="xl" variant="light">
               <TbBox size={16} />
             </ThemeIcon>
-            <Text size="sm">{equipment.type}</Text>
+            <Text size="sm">{equipment?.type}</Text>
             <Divider orientation="vertical" />
             <Text size="sm" component="label">
-              {equipment.brand}
+              {equipment?.brand}
             </Text>
             <Divider orientation="vertical" />
             <Text size="sm" component="label">
-              {equipment.model}
+              {equipment?.model}
             </Text>
           </Group>
-          {equipment.warrantyPeriod && (
-            <>
-              <Group>
-                <Text size="sm">Garantia</Text>
-                <Badge>
-                  {equipment.mounthsWarranty && equipment?.mounthsWarranty > 1
-                    ? `${equipment.mounthsWarranty} Meses`
-                    : `${equipment.mounthsWarranty} Mês`}
-                </Badge>
-              </Group>
-              <Group>
-                <Text size="sm">Término:</Text>
-                <Text size="sm" component="label">
-                  {new Date(equipment.warrantyPeriod!).toLocaleDateString(
+          <Group>
+            <Text size="sm">Garantia</Text>
+            <Badge color={equipment?.mounthsWarranty ? "tecman" : "orange"}>
+              {equipment?.mounthsWarranty ? (
+                equipment?.mounthsWarranty > 1 ? (
+                  `${equipment?.mounthsWarranty} Meses`
+                ) : (
+                  `${equipment?.mounthsWarranty} Mês`
+                )
+              ) : (
+                <Text size="xs">sem garantia</Text>
+              )}
+            </Badge>
+          </Group>
+          {equipment?.warrantyPeriod && (
+            <Group>
+              <Text size="sm">Término:</Text>
+              <Text size="sm" component="label">
+                {equipment?.warrantyPeriod &&
+                  new Date(equipment?.warrantyPeriod!).toLocaleDateString(
                     "pt-BR"
                   )}
-                </Text>
-              </Group>
-            </>
+              </Text>
+            </Group>
           )}
         </Group>
       </Grid.Col>

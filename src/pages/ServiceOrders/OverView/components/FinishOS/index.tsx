@@ -3,7 +3,11 @@ import { QuantityInput } from "@/components/QuantityInput";
 import { equipmentsList } from "@/pages/ServiceOrders/constants/equipaments";
 import { useFinishOS } from "@/services/features/serviceOrders/hooks/useFinishOS";
 import { useTechniciansSelect } from "@/services/features/technicians/hooks/useTechniciansSelect";
-import { ServiceOrderFinish, ServiceOrders } from "@/types/serviceOrders";
+import {
+  Device,
+  ServiceOrderFinish,
+  ServiceOrders,
+} from "@/types/serviceOrders";
 import {
   Button,
   Checkbox,
@@ -48,7 +52,10 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
       serviceExecuted: os.serviceExecuted ? os.serviceExecuted : "",
       datePayment: os.datePayment ? new Date(os.datePayment) : null,
       hasWarranty: "" || undefined,
-      device: os.equipments[0] || null,
+      device:
+        os?.equipments !== null
+          ? os?.equipments[0]
+          : ({ brand: "", model: "", type: "" } as Device),
     },
     validationSchema,
     onSubmit: async (values) => {
