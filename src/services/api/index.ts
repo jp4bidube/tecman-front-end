@@ -2,11 +2,11 @@ import axios from "axios";
 import { authService } from "../features/auth";
 
 export const api = axios.create({
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: "https://tecman-back-end-production.up.railway.app/api/v1", //import.meta.env.BASE_URL,
 });
 
 export const uninterceptedAxiosInstance = axios.create({
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: "https://tecman-back-end-production.up.railway.app/api/v1", //import.meta.env.BASE_URL,
 });
 
 uninterceptedAxiosInstance.interceptors.request.use(
