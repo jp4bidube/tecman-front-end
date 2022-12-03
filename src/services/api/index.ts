@@ -2,11 +2,11 @@ import axios from "axios";
 import { authService } from "../features/auth";
 
 export const api = axios.create({
-  baseURL: "http://localhost:5000/api/v1",
+  baseURL: import.meta.env.BASE_URL,
 });
 
 export const uninterceptedAxiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api/v1",
+  baseURL: import.meta.env.BASE_URL,
 });
 
 uninterceptedAxiosInstance.interceptors.request.use(
