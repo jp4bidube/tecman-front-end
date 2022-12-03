@@ -65,7 +65,9 @@ export const ClientsCards = ({ clients }: ClientsCardsProps) => {
               <Text weight={500} size="sm">
                 Endereço
               </Text>
-              <Text size="sm" color="dimmed"></Text>
+              <Text size="sm" color="dimmed">
+                {client.street}
+              </Text>
             </Group>
             <Group position="apart" mt="md" mb="xs">
               <Text weight={500} size="sm">

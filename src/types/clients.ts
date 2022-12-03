@@ -13,7 +13,7 @@ export type ClientList = {
   cpf: string;
   phoneNumber: string;
   email: string;
-  district: string;
+  street: string;
 };
 
 export type ClientCreatePayload = {

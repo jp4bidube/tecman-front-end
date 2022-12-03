@@ -70,7 +70,7 @@ export const ClientsTable = ({ clients }: ClientsTableProps) => {
               </td>
               <td>
                 <Text size="xs" tt="capitalize">
-                  {client.district}
+                  {client.street}
                 </Text>
               </td>
               <td>

@@ -113,7 +113,7 @@ export const TechniciansEditForm = ({ user }: TechniciansEditProps) => {
                   <Button
                     radius="xl"
                     variant="outline"
-                    onClick={() => navigate("/users")}
+                    onClick={() => navigate(-1)}
                   >
                     Cancelar
                   </Button>
