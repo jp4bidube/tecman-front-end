@@ -28,15 +28,10 @@ const Guarantees = ({ os }: GuaranteesProps) => {
   const hasPermission = usePermission();
 
   const allowedCreateVisit = () => {
-    // if (hasPermission) {
-    //   return !hasPermission;
-    // }
-    if (
-      isBefore(
-        new Date("28/03/2023"),
-        new Date(os.equipments[0].warrantyPeriod!)
-      )
-    ) {
+    if (hasPermission) {
+      return !hasPermission;
+    }
+    if (isBefore(new Date(), new Date(os.equipments[0].warrantyPeriod!))) {
       return false;
     }
     return true;
@@ -63,7 +58,7 @@ const Guarantees = ({ os }: GuaranteesProps) => {
           />
         </Group>
         <Tooltip
-          label="Você não tem permissão para alterar a garantia"
+          label="Usuário sem permissão para alterar a garantia"
           withArrow
           color="red.4"
           disabled={!allowedCreateVisit()}
