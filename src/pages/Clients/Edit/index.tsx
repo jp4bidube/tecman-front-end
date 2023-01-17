@@ -6,7 +6,6 @@ import { TbAd2, TbUsers } from "react-icons/tb";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { ClientEditForm } from "./ClientEditForm";
 import { ClientEditFormSkeleton } from "./ClientEditFormSkeleton";
-import { ServiceOrderTab } from "./components/ServiceOrderTab";
 
 export const ClientEdit = () => {
   const theme = useMantineTheme();
@@ -112,7 +111,7 @@ export const ClientEdit = () => {
     <>
       {location.pathname.includes("service-orders/create") ||
       location.pathname.includes(`service-orders/${params.osId}`) ? (
-        <Outlet context={data} />
+        <Outlet />
       ) : (
         <Paper withBorder sx={{ padding: "1.5rem" }}>
           <Tabs value={activeTab} onTabChange={setActiveTab} variant="outline">
@@ -173,7 +172,7 @@ export const ClientEdit = () => {
               {isLoading || isFetching ? (
                 <ClientEditFormSkeleton />
               ) : (
-                <ClientEditForm client={data!} />
+                <ClientEditForm />
               )}
             </Tabs.Panel>
 

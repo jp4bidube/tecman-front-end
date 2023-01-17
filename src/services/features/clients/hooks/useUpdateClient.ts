@@ -23,7 +23,7 @@ export const useUpdateClient = () => {
         queryClient.invalidateQueries("fetchClients");
         showNotification({
           title: "Sucesso",
-          message: "Funcionario criado com sucesso",
+          message: "Cliente atualizado com sucesso",
           color: "teal",
           autoClose: true,
         });

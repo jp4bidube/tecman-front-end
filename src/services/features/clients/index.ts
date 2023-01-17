@@ -10,14 +10,10 @@ import { ResponseOK } from "@/types/responseOk";
 import { AxiosResponse } from "axios";
 
 class ClientsService {
-  async postCreateClient(payload: ClientCreatePayload): Promise<{
-    message: string;
-    errorCode: number;
-    success: boolean;
-  }> {
+  async postCreateClient(payload: ClientCreatePayload): Promise<ResponseOK> {
     const { data } = await api.post(`/Client`, payload);
 
-    return data.result;
+    return data;
   }
 
   async getClients(

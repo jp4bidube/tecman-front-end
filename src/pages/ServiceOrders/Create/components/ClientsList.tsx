@@ -1,4 +1,7 @@
 import { PaginationSkeleton } from "@/components/PaginationSkeleton";
+import { ClientsCards } from "@/pages/Clients/components/clientsCards";
+import { ClientsTable } from "@/pages/Clients/components/clientsTable";
+import { ClientsTableSkeleton } from "@/pages/Clients/List/ClientsTableSkeleton";
 import { useFetchClients } from "@/services/features/clients/hooks/useFetchClients";
 import useStore from "@/store";
 import {
@@ -13,12 +16,17 @@ import {
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { TbSearch } from "react-icons/tb";
-import { ClientsCards } from "../components/clientsCards";
-import { ClientsTable } from "../components/clientsTable";
-import { ClientsTableSkeleton } from "./ClientsTableSkeleton";
+import { useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 
-export const ClientsList = () => {
+interface ClientsListProps {
+  setOpened: (value: boolean) => void;
+}
+
+export const ClientsList = ({ setOpened }: ClientsListProps) => {
   const store = useStore();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { page, order, search, sort } = store.clientsFilter;
   const { data, isFetching, isLoading } = useFetchClients({
@@ -50,6 +58,14 @@ export const ClientsList = () => {
       sort: "name",
     });
   }, []);
+
+  const handleSelect = (id: number) => {
+    setOpened(false);
+    queryClient.invalidateQueries("fetchClientById");
+    return navigate(`/clients/${id}/edit/service-orders/create`, {
+      replace: true,
+    });
+  };
 
   return (
     <Paper withBorder sx={{ padding: "1.5rem" }}>
@@ -98,7 +114,11 @@ export const ClientsList = () => {
               {isFetching ? (
                 <ClientsTableSkeleton />
               ) : (
-                <ClientsTable clients={data?.clients} />
+                <ClientsTable
+                  clients={data?.clients}
+                  select={handleSelect}
+                  noEdit={true}
+                />
               )}
             </div>
           </MediaQuery>

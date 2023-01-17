@@ -8,11 +8,14 @@ import {
   Loader,
   Paper,
   Stack,
+  Switch,
+  Text,
   TextInput,
   Title,
 } from "@mantine/core";
 import cep from "cep-promise";
 import { useFormik } from "formik";
+import { useState } from "react";
 import { TbDeviceFloppy } from "react-icons/tb";
 import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +24,9 @@ import { validationSchema } from "./validationSchema";
 export const ClientCreateForm = () => {
   const navigate = useNavigate();
   const mutation = useCreateClient();
+  const [createOs, setCreateOs] = useState(
+    localStorage.getItem("createOs") === "true" ? true : false
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -42,6 +48,10 @@ export const ClientCreateForm = () => {
       mutation.mutate(values);
     },
   });
+  const handleCreateOSChange = (check: boolean) => {
+    localStorage.setItem("createOs", check + "");
+    setCreateOs(check);
+  };
 
   const { values, errors, touched, ...action } = formik;
 
@@ -66,11 +76,23 @@ export const ClientCreateForm = () => {
             <Grid.Col span={12}>
               <Group position="apart">
                 <Title order={4}>Informações básicas</Title>
-                <Group>
+                <Group align="flex-start">
+                  <Switch
+                    labelPosition="left"
+                    checked={createOs}
+                    onChange={(event) =>
+                      handleCreateOSChange(event.currentTarget.checked)
+                    }
+                    label={
+                      <Text component="label" weight={500} size="sm">
+                        Criar OS ao salvar o cliente
+                      </Text>
+                    }
+                  />
                   <Button
                     radius="xl"
                     type="submit"
-                    disabled={mutation.isLoading}
+                    // disabled={mutation.isLoading}
                     leftIcon={<TbDeviceFloppy size={20} />}
                   >
                     {mutation.isLoading ? <Loader size="xs" /> : "Salvar"}
@@ -112,15 +134,20 @@ export const ClientCreateForm = () => {
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
               <InputBase
-                placeholder="CPF"
-                label="CPF"
+                placeholder="Digite o Documento"
+                label="CPF ou CNPJ"
                 name="cpf"
                 id="cpf"
                 component={InputMask}
                 value={values.cpf}
                 onChange={action.handleChange}
                 error={touched.cpf && errors.cpf}
-                mask="999.999.999-99"
+                maskChar=""
+                mask={
+                  values.cpf.length < 15
+                    ? "999.999.999-999"
+                    : "99.999.999/0001-99"
+                }
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>

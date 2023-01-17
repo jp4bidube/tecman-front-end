@@ -1,7 +1,16 @@
 import { Th } from "@/components/Th";
+import { usePermission } from "@/hooks/usePermission";
 import useStore from "@/store";
 import { User } from "@/types/user";
-import { Badge, Flex, Table, Text, ThemeIcon, Tooltip } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Flex,
+  Table,
+  Text,
+  ThemeIcon,
+  Tooltip,
+} from "@mantine/core";
 
 import { TbEdit, TbUser, TbUserOff } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +30,7 @@ export const UsersTable = ({
   const navigate = useNavigate();
   const store = useStore();
   const { sort, order } = store.usersFilter;
+  const hasPermission = usePermission();
 
   const handleSort = (column: string) => {
     store.setUsersFilter({
@@ -120,26 +130,46 @@ export const UsersTable = ({
                     </ThemeIcon>
                   </Tooltip>
                   {user.employeeStatus.status === "Ativo" ? (
-                    <Tooltip label="Desativar usuário" withArrow>
-                      <ThemeIcon
-                        color="red"
-                        variant="light"
-                        sx={{ cursor: "pointer" }}
-                        onClick={() => confirmInactivation(user.id, user)}
-                      >
-                        <TbUserOff />
-                      </ThemeIcon>
+                    <Tooltip
+                      label={
+                        !hasPermission
+                          ? "Usuário não tem permissão para executar esta ação"
+                          : "Desativar usuário"
+                      }
+                      withArrow
+                    >
+                      <span>
+                        <ActionIcon
+                          disabled={!hasPermission}
+                          color="red"
+                          variant="light"
+                          sx={{ cursor: "pointer" }}
+                          onClick={() => confirmInactivation(user.id, user)}
+                        >
+                          <TbUserOff />
+                        </ActionIcon>
+                      </span>
                     </Tooltip>
                   ) : (
-                    <Tooltip label="Ativar usuário" withArrow>
-                      <ThemeIcon
-                        color="teal"
-                        variant="light"
-                        sx={{ cursor: "pointer" }}
-                        onClick={() => confirmInactivation(user.id, user)}
-                      >
-                        <TbUser />
-                      </ThemeIcon>
+                    <Tooltip
+                      label={
+                        !hasPermission
+                          ? "Usuário não tem permissão para executar esta ação"
+                          : "Ativar usuário"
+                      }
+                      withArrow
+                    >
+                      <span>
+                        <ActionIcon
+                          disabled={!hasPermission}
+                          color="teal"
+                          variant="light"
+                          sx={{ cursor: "pointer" }}
+                          onClick={() => confirmInactivation(user.id, user)}
+                        >
+                          <TbUser />
+                        </ActionIcon>
+                      </span>
                     </Tooltip>
                   )}
                 </Flex>

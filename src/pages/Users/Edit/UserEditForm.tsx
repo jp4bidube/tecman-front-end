@@ -1,4 +1,5 @@
 import { InputDate } from "@/components/InputDate";
+import { usePermission } from "@/hooks/usePermission";
 import { useUpdateUser } from "@/services/features/users/hooks/useUpdateUser";
 import { EditUserPayload, User } from "@/types/user";
 import { toBase64 } from "@/utils/fileToB64";
@@ -19,6 +20,7 @@ import {
   Text,
   TextInput,
   Title,
+  Tooltip,
 } from "@mantine/core";
 import cep from "cep-promise";
 import { getIn, useFormik } from "formik";
@@ -36,6 +38,7 @@ type UserEditProps = {
 export const UserEditForm = ({ user }: UserEditProps) => {
   const navigate = useNavigate();
   const mutation = useUpdateUser();
+  const hasPermission = usePermission();
 
   const initialValue = {
     ...user,
@@ -130,13 +133,25 @@ export const UserEditForm = ({ user }: UserEditProps) => {
               <Group position="apart">
                 <Title order={4}>Informações básicas</Title>
                 <Group>
-                  <Button
-                    radius="xl"
-                    type="submit"
-                    leftIcon={<TbDeviceFloppy size={20} />}
+                  <Tooltip
+                    label={
+                      !hasPermission
+                        ? "Usuário não tem permissão para executar esta ação"
+                        : "Adicionar Usuário"
+                    }
+                    withArrow
                   >
-                    Atualizar
-                  </Button>
+                    <span>
+                      <Button
+                        radius="xl"
+                        type="submit"
+                        leftIcon={<TbDeviceFloppy size={20} />}
+                        disabled={!hasPermission}
+                      >
+                        Atualizar
+                      </Button>
+                    </span>
+                  </Tooltip>
                   <Button
                     radius="xl"
                     variant="outline"

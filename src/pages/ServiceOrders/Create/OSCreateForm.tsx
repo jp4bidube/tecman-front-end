@@ -1,33 +1,34 @@
 import { useCreateClient } from "@/services/features/clients/hooks/useCreateClient";
 import { useFetchClientByCPF } from "@/services/features/clients/hooks/useFetchClientByCPF";
+import { useFetchClientById } from "@/services/features/clients/hooks/useFetchClientById";
 import { useCreateOS } from "@/services/features/serviceOrders/hooks/useCreateOS";
 import { useTechniciansSelect } from "@/services/features/technicians/hooks/useTechniciansSelect";
 import { Client } from "@/types/clients";
 import {
-  Box,
   Button,
   Grid,
   Group,
   InputBase,
   Loader,
+  Modal,
   Paper,
   ScrollArea,
   Select,
   Stack,
-  Text,
   Textarea,
   TextInput,
-  ThemeIcon,
   Title,
 } from "@mantine/core";
 import cep from "cep-promise";
 import { FormikProvider, getIn, useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { TbArrowUpRight, TbDeviceFloppy, TbUserCircle } from "react-icons/tb";
+import { TbArrowUpRight, TbDeviceFloppy, TbSearch } from "react-icons/tb";
 import InputMask from "react-input-mask";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ClientAddressList } from "../components/ClientAddressList";
 import { equipmentsList } from "../constants/equipaments";
+import { ClientSection } from "./components/ClientSection";
+import { ClientsList } from "./components/ClientsList";
 import { validationSchema } from "./validationSchema";
 
 type Equipment = {
@@ -39,11 +40,14 @@ type Equipment = {
 export const OSCreateForm = () => {
   const navigate = useNavigate();
   const mutation = useCreateClient();
-  const clienteData = useOutletContext<Client>();
+  const params = useParams();
+
+  const { data: clienteData } = useFetchClientById(params.id || "");
 
   const [openChangeAddress, setOpenChangeAddress] = useState(false);
   const [lockAdress, setLockAdress] = useState(true);
   const [client, setClient] = useState<Client | null>(null);
+  const [opened, setOpened] = useState(false);
 
   const clientMutation = useFetchClientByCPF();
   const createOSMutation = useCreateOS();
@@ -52,17 +56,30 @@ export const OSCreateForm = () => {
   useEffect(() => {
     if (clienteData) {
       setClient(clienteData);
+      formik.setValues({
+        cpf: clienteData?.cpf || "",
+        street: clienteData?.address[0]?.address?.street || "",
+        cep: clienteData?.address[0]?.address?.cep || "",
+        number: clienteData?.address[0]?.address?.number || "",
+        district: clienteData?.address[0]?.address?.district || "",
+        complement: clienteData?.address[0]?.address?.complement || "",
+        tecnicId: "",
+        periodAttendance: "",
+        defect: "",
+        observacao: "",
+        devices: [{ type: "", brand: "", model: "" }] as Array<Equipment>,
+      });
     }
   }, [clienteData]);
 
   const formik = useFormik({
     initialValues: {
-      cpf: clienteData?.cpf || "",
-      street: clienteData?.address[0]?.address?.street || "",
-      cep: clienteData?.address[0]?.address?.cep || "",
-      number: clienteData?.address[0]?.address?.number || "",
-      district: clienteData?.address[0]?.address?.district || "",
-      complement: clienteData?.address[0]?.address?.complement || "",
+      cpf: "",
+      street: "",
+      cep: "",
+      number: "",
+      district: "",
+      complement: "",
       tecnicId: "",
       periodAttendance: "",
       defect: "",
@@ -121,8 +138,6 @@ export const OSCreateForm = () => {
     return setLockAdress(true);
   };
 
-  console.log(formik.errors);
-
   return (
     <Stack style={{ maxHeight: "90vh", overflow: "hidden" }}>
       <FormikProvider value={formik}>
@@ -140,6 +155,18 @@ export const OSCreateForm = () => {
                 <Group position="apart">
                   <Title order={4}>Informações do Cliente</Title>
                   <Group>
+                    <Button
+                      radius="xl"
+                      leftIcon={<TbSearch size={20} />}
+                      disabled={clientMutation.isLoading}
+                      onClick={() => setOpened(true)}
+                    >
+                      {mutation.isLoading ? (
+                        <Loader size="xs" />
+                      ) : (
+                        "Buscar cliente"
+                      )}
+                    </Button>
                     <Button
                       radius="xl"
                       type="submit"
@@ -166,7 +193,7 @@ export const OSCreateForm = () => {
               scrollHideDelay={150}
             >
               <Grid>
-                <Grid.Col xs={12} md={4}>
+                {/* <Grid.Col xs={12} md={4}>
                   <InputBase
                     placeholder="CPF"
                     label="CPF do Cliente"
@@ -180,45 +207,20 @@ export const OSCreateForm = () => {
                     icon={<TbUserCircle size={14} />}
                     mask="999.999.999-99"
                   />
-                </Grid.Col>
-                <Grid.Col xs={12} md={8}>
+                </Grid.Col> */}
+                {/* <Grid.Col xs={12} md={8}>
                   <Box mt="1.5rem">
-                    <Button
-                      radius="xl"
-                      disabled={clientMutation.isLoading}
-                      onClick={handleFetchClient}
-                    >
-                      {mutation.isLoading ? (
-                        <Loader size="xs" />
-                      ) : (
-                        "Buscar cliente"
-                      )}
-                    </Button>
+                    
                   </Box>
-                </Grid.Col>
+                </Grid.Col> */}
                 {client && (
                   <Grid.Col span={12}>
-                    <Group>
-                      <ThemeIcon variant="light">
-                        <TbUserCircle size={14} />
-                      </ThemeIcon>
-                      <Title order={5}>Cliente</Title>
-                      <Text size="sm">
-                        {client?.name}{" "}
-                        <Text
-                          sx={(theme) => ({
-                            color:
-                              theme.colorScheme === "dark"
-                                ? theme.colors.gray[4]
-                                : theme.colors.gray[7],
-                          })}
-                          component="span"
-                          weight="bold"
-                        >
-                          - {client?.phoneNumber}
-                        </Text>
-                      </Text>
-                    </Group>
+                    <ClientSection
+                      name={client.name}
+                      email={client.email}
+                      phone={client.phoneNumber}
+                      document={client.cpf}
+                    />
                   </Grid.Col>
                 )}
 
@@ -449,6 +451,16 @@ export const OSCreateForm = () => {
         adresses={client?.address}
         onChange={handleChangeAdress}
       />
+
+      <Modal
+        centered
+        size={900}
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Buscar Client"
+      >
+        <ClientsList setOpened={setOpened} />
+      </Modal>
     </Stack>
   );
 };

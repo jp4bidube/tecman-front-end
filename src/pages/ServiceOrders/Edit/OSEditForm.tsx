@@ -1,6 +1,7 @@
-import { useEffect } from "react";
 import { InputDate } from "@/components/InputDate";
 import { QuantityInput } from "@/components/QuantityInput";
+import { usePermission } from "@/hooks/usePermission";
+import { useEditOS } from "@/services/features/serviceOrders/hooks/useEditOS";
 import { useTechniciansSelect } from "@/services/features/technicians/hooks/useTechniciansSelect";
 import { ServiceOrders, ServiceOrdersEdit } from "@/types/serviceOrders";
 import {
@@ -23,16 +24,15 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { DatePicker, TimeInput } from "@mantine/dates";
+import cep from "cep-promise";
+import { setHours, setMinutes, setMonth } from "date-fns";
 import { getIn, useFormik } from "formik";
+import { useEffect } from "react";
 import { TbCurrencyDollar, TbDeviceFloppy } from "react-icons/tb";
 import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
-import cep from "cep-promise";
 import { equipmentsList } from "../constants/equipaments";
-import { setMonth, setHours, setMinutes } from "date-fns";
 import { validationSchema } from "./validationSchema";
-import { useEditOS } from "@/services/features/serviceOrders/hooks/useEditOS";
-import { usePermission } from "@/hooks/usePermission";
 
 type OSEditFormProps = {
   os: ServiceOrders;
@@ -499,7 +499,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                 <>
                   <Grid.Col xs={12} md={4}>
                     <Tooltip
-                      label="Você não tem permissão para alterar a garantia"
+                      label="Usuário não tem permissão para executar esta ação"
                       withArrow
                       color="red.4"
                       disabled={hasPermission}
@@ -527,7 +527,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                     <>
                       <Grid.Col xs={12} md={4}>
                         <Tooltip
-                          label="Você não tem permissão para alterar a garantia"
+                          label="Usuário não tem permissão para executar esta ação"
                           withArrow
                           color="red.4"
                           disabled={hasPermission}

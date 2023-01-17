@@ -3,14 +3,20 @@ import useStore from "@/store";
 import { ClientList } from "@/types/clients";
 import { Group, Table, Text, ThemeIcon, Tooltip } from "@mantine/core";
 
-import { TbChevronDown, TbChevronUp, TbEdit } from "react-icons/tb";
+import { TbEdit } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
 type ClientsTableProps = {
   clients: ClientList[] | undefined;
+  select?: (id: number) => void;
+  noEdit?: boolean;
 };
 
-export const ClientsTable = ({ clients }: ClientsTableProps) => {
+export const ClientsTable = ({
+  clients,
+  noEdit = false,
+  select,
+}: ClientsTableProps) => {
   const navigate = useNavigate();
   const store = useStore();
   const { sort, order } = store.clientsFilter;
@@ -24,7 +30,11 @@ export const ClientsTable = ({ clients }: ClientsTableProps) => {
   };
 
   return (
-    <Table verticalSpacing="sm" striped>
+    <Table
+      verticalSpacing="sm"
+      striped
+      highlightOnHover={select !== undefined ? true : false}
+    >
       <thead>
         <tr>
           <Th onSort={handleSort} columnName="name" sort={sort} order={order}>
@@ -52,17 +62,27 @@ export const ClientsTable = ({ clients }: ClientsTableProps) => {
               Telefone
             </Text>
           </Th>
-          <th style={{ width: "6rem" }}>
-            <Text size="xs" tt="capitalize">
-              Açoes
-            </Text>
-          </th>
+          {!noEdit ? (
+            <th style={{ width: "6rem" }}>
+              <Text size="xs" tt="capitalize">
+                Açoes
+              </Text>
+            </th>
+          ) : null}
         </tr>
       </thead>
       <tbody>
         {clients &&
           clients.map((client) => (
-            <tr key={client.id}>
+            <tr
+              style={{ cursor: noEdit ? "pointer" : "initial" }}
+              key={client.id}
+              onClick={() => {
+                if (noEdit) {
+                  select!(client.id);
+                }
+              }}
+            >
               <td>
                 <Text size="xs" tt="capitalize">
                   {client.name}
@@ -84,17 +104,19 @@ export const ClientsTable = ({ clients }: ClientsTableProps) => {
                 </Text>
               </td>
               <td>
-                <Group>
-                  <Tooltip label="Editar" withArrow>
-                    <ThemeIcon
-                      variant="light"
-                      sx={{ cursor: "pointer" }}
-                      onClick={() => navigate(`/clients/${client.id}/edit`)}
-                    >
-                      <TbEdit />
-                    </ThemeIcon>
-                  </Tooltip>
-                </Group>
+                {!noEdit ? (
+                  <Group>
+                    <Tooltip label="Editar" withArrow>
+                      <ThemeIcon
+                        variant="light"
+                        sx={{ cursor: "pointer" }}
+                        onClick={() => navigate(`/clients/${client.id}/edit`)}
+                      >
+                        <TbEdit />
+                      </ThemeIcon>
+                    </Tooltip>
+                  </Group>
+                ) : null}
               </td>
             </tr>
           ))}
