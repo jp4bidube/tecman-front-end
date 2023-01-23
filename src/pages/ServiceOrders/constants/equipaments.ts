@@ -30,4 +30,5 @@ export const equipmentsList = [
   },
   { value: "Frigobar", label: "Frigobar" },
   { value: "Lava e seca", label: "Lava e seca" },
+  { value: "Outros", label: "Outros" },
 ];
