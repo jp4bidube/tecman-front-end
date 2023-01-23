@@ -1,18 +1,9 @@
 import { Th } from "@/components/Th";
 import useStore from "@/store";
-import {
-  Badge,
-  Center,
-  Group,
-  Table,
-  Text,
-  ThemeIcon,
-  Tooltip,
-} from "@mantine/core";
+import { Badge, Group, Table, Text, ThemeIcon, Tooltip } from "@mantine/core";
 
 import { ServiceOrders } from "@/types/serviceOrders";
-import { User } from "@/types/user";
-import { TbEdit, TbSearch, TbUser, TbUserOff } from "react-icons/tb";
+import { TbSearch } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { OSTableSkeleton } from "../List/OSTableSkeleton";
 
@@ -58,7 +49,11 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
               Endereço
             </Text>
           </Th>
-
+          <Th onSort={handleSort} columnName="phone" sort={sort} order={order}>
+            <Text size="xs" tt="capitalize">
+              Telefone
+            </Text>
+          </Th>
           <Th onSort={handleSort} columnName="status" sort={sort} order={order}>
             <Text size="xs" tt="capitalize">
               Situação
@@ -104,6 +99,11 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
               <td>
                 <Text size="xs" tt="capitalize">
                   {os.street}, {os.number}
+                </Text>
+              </td>
+              <td>
+                <Text size="xs" tt="capitalize">
+                  {os.client.phoneNumber}
                 </Text>
               </td>
               <td>
