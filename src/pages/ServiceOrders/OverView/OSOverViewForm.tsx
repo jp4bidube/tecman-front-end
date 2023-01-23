@@ -10,6 +10,7 @@ import {
   Title,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
+import { useRef } from "react";
 import { ClientSection } from "./components/ClientSection";
 import { Equipaments } from "./components/Equipaments";
 import { OSInfo } from "./components/OSInfo";
@@ -24,6 +25,8 @@ export const OSOverViewForm = ({
   handleFinishOS,
   data,
 }: OSOverViewFormProps) => {
+  const componentRef = useRef<HTMLDivElement>(null);
+
   return (
     <Stack style={{ maxHeight: "90vh", overflow: "hidden" }}>
       <Top data={data!} handleFinishOS={handleFinishOS} />

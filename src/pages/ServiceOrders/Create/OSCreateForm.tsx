@@ -1,3 +1,4 @@
+import { InputDate } from "@/components/InputDate";
 import { useCreateClient } from "@/services/features/clients/hooks/useCreateClient";
 import { useFetchClientByCPF } from "@/services/features/clients/hooks/useFetchClientByCPF";
 import { useFetchClientById } from "@/services/features/clients/hooks/useFetchClientById";
@@ -356,6 +357,15 @@ export const OSCreateForm = () => {
                     ]}
                     searchable
                     clearable
+                  />
+                </Grid.Col>
+                <Grid.Col xs={12} md={4}>
+                  <InputDate
+                    placeholder="Data de agendamento"
+                    label="Data de agendamento"
+                    name="absence1"
+                    formik={formik}
+                    value={new Date()}
                   />
                 </Grid.Col>
                 <Grid.Col span={12}>

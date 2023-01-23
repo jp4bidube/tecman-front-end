@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { ServiceOrders } from "@/types/serviceOrders";
 import {
   ActionIcon,
@@ -11,6 +10,7 @@ import {
   Menu,
   Title,
 } from "@mantine/core";
+import { useRef } from "react";
 import {
   TbAd2,
   TbArrowLeft,
@@ -19,8 +19,8 @@ import {
   TbPrinter,
 } from "react-icons/tb";
 import { useNavigate, useParams } from "react-router-dom";
-import { OSReport } from "./OSReport";
 import { useReactToPrint } from "react-to-print";
+import { OSReport } from "./OSReport";
 
 type TopProps = {
   data: ServiceOrders;

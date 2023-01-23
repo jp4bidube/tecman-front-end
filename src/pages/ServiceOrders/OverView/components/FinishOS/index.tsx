@@ -25,7 +25,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import { setMonth } from "date-fns";
+import { isBefore, setMonth } from "date-fns";
 import { FormikProvider, getIn, useFormik } from "formik";
 import { useEffect } from "react";
 import { TbCurrencyDollar, TbDeviceFloppy } from "react-icons/tb";
@@ -51,6 +51,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
       pieceSold: os.pieceSold ? os.pieceSold : false,
       serviceExecuted: os.serviceExecuted ? os.serviceExecuted : "",
       datePayment: os.datePayment ? new Date(os.datePayment) : null,
+      dateCreated: os.dateCreated,
       hasWarranty: "" || undefined,
       device:
         os?.equipments !== null
@@ -58,6 +59,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
           : ({ brand: "", model: "", type: "" } as Device),
     },
     validationSchema,
+
     onSubmit: async (values) => {
       let payload = { ...values, equipments: [values.device] } as Omit<
         ServiceOrderFinish,
@@ -74,6 +76,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
   });
   const { values, errors, touched, ...action } = formik;
   const currentWarranty = getIn(values, "hasWarranty");
+  const currentPaymentDate = getIn(values, "datePayment");
 
   useEffect(() => {
     if (currentWarranty === "sim") {
@@ -87,6 +90,21 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
       action.setFieldValue("device.warrantyPeriod", null);
     }
   }, [currentWarranty]);
+
+  useEffect(() => {
+    if (currentPaymentDate === null) {
+      return;
+    }
+    const dateCompare = isBefore(
+      new Date(currentPaymentDate),
+      new Date(os.dateCreated)
+    );
+    if (dateCompare) {
+      action.setFieldTouched("datePayment", true, true);
+      action.setFieldError("datePayment", "erro");
+    }
+  }, [currentPaymentDate]);
+
   return (
     <Drawer
       opened={opened}
@@ -180,6 +198,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                   value={values?.datePayment}
                   name="datePayment"
                   formik={formik}
+                  error={touched?.datePayment && errors?.datePayment}
                 />
               </Grid.Col>
 
