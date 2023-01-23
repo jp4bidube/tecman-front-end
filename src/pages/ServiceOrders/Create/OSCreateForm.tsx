@@ -361,11 +361,12 @@ export const OSCreateForm = () => {
                 </Grid.Col>
                 <Grid.Col xs={12} md={4}>
                   <InputDate
-                    placeholder="Data de agendamento"
-                    label="Data de agendamento"
+                    placeholder="Data do atendimento"
+                    label="Data do atendimento"
                     name="absence1"
                     formik={formik}
                     value={new Date()}
+                    minDate={new Date()}
                   />
                 </Grid.Col>
                 <Grid.Col span={12}>
@@ -392,7 +393,6 @@ export const OSCreateForm = () => {
                 </Grid.Col>
                 <Grid.Col xs={12} md={4}>
                   <TextInput
-                    withAsterisk
                     placeholder="Marca"
                     label="Marca"
                     name={`devices.0.brand`}
@@ -409,7 +409,6 @@ export const OSCreateForm = () => {
                 </Grid.Col>
                 <Grid.Col xs={12} md={4}>
                   <TextInput
-                    withAsterisk
                     placeholder="Modelo"
                     label="Modelo"
                     name={`devices.0.model`}

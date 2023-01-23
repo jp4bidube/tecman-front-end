@@ -342,6 +342,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                       name="datePayment"
                       formik={formik}
                       withAsterisk
+                      minDate={new Date(os.dateCreated)}
                     />
                   </Grid.Col>
                   <Grid.Col xs={12} md={6}>
