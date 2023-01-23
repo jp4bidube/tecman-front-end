@@ -474,7 +474,6 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
               </Grid.Col>
               <Grid.Col xs={6} md={4}>
                 <TextInput
-                  withAsterisk
                   placeholder="Marca"
                   label="Marca"
                   name={"device.brand"}
@@ -486,7 +485,6 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
               </Grid.Col>
               <Grid.Col xs={6} md={4}>
                 <TextInput
-                  withAsterisk
                   placeholder="Modelo"
                   label="Modelo"
                   name={`device.model`}

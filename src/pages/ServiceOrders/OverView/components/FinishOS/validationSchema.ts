@@ -9,7 +9,7 @@ export const validationSchema = yup.object({
   hasWarranty: yup.string().nullable().required("O campo é obrigatório"),
   device: yup.object().shape({
     type: yup.string().nullable().required("O campo é obrigatório"),
-    brand: yup.string().required("O campo é obrigatório"),
-    model: yup.string().required("O campo é obrigatório"),
+    // brand: yup.string().required("O campo é obrigatório"),
+    // model: yup.string().required("O campo é obrigatório"),
   }),
 });

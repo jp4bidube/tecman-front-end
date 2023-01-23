@@ -258,7 +258,6 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
               </Grid.Col>
               <Grid.Col xs={6} md={4}>
                 <TextInput
-                  withAsterisk
                   placeholder="Marca"
                   label="Marca"
                   name={"device.brand"}
@@ -270,7 +269,6 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
               </Grid.Col>
               <Grid.Col xs={6} md={4}>
                 <TextInput
-                  withAsterisk
                   placeholder="Modelo"
                   label="Modelo"
                   name={"device.model"}
