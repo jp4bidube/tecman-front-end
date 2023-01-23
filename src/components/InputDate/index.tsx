@@ -1,11 +1,11 @@
-import { DatePicker, DatePickerBaseSharedProps } from "@mantine/dates";
+import { DatePicker, DatePickerProps } from "@mantine/dates";
 import dayjs from "dayjs";
 
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { TbCalendar } from "react-icons/tb";
 dayjs.extend(customParseFormat);
 
-interface DatePickerProps extends DatePickerBaseSharedProps {
+interface InputDateProps extends DatePickerProps {
   name: string;
   value: Date | null;
   formik: any;
@@ -22,7 +22,8 @@ export const InputDate = ({
   name,
   placeholder,
   value,
-}: DatePickerProps) => {
+  ...rest
+}: InputDateProps) => {
   return (
     <DatePicker
       placeholder={placeholder}
@@ -31,6 +32,7 @@ export const InputDate = ({
       allowFreeInput
       value={value}
       inputFormat="DD/MM/YYYY"
+      {...rest}
       dateParser={(dateString) =>
         dateString !== "" || dateString !== null
           ? new Date(
