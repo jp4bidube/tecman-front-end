@@ -128,13 +128,13 @@ export const ClientAddressItem = ({
     >
       <Card.Section>
         <Flex justify="end" pt={10}>
-          {!data.defaultAddress ? (
+          {!data.defaultAddress && isEditing ? (
             <ActionIcon color="red" onClick={openCofirmDeleteAdressModal}>
               <TbTrash size={17} />
             </ActionIcon>
-          ) : (
+          ) : data.defaultAddress ? (
             <ActionIcon opacity={0} sx={{ cursor: "auto" }}></ActionIcon>
-          )}
+          ) : null}
         </Flex>
       </Card.Section>
       <form

@@ -7,13 +7,13 @@ import {
   Divider,
   Flex,
   Grid,
-  Group,
   Text,
+  Title,
   Tooltip,
 } from "@mantine/core";
 import { isBefore } from "date-fns";
 import { useState } from "react";
-import { TbListSearch, TbPlus } from "react-icons/tb";
+import { TbPlus } from "react-icons/tb";
 import { CreateVisit } from "./CreateVisit";
 import { DeviceInfo } from "./DeviceInfo";
 
@@ -44,19 +44,16 @@ const Guarantees = ({ os }: GuaranteesProps) => {
           <DeviceInfo data={os} />
         </Grid.Col>
       </Grid>
-      <Flex justify="space-between" pb={20} px={20}>
-        <Group mb="md">
-          <TbListSearch size={18} />
-          <Divider
-            size="xs"
-            labelPosition="left"
-            label={
-              <Text component="label" size="sm">
-                Todas as visitas
-              </Text>
-            }
-          />
-        </Group>
+      <Flex justify="start" px={20} align="center" mb={20}>
+        <Divider
+          size="xs"
+          labelPosition="left"
+          label={
+            <Title order={5} mr={10}>
+              Histórico das visitas de garantia
+            </Title>
+          }
+        />
         <Tooltip
           label="Usuário sem permissão para alterar a garantia"
           withArrow

@@ -278,7 +278,7 @@ export const ClientEditForm = () => {
                       onChange={action.handleChange}
                       error={touched.cpf && errors.cpf}
                       maskChar=""
-                      mask="99.999.999/999-99"
+                      mask="99.999.999/9999-99"
                     />
                   </Grid.Col>
                   <Grid.Col xs={12} md={3}>

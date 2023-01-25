@@ -26,3 +26,7 @@ export const maskDate = (value: string) => {
     .replace(/(\d{2})(\d)/, "$1/$2")
     .replace(/(\d{4})(\d)/, "$1");
 };
+
+export const maskCpf = (value: string) => {
+  return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, "$1.$2.$3-$4");
+};
