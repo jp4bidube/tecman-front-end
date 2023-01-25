@@ -81,6 +81,7 @@ export const OSOverViewForm = ({
                   value={data?.serviceExecuted!}
                   variant="filled"
                   readOnly
+                  autosize
                   minRows={2}
                 />
               </Grid.Col>

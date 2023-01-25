@@ -81,7 +81,7 @@ const data: MainLinkProps[] = [
 
 export function MainLinks() {
   const links = data.map((link) => <MainLink {...link} key={link.label} />);
-  const [openAdmin, setOpenAdmin] = useState(false);
+  const [openAdmin, setOpenAdmin] = useState(true);
 
   return (
     <div>

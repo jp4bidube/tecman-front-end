@@ -123,6 +123,10 @@ export interface Client {
   cpf: string;
   phoneNumber: string;
   email: string;
+  documentIdenfication: string;
+  stateRegistration: string;
+  municipalRegistration: string;
+  typePerson: "PF" | "PJ";
 }
 
 export interface Equipment {

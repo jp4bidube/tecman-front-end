@@ -50,7 +50,7 @@ const Guarantees = ({ os }: GuaranteesProps) => {
           labelPosition="left"
           label={
             <Title order={5} mr={10}>
-              Histórico das visitas de garantia
+              Histórico de visitas da garantia
             </Title>
           }
         />

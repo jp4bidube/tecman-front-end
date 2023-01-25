@@ -30,6 +30,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import { absenceValidationSchema } from "../validationSchema";
+import { GaranteeReport } from "./GaranteeReport";
 import { OSReport } from "./OSReport";
 
 type TopProps = {
@@ -61,11 +62,16 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
   const menuIconColor =
     theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 5 : 6];
   const componentRef = useRef<HTMLDivElement>(null);
+  const componentGRef = useRef<HTMLDivElement>(null);
 
   const mutation = useCancelOS();
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
+  });
+
+  const handlePrintGarantee = useReactToPrint({
+    content: () => componentGRef.current,
   });
 
   interface IForm {
@@ -161,6 +167,12 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
                       Imprimir OS
                     </Menu.Item>
                   ) : null}
+                  <Menu.Item
+                    icon={<TbPrinter size={16} color={menuIconColor} />}
+                    onClick={handlePrintGarantee}
+                  >
+                    Imprimir Garantia
+                  </Menu.Item>
                   {data.orderServiceStatus.id === 1 ? (
                     <Menu.Item
                       icon={<MdOutlineCancel size={16} color={menuIconColor} />}
@@ -169,6 +181,7 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
                       Cancelar OS
                     </Menu.Item>
                   ) : null}
+
                   <Menu.Item
                     icon={<TbEdit size={16} color={menuIconColor} />}
                     onClick={() =>
@@ -258,6 +271,9 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
       </Modal>
       <Box sx={{ display: "none" }}>
         <OSReport data={data} componentRef={componentRef} />
+      </Box>
+      <Box sx={{ display: "none" }}>
+        <GaranteeReport data={data} componentRef={componentGRef} />
       </Box>
     </>
   );

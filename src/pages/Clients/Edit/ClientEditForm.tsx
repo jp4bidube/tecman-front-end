@@ -9,7 +9,6 @@ import {
   Group,
   Input,
   InputBase,
-  NumberInput,
   SegmentedControl,
   Stack,
   Text,
@@ -51,14 +50,17 @@ export const ClientEditForm = () => {
     },
     validationSchema,
     onSubmit: (values) => {
+      console.log(values);
       const payload = {
         ...values,
         documentIdenfication:
           values.typePerson !== "PF" ? "" : values.documentIdenfication,
         stateRegistration:
-          values.typePerson !== "PJ" ? "" : values.stateRegistration,
+          values.typePerson !== "PJ" ? "" : values.stateRegistration.toString(),
         municipalRegistration:
-          values.typePerson !== "PJ" ? "" : values.municipalRegistration,
+          values.typePerson !== "PJ"
+            ? ""
+            : values.municipalRegistration.toString(),
       };
       mutation.mutate({ id: client!.id, payload });
     },
@@ -282,13 +284,13 @@ export const ClientEditForm = () => {
                     />
                   </Grid.Col>
                   <Grid.Col xs={12} md={3}>
-                    <NumberInput
-                      hideControls
+                    <TextInput
+                      type="number"
                       placeholder="Digite o Documento"
                       label="Inscrição Estadual"
                       name="stateRegistration"
                       id="stateRegistration"
-                      value={+values.stateRegistration}
+                      value={values.stateRegistration}
                       onChange={action.handleChange}
                       maxLength={50}
                       error={
@@ -297,13 +299,13 @@ export const ClientEditForm = () => {
                     />
                   </Grid.Col>
                   <Grid.Col xs={12} md={3}>
-                    <NumberInput
-                      hideControls
+                    <TextInput
+                      type="number"
                       placeholder="Digite o Documento"
                       label="Inscrição Municipal"
                       name="municipalRegistration"
                       id="municipalRegistration"
-                      value={+values.municipalRegistration}
+                      value={values.municipalRegistration}
                       onChange={action.handleChange}
                       maxLength={50}
                       error={

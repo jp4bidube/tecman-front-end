@@ -8,7 +8,7 @@ interface ListOfVisitsProps {
 
 export function ListOfVisits({ data }: ListOfVisitsProps) {
   return (
-    <Accordion variant="separated" miw="68%">
+    <Accordion variant="separated" miw="100%">
       {data.map((item) => (
         <Accordion.Item value={item.id + ""}>
           <Accordion.Control

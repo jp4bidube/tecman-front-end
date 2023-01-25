@@ -1,14 +1,15 @@
 import paymentQr from "@/assets/payment-qr-code.png";
 import logo from "@/assets/tecman-logo.jpg";
 import { ServiceOrders } from "@/types/serviceOrders";
+import { Text } from "@mantine/core";
 import "./styles.css";
 
-interface OSReportProps {
+interface GaranteeReportProps {
   componentRef: React.RefObject<HTMLDivElement>;
   data: ServiceOrders;
 }
 
-export const OSReport = ({ componentRef, data }: OSReportProps) => {
+export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
   return (
     <div style={{ margin: "1rem" }} ref={componentRef}>
       <header>
@@ -62,33 +63,20 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
       <main>
         <section className="os-infos">
           <div className="os">
-            <h3 id="os-title">ORDEM DE SERVIÇO</h3>
+            <h3 id="os-title">GARANTIA</h3>
           </div>
           <div className="grid-os">
-            <div className="grid-container">
-              <div className="grid-item os-number-cell border borderBottomNone">
-                <span className="number-os-title">NÚMERO OS: </span>
+            <div className="grid-container details">
+              <div className="grid-item os-number-cell  borderRightBottomNone">
+                <span className="number-os-title">GARANTIA DA OS: </span>
                 <span className="number-os blue-info">{data?.id}</span>
               </div>
-              <div className="grid-item os-date-cell borderleftBottomNone">
-                <span className="date-os-title">DATA: </span>
-                <span className="date-os blue-info">
-                  {new Date(data?.dateCreated).toLocaleDateString("pt-BR")}
-                </span>
-              </div>
-              <div className="grid-item os-technician-cell borderleftBottomNone ">
-                <span className="technician-os-title">TÉCNICO: </span>
-                <span className="technician-os blue-info">
-                  {data?.tecnic.name}
-                </span>
-              </div>
-              <div className="grid-item os-period-cell borderleftBottomNone">
-                <span className="period-os-title">PERÍODO: </span>
-                <span className="period-os blue-info">
-                  {data?.periodAttendance}
-                </span>
+              <div className="grid-item os-number-cell  borderBottomNone">
+                <span className="date-os-title">DATA VISITA: </span>
+                <span className="date-os blue-info"></span>
               </div>
             </div>
+
             <div className="grid-container details">
               <div
                 className="grid-item info-client border"
@@ -97,6 +85,7 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                 <span className="info-client-title">
                   INFORMAÇÕES DO CLIENTE
                 </span>
+
                 <div className="data-client">
                   <div>
                     <span className="bold">Cliente: </span>
@@ -131,26 +120,37 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                         ? data?.equipments[0].type
                         : ""}
                     </span>{" "}
-                    |<span className="os-brand bold">Marca: </span>
+                    <span className="os-brand bold">Marca: </span>
                     <span className="blue-info" id="brand">
                       {data?.equipments !== null
                         ? data?.equipments[0].brand
                         : ""}
                     </span>{" "}
-                    |<span className="os-model bold">Modelo: </span>
+                    <span className="os-model bold">Modelo: </span>
                     <span className="blue-info" id="model">
                       {data?.equipments !== null
                         ? data?.equipments[0].model
                         : ""}
                     </span>
                   </div>
-                  <div>
-                    <span className="os-defect bold">Defeito reclamado: </span>
-                    <span className="blue-info" id="defect">
-                      {data?.defect}
+
+                  <Text lineClamp={6} component="span" p={0}>
+                    <span className="os-defect bold">
+                      Serviço em garantia:{" "}
                     </span>
-                  </div>
+                    {data?.serviceExecuted}
+                  </Text>
                 </div>
+              </div>
+            </div>
+            <div className="grid-container details">
+              <div className="grid-item os-number-cell  borderTopRightNone">
+                <span className="number-os-title">GARANTIA EXECUTADA: </span>
+                <span className="number-os blue-info"></span>
+              </div>
+              <div className="grid-item os-number-cell  borderTopNone">
+                <span className="number-os-title">TÉCNICO: </span>
+                <span className="number-os blue-info"></span>
               </div>
             </div>
             <div className="grid-container details">
@@ -175,16 +175,7 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                 <span className="number-os blue-info">{data?.obsAbsence}</span>
               </div>
             </div>
-            <div className="grid-container details">
-              <div className="grid-item os-number-cell  borderTopRightNone">
-                <span className="number-os-title">CUSTO DA VISITA: </span>
-                <span className="number-os blue-info"></span>
-              </div>
-              <div className="grid-item os-number-cell  borderTopNone">
-                <span className="number-os-title">FORMA DE PAGAMENTO: </span>
-                <span className="number-os blue-info">{data?.id}</span>
-              </div>
-            </div>
+
             <div className="grid">
               <div className="grid-item  borderTopNone">
                 <span className="number-os-title">
@@ -193,11 +184,6 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                 <div className="servico-content">
                   <span></span>
                 </div>
-              </div>
-            </div>
-            <div className="grid">
-              <div className="grid-item  borderTopNone">
-                <span className="number-os-title">GARANTIA: </span>
               </div>
             </div>
           </div>
@@ -290,25 +276,15 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
               </div>
             </div>
             <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
+              <div className="grid-item  borderRightNone">
                 <div className="servico-content">
                   <span></span>
                 </div>
               </div>
-              <div className="grid-item especification borderBottomNone">
+              <div className="grid-item especification border">
                 <div className="servico-content">
                   <span></span>
                 </div>
-              </div>
-            </div>
-            <div className="grid-container total">
-              <div className="grid-item signature total-title borderRightNone">
-                <span className="total-value-title bold">
-                  VALOR TOTAL DO ORÇAMENTO:{" "}
-                </span>
-              </div>
-              <div className="grid-item signature total-value border">
-                <span className="total-value bold">R$</span>
               </div>
             </div>
           </div>
@@ -317,16 +293,15 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
       <footer>
         <section className="payment-infos">
           <div className="grid-container">
-            <div className="grid-item signature borderTopRightBottonNone">
+            <div className="grid-item signature borderTopRightNone">
               <span className="left-tech-signature-title">
-                <strong>OBSERVAÇÃO:</strong> APÓS DADO O ORÇAMENTO, O PRAZO PARA
-                RETIRADA DO APARELHO, DO ESTABELECIMENTO, É DE 30 DIAS. SENDO
-                ULTRAPASSADO ESTE PRAZO, O APARELHO SERÁ DESCARTADO.
+                RECEBI A IMPORTÂNCIA DE: ___________ REFERENTE AOS SERVIÇOS
+                PRESTADOS CONFORME ORÇAMENTO ACIMA.
               </span>
             </div>
-            <div className="grid-item signature borderBottomTopNone">
+            <div className="grid-item signature borderTopNone">
               <h6 className="signature-technician-title regular">
-                ASSINATURA DO CLIENTE:
+                ASSINATURA DO TÉCNICO:
               </h6>
               <hr className="hr" />
             </div>
@@ -358,23 +333,12 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
               <hr className="hr" />
             </div>
           </div>
-          <div className="grid-container">
-            <div className="grid-item signature borderTopRightNone">
-              <span className="left-tech-signature-title">
-                RECEBI A IMPORTÂNCIA DE: ___________ REFERENTE AOS SERVIÇOS
-                PRESTADOS CONFORME ORÇAMENTO ACIMA.
-              </span>
-            </div>
-            <div className="grid-item signature borderTopNone">
-              <h6 className="signature-technician-title regular">
-                ASSINATURA DO TÉCNICO:
-              </h6>
-              <hr className="hr" />
-            </div>
-          </div>
         </section>
       </footer>
-      <span className="footer-text">
+      <span
+        className="footer-text"
+        style={{ marginTop: "7rem", position: "absolute", bottom: 0 }}
+      >
         <strong>
           SERVIÇO A SER EXECUTADO / TROCA DE MOTOR, CONGELADOR OU CARGA DE GÁS
         </strong>
@@ -382,6 +346,12 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
         ocorrer com o congelador, como também, na troca do congelador a empresa
         não se responsabiliza pelo compressor. | Na carga de gás a garantia se
         resume unicamente a vazamentos externos.
+        <span style={{ marginTop: "1rem", fontSize: "14px" }}>
+          <strong>
+            Os aparelhos, depois de consertados, ficarão na loja por até 90
+            dias, sendo descartados após este período.
+          </strong>
+        </span>
       </span>
     </div>
   );

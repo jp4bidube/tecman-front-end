@@ -9,7 +9,6 @@ import {
   Input,
   InputBase,
   Loader,
-  NumberInput,
   Paper,
   SegmentedControl,
   Stack,
@@ -55,7 +54,11 @@ export const ClientCreateForm = () => {
     } as ClientCreatePayload,
     validationSchema,
     onSubmit: (values) => {
-      mutation.mutate(values);
+      mutation.mutate({
+        ...values,
+        stateRegistration: values.stateRegistration.toString(),
+        municipalRegistration: values.municipalRegistration.toString(),
+      });
     },
   });
   const handleCreateOSChange = (check: boolean) => {
@@ -265,8 +268,8 @@ export const ClientCreateForm = () => {
                   />
                 </Grid.Col>
                 <Grid.Col xs={12} md={3}>
-                  <NumberInput
-                    hideControls
+                  <TextInput
+                    type="number"
                     placeholder="Digite o Documento"
                     label="Inscrição Estadual"
                     name="stateRegistration"
@@ -280,8 +283,8 @@ export const ClientCreateForm = () => {
                   />
                 </Grid.Col>
                 <Grid.Col xs={12} md={3}>
-                  <NumberInput
-                    hideControls
+                  <TextInput
+                    type="number"
                     placeholder="Digite o Documento"
                     label="Inscrição Municipal"
                     name="municipalRegistration"

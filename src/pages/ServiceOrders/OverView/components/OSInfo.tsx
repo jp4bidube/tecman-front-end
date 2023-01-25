@@ -54,12 +54,25 @@ export const OSInfo = ({ data }: OSInfoProps) => {
           </Group>
         )}
       </Group>
-      <Group mt={15} spacing="xs">
-        <Text size="sm" weight={500} component="label">
-          Técnico:
-        </Text>
-        <Text size="sm">{data?.tecnic?.name}</Text>
+      <Group mt={15} spacing="xs" position="apart">
+        <Group>
+          <Text size="sm" weight={500} component="label">
+            Técnico:
+          </Text>
+          <Text size="sm">{data?.tecnic?.name}</Text>
+        </Group>
+        <Group>
+          <Text size="sm" weight={500} component="label">
+            Data do Atendimento:
+          </Text>
+          <Text size="sm">
+            {new Date(data?.scheduledAttendance || "").toLocaleDateString(
+              "pt-BR"
+            )}
+          </Text>
+        </Group>
       </Group>
+
       <Group mt={5} position="apart">
         <Group>
           <Text size="sm" weight={500} component="label">
@@ -77,16 +90,6 @@ export const OSInfo = ({ data }: OSInfoProps) => {
             </Text>
           </Group>
         ) : null}
-        <Group>
-          <Text size="sm" weight={500} component="label">
-            Data do Atendimento:
-          </Text>
-          <Text size="sm">
-            {new Date(data?.scheduledAttendance || "").toLocaleDateString(
-              "pt-BR"
-            )}
-          </Text>
-        </Group>
       </Group>
     </Card>
   );
