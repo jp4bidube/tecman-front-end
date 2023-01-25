@@ -69,6 +69,7 @@ export const OSCreateForm = () => {
         defect: "",
         observacao: "",
         devices: [{ type: "", brand: "", model: "" }] as Array<Equipment>,
+        scheduledAttendance: new Date(),
       });
     }
   }, [clienteData]);
@@ -86,6 +87,7 @@ export const OSCreateForm = () => {
       defect: "",
       observacao: "",
       devices: [{ type: "", brand: "", model: "" }] as Array<Equipment>,
+      scheduledAttendance: new Date(),
     },
     validationSchema,
     onSubmit: (values) => {
@@ -363,9 +365,9 @@ export const OSCreateForm = () => {
                   <InputDate
                     placeholder="Data do atendimento"
                     label="Data do atendimento"
-                    name="absence1"
+                    name="scheduledAttendance"
                     formik={formik}
-                    value={new Date()}
+                    value={formik.values.scheduledAttendance}
                     minDate={new Date()}
                   />
                 </Grid.Col>

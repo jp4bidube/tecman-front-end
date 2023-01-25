@@ -1,3 +1,5 @@
+import { InputDate } from "@/components/InputDate";
+import { useCancelOS } from "@/services/features/serviceOrders/hooks/useCancelOS";
 import { ServiceOrders } from "@/types/serviceOrders";
 import {
   ActionIcon,
@@ -5,12 +7,19 @@ import {
   Box,
   Button,
   createStyles,
+  Divider,
   Grid,
   Group,
   Menu,
+  Modal,
+  TextInput,
   Title,
 } from "@mantine/core";
-import { useRef } from "react";
+import { TimeInput } from "@mantine/dates";
+import { setHours, setMinutes } from "date-fns";
+import { useFormik } from "formik";
+import { useRef, useState } from "react";
+import { MdOutlineCancel } from "react-icons/md";
 import {
   TbAd2,
   TbArrowLeft,
@@ -20,6 +29,7 @@ import {
 } from "react-icons/tb";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
+import { absenceValidationSchema } from "../validationSchema";
 import { OSReport } from "./OSReport";
 
 type TopProps = {
@@ -46,15 +56,46 @@ const useStyles = createStyles((theme) => ({
 export const Top = ({ data, handleFinishOS }: TopProps) => {
   const navigate = useNavigate();
   const params = useParams();
+  const [opened, setOpened] = useState(false);
   const { classes, theme } = useStyles();
   const menuIconColor =
     theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 5 : 6];
   const componentRef = useRef<HTMLDivElement>(null);
 
+  const mutation = useCancelOS();
+
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
+  interface IForm {
+    date: Date;
+    hours?: Date | null;
+    obs: string;
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      date: data.scheduledAttendance!,
+      hours: null,
+      obs: "",
+    } as IForm,
+    validationSchema: absenceValidationSchema,
+    onSubmit: (values) => {
+      const hour = setMinutes(
+        setHours(values.hours!, values.hours?.getHours()!),
+        values.hours?.getMinutes()!
+      ).getTime();
+      console.log(hour);
+      let payload = {
+        ...values,
+      };
+      delete payload.hours;
+      mutation.mutate({ payload, id: data.id });
+    },
+  });
+
+  const { values, touched, errors, ...actions } = formik;
   return (
     <>
       <Grid gutter="xl" mb={8}>
@@ -68,7 +109,13 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
             </Group>
             <Badge
               size="lg"
-              color={data?.orderServiceStatus.id === 1 ? "orange" : "teal"}
+              color={
+                data?.orderServiceStatus?.id === 1
+                  ? "orange"
+                  : data?.orderServiceStatus?.id === 3
+                  ? "red"
+                  : "teal"
+              }
             >
               {data?.orderServiceStatus?.status}
             </Badge>
@@ -90,7 +137,7 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
                   leftIcon={<TbPrinter size={20} />}
                   onClick={handlePrint}
                 >
-                  Imprimir
+                  Imprimir OS
                 </Button>
               )}
 
@@ -111,10 +158,17 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
                       icon={<TbPrinter size={16} color={menuIconColor} />}
                       onClick={handlePrint}
                     >
-                      Imprimir
+                      Imprimir OS
                     </Menu.Item>
                   ) : null}
-
+                  {data.orderServiceStatus.id === 1 ? (
+                    <Menu.Item
+                      icon={<MdOutlineCancel size={16} color={menuIconColor} />}
+                      onClick={() => setOpened(true)}
+                    >
+                      Cancelar OS
+                    </Menu.Item>
+                  ) : null}
                   <Menu.Item
                     icon={<TbEdit size={16} color={menuIconColor} />}
                     onClick={() =>
@@ -139,6 +193,69 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
           </Group>
         </Grid.Col>
       </Grid>
+      <Modal
+        opened={opened}
+        centered
+        closeOnClickOutside={false}
+        onClose={() => setOpened(false)}
+        title={<Title order={4}>Cancelar OS por ausência em visita</Title>}
+      >
+        <form onSubmit={actions.handleSubmit}>
+          <Grid mb={20}>
+            <Grid.Col xs={12} md={6}>
+              <InputDate
+                readOnly
+                placeholder="Ausencia"
+                label="Ausência"
+                name="date"
+                formik={formik}
+                value={new Date(values.date!)}
+                withAsterisk
+                minDate={new Date(data.scheduledAttendance!)}
+                maxDate={new Date(data.scheduledAttendance!)}
+              />
+            </Grid.Col>
+            <Grid.Col xs={12} md={6}>
+              <TimeInput
+                label="Horário"
+                id="hours"
+                name="hours"
+                clearable
+                value={values.hours}
+                onChange={(value) => formik.setFieldValue("hours", value)}
+                error={touched?.hours && errors?.hours}
+                withAsterisk
+              />
+            </Grid.Col>
+            <Grid.Col xs={12} md={12}>
+              <TextInput
+                placeholder="Digite quem informou a ausência"
+                label="Quem informou a ausência"
+                id="obs"
+                name="obs"
+                value={values?.obs}
+                onChange={actions.handleChange}
+                error={touched.obs && errors.obs}
+                withAsterisk
+              />
+            </Grid.Col>
+          </Grid>
+          <Divider />
+          <Group align="flex-end" mt={20}>
+            <Button radius="xl" type="submit">
+              Salvar
+            </Button>
+            <Button
+              radius="xl"
+              variant="outline"
+              type="button"
+              onClick={() => setOpened(false)}
+            >
+              Fechar
+            </Button>
+          </Group>
+        </form>
+      </Modal>
       <Box sx={{ display: "none" }}>
         <OSReport data={data} componentRef={componentRef} />
       </Box>

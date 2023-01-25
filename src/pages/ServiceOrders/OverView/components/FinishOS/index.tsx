@@ -60,10 +60,12 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
     validationSchema,
 
     onSubmit: async (values) => {
-      let payload = { ...values, equipments: [values.device] } as Omit<
-        ServiceOrderFinish,
-        "id"
-      >;
+      let payload = {
+        ...values,
+        amountReceived:
+          values.amountReceived === "" ? 0 : values.amountReceived,
+        equipments: [values.device],
+      } as Omit<ServiceOrderFinish, "id">;
       delete payload.hasWarranty;
       delete payload.device;
 
@@ -138,6 +140,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
             <Grid mt={10}>
               <Grid.Col xs={12} md={4}>
                 <Input.Wrapper
+                  withAsterisk
                   label="Valor do Orçamento"
                   error={touched?.budget && errors?.budget}
                 >
@@ -187,6 +190,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
 
               <Grid.Col xs={12} md={12}>
                 <Textarea
+                  withAsterisk
                   placeholder="Descreva o serviço executado"
                   label="Serviço executado"
                   name="serviceExecuted"
@@ -313,7 +317,10 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                       placeholder="Término da garantia"
                       locale="pt-BR"
                       label="Data de término da garantia"
-                      value={values?.device?.warrantyPeriod || new Date()}
+                      value={
+                        values?.device?.warrantyPeriod ||
+                        new Date(os.scheduledAttendance!)
+                      }
                       error={
                         touched?.device?.warrantyPeriod &&
                         errors?.device?.warrantyPeriod

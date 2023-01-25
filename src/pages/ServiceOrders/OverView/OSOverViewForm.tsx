@@ -7,9 +7,10 @@ import {
   ScrollArea,
   Stack,
   Textarea,
+  TextInput,
   Title,
 } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
+import { DatePicker, TimeInput } from "@mantine/dates";
 import { useRef } from "react";
 import { ClientSection } from "./components/ClientSection";
 import { Equipaments } from "./components/Equipaments";
@@ -26,7 +27,7 @@ export const OSOverViewForm = ({
   data,
 }: OSOverViewFormProps) => {
   const componentRef = useRef<HTMLDivElement>(null);
-
+  console.log(data);
   return (
     <Stack style={{ maxHeight: "90vh", overflow: "hidden" }}>
       <Top data={data!} handleFinishOS={handleFinishOS} />
@@ -102,29 +103,40 @@ export const OSOverViewForm = ({
             </>
           ) : null}
 
-          {data.absence1 ? (
-            <Grid.Col xs={12} md={6}>
-              <DatePicker
-                placeholder="Ausencia"
-                locale="pt-BR"
-                label="Ausencia"
-                inputFormat="DD/MM/YYYY"
-                value={data.absence1}
-                disabled
-              />
-            </Grid.Col>
-          ) : null}
-          {data.absence2 ? (
-            <Grid.Col xs={12} md={6}>
-              <DatePicker
-                placeholder="Ausencia"
-                locale="pt-BR"
-                inputFormat="DD/MM/YYYY"
-                label="Ausencia 2"
-                value={data.absence2}
-                disabled
-              />
-            </Grid.Col>
+          {data.absence1 !== null ? (
+            <>
+              <Grid.Col xs={12} md={4}>
+                <DatePicker
+                  placeholder="Ausencia"
+                  locale="pt-BR"
+                  label="Ausencia"
+                  inputFormat="DD/MM/YYYY"
+                  value={new Date(data.absence1)}
+                  disabled
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={2}>
+                <TimeInput
+                  label="Horário"
+                  id="absence1Hour"
+                  name="absence1Hour"
+                  clearable
+                  value={new Date(data.absence1)}
+                  disabled
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={6}>
+                <TextInput
+                  variant="filled"
+                  readOnly
+                  placeholder="Quem "
+                  label="Quem informou a ausência"
+                  id="obsAbsence"
+                  name="obsAbsence"
+                  value={data?.obsAbsence!}
+                />
+              </Grid.Col>
+            </>
           ) : null}
         </Grid>
       </ScrollArea.Autosize>

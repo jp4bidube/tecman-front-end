@@ -88,12 +88,12 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
               </td>
               <td>
                 <Text size="xs" tt="capitalize">
-                  {os.client.name}
+                  {os.client?.name}
                 </Text>
               </td>
               <td>
                 <Text size="xs" tt="capitalize">
-                  {os.client.cpf}
+                  {os.client?.cpf}
                 </Text>
               </td>
               <td>
@@ -103,12 +103,18 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
               </td>
               <td>
                 <Text size="xs" tt="capitalize">
-                  {os.client.phoneNumber}
+                  {os.client?.phoneNumber}
                 </Text>
               </td>
               <td>
                 <Badge
-                  color={os.orderServiceStatus.id === 1 ? "orange" : "teal"}
+                  color={
+                    os?.orderServiceStatus?.id === 1
+                      ? "orange"
+                      : os?.orderServiceStatus?.id === 3
+                      ? "red"
+                      : "teal"
+                  }
                 >
                   <Text size="xs" tt="capitalize">
                     {os.orderServiceStatus.status}

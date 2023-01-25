@@ -64,10 +64,9 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
       complement: os?.complement || "",
       observacao: os?.observacao || "",
       defect: os?.defect || "",
-      absence1: os.absence1 || null,
-      absence1Hour: os.absence1 || null,
-      absence2: os.absence2 || null,
-      absence2Hour: os.absence2 || null,
+      absence1: os.absence1 !== null ? new Date(os.absence1) : null,
+      absence1Hour: os.absence1 !== null ? new Date(os.absence1) : null,
+      obsAbsence: os.obsAbsence || "",
       device: {
         id: os?.equipments[0]?.id || null,
         type: os?.equipments[0]?.type || "",
@@ -76,32 +75,30 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
         mounthsWarranty: os?.equipments[0]?.mounthsWarranty || 0,
         warrantyPeriod: os?.equipments[0]?.warrantyPeriod || null,
       },
+      scheduledAttendance: os.scheduledAttendance
+        ? new Date(os.scheduledAttendance)
+        : null,
       hasWarranty: os?.equipments[0]?.mounthsWarranty ? "sim" : "não",
     },
     validationSchema,
     onSubmit: async (values) => {
+      const absence1 =
+        values.absence1 !== null ? new Date(values.absence1!) : null;
+
       let payload = {
         ...values,
         tecnicId: +values.tecnicId || 0,
         budget: +values.budget || 0,
         amountReceived: +values.amountReceived || 0,
         absence1:
-          values.absence1 !== null
+          absence1 !== null
             ? setMinutes(
                 setHours(values.absence1!, values.absence1Hour?.getHours()!),
                 values.absence1Hour?.getMinutes()!
               )
             : null,
-        absence2:
-          values.absence2 !== null
-            ? setMinutes(
-                setHours(values.absence2!, values.absence2Hour?.getHours()!),
-                values.absence2Hour?.getMinutes()!
-              )
-            : null,
       } as ServiceOrdersEdit;
       delete payload.absence1Hour;
-      delete payload.absence2Hour;
       delete payload.hasWarranty;
       delete payload.status;
       const res = await mutation.mutateAsync(payload);
@@ -130,7 +127,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
       action.setFieldValue("device.warrantyPeriod", null);
     }
   }, [currentWarranty]);
-
+  console.log(os?.orderServiceStatus?.id);
   return (
     <form onSubmit={action.handleSubmit}>
       <Paper withBorder p="1.5rem">
@@ -146,7 +143,13 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                 </Group>
                 <Badge
                   size="lg"
-                  color={os?.orderServiceStatus?.id === 1 ? "orange" : "teal"}
+                  color={
+                    os?.orderServiceStatus?.id === 1
+                      ? "orange"
+                      : os?.orderServiceStatus?.id === 3
+                      ? "red"
+                      : "teal"
+                  }
                 >
                   {os?.orderServiceStatus?.status}
                 </Badge>
@@ -383,7 +386,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                 </>
               ) : null}
 
-              <Grid.Col xs={12} md={6}>
+              <Grid.Col xs={12} md={4}>
                 <Select
                   label="Técnico Responsável"
                   placeholder="Selecione um técnico"
@@ -397,7 +400,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                   clearable
                 />
               </Grid.Col>
-              <Grid.Col xs={12} md={6}>
+              <Grid.Col xs={12} md={4}>
                 <Select
                   label="Período de atendimento"
                   placeholder="Selecione período"
@@ -416,39 +419,67 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
               </Grid.Col>
               <Grid.Col xs={12} md={4}>
                 <InputDate
-                  placeholder="Ausencia"
-                  label="Ausencia"
-                  name="absence1"
+                  withAsterisk
+                  placeholder="Data do atendimento"
+                  label="Data do atendimento"
+                  name="scheduledAttendance"
                   formik={formik}
-                  value={values.absence1}
-                  disabled={!!os?.absence1}
+                  value={formik.values.scheduledAttendance}
+                  minDate={new Date()}
                 />
               </Grid.Col>
-              <Grid.Col xs={12} md={2}>
-                <TimeInput
-                  label="Horário"
-                  id="absence1Hour"
-                  name="absence1Hour"
-                  clearable
-                  value={values.absence1Hour}
-                  onChange={(value) =>
-                    formik.setFieldValue("absence1Hour", value)
-                  }
-                  error={touched?.absence1Hour && errors?.absence1Hour}
-                  disabled={!!os?.absence1}
-                />
-              </Grid.Col>
-              {os?.absence2 ? (
-                <Grid.Col xs={12} md={6}>
-                  <InputDate
-                    placeholder="Ausencia"
-                    label="Ausencia 2"
-                    value={os?.absence2}
-                    name="absence2"
-                    formik={formik}
-                    disabled={!!os?.absence1}
-                  />
-                </Grid.Col>
+              {os?.absence1 !== null ? (
+                <>
+                  <Grid.Col xs={12} md={4}>
+                    <InputDate
+                      variant="filled"
+                      readOnly
+                      placeholder="Ausencia"
+                      label="Ausência"
+                      name="absence1"
+                      formik={formik}
+                      value={
+                        values.absence1 !== null
+                          ? new Date(values.absence1)
+                          : null
+                      }
+                      disabled={!!os?.absence1}
+                    />
+                  </Grid.Col>
+                  <Grid.Col xs={12} md={2}>
+                    <TimeInput
+                      variant="filled"
+                      label="Horário"
+                      id="absence1Hour"
+                      name="absence1Hour"
+                      clearable
+                      value={
+                        values.absence1Hour !== null
+                          ? new Date(values.absence1Hour)
+                          : null
+                      }
+                      onChange={(value) =>
+                        formik.setFieldValue("absence1Hour", value)
+                      }
+                      error={touched?.absence1Hour && errors?.absence1Hour}
+                      disabled
+                    />
+                  </Grid.Col>
+                  <Grid.Col xs={12} md={6}>
+                    <TextInput
+                      variant="filled"
+                      readOnly
+                      placeholder="Quem "
+                      label="Quem informou a ausência"
+                      id="obsAbsence"
+                      name="obsAbsence"
+                      value={values?.obsAbsence}
+                      onChange={action.handleChange}
+                      error={touched.obsAbsence && errors.obsAbsence}
+                      withAsterisk
+                    />
+                  </Grid.Col>
+                </>
               ) : null}
               <Grid.Col xs={12}>
                 <Divider

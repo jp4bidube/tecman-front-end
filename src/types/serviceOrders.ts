@@ -35,8 +35,7 @@ export interface ServiceOrdersEdit {
   device: Device;
   absence1?: Date | null;
   absence1Hour?: Date | null;
-  absence2?: Date | null;
-  absence2Hour?: Date | null;
+  obsAbsence: string | null;
   hasWarranty?: string;
   status?: number;
 }
@@ -63,7 +62,7 @@ export interface ServiceOrder {
   amountReceived: number | null;
   datePayment: Date | null;
   absence1: Date | null;
-  absence2: Date | null;
+  obsAbsence: string | null;
   serviceExecuted: null;
 }
 
@@ -113,8 +112,9 @@ export interface ServiceOrders {
   amountReceived: number | null;
   datePayment: Date | null;
   absence1: Date | null;
-  absence2: Date | null;
+  obsAbsence: string | null;
   serviceExecuted: string | null;
+  scheduledAttendance: Date | null;
 }
 
 export interface Client {

@@ -1,20 +1,24 @@
+import { useDeleteClientAddress } from "@/services/features/clients/hooks/useDeleteClientAddress";
 import { usePatchClientDefaultAddress } from "@/services/features/clients/hooks/usePatchClientDefaultAddress";
 import { usePostClientAddress } from "@/services/features/clients/hooks/usePostClientAddress";
 import { useUpdateClientAddress } from "@/services/features/clients/hooks/useUpdateClientAddress";
 import { ClientAddress } from "@/types/clients";
 import {
-  Badge,
+  ActionIcon,
   Button,
   Card,
+  Flex,
   Group,
   InputBase,
   Text,
   TextInput,
+  Title,
 } from "@mantine/core";
+import { openConfirmModal } from "@mantine/modals";
 import cep from "cep-promise";
 import { useFormik } from "formik";
 import { useCallback, useState } from "react";
-import { TbCheck, TbEdit, TbTarget } from "react-icons/tb";
+import { TbCheck, TbEdit, TbTarget, TbTrash } from "react-icons/tb";
 import InputMask from "react-input-mask";
 import { validateClientAddress } from "./validationSchema";
 
@@ -30,6 +34,7 @@ export const ClientAddressItem = ({
   onRemoveItem,
 }: ClientAddressItemProps) => {
   const mutationEdit = useUpdateClientAddress();
+  const mutationDelete = useDeleteClientAddress();
   const mutationCreate = usePostClientAddress();
   const mutationDefault = usePatchClientDefaultAddress();
 
@@ -82,6 +87,31 @@ export const ClientAddressItem = ({
     });
   };
 
+  const openCofirmDeleteAdressModal = () => {
+    openConfirmModal({
+      title: <Title order={4}>Deletar endereço</Title>,
+      centered: true,
+      children: (
+        <Text size="sm">
+          Essa operação não poderá ser desfeita. Confirma a exclusão do
+          endereço?
+        </Text>
+      ),
+      labels: { confirm: "Confirmar", cancel: "Cancelar" },
+      confirmProps: {
+        color: "red",
+        radius: "xl",
+        variant: "outline",
+      },
+      cancelProps: { radius: "xl" },
+      onConfirm: () => handleDeleteAddress(),
+    });
+  };
+
+  const handleDeleteAddress = () => {
+    mutationDelete.mutate(data.address.id);
+  };
+
   return (
     <Card
       shadow="sm"
@@ -96,6 +126,17 @@ export const ClientAddressItem = ({
         display: "inline-block",
       }}
     >
+      <Card.Section>
+        <Flex justify="end" pt={10}>
+          {!data.defaultAddress ? (
+            <ActionIcon color="red" onClick={openCofirmDeleteAdressModal}>
+              <TbTrash size={17} />
+            </ActionIcon>
+          ) : (
+            <ActionIcon opacity={0} sx={{ cursor: "auto" }}></ActionIcon>
+          )}
+        </Flex>
+      </Card.Section>
       <form
         onSubmit={action.handleSubmit}
         onKeyDown={(e) => {

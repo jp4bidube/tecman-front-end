@@ -77,6 +77,16 @@ export const OSInfo = ({ data }: OSInfoProps) => {
             </Text>
           </Group>
         ) : null}
+        <Group>
+          <Text size="sm" weight={500} component="label">
+            Data do Atendimento:
+          </Text>
+          <Text size="sm">
+            {new Date(data?.scheduledAttendance || "").toLocaleDateString(
+              "pt-BR"
+            )}
+          </Text>
+        </Group>
       </Group>
     </Card>
   );

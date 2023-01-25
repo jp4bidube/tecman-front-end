@@ -117,6 +117,18 @@ class ClientsService {
 
     return data;
   }
+
+  async putDeleteClientAddress(id: string): Promise<{
+    message: string;
+    errorCode: number;
+    success: boolean;
+  }> {
+    const { data }: AxiosResponse<ResponseOK> = await api.delete(
+      `/Client/client-address-delete/${id}`
+    );
+
+    return data;
+  }
 }
 
 export const clientsService = new ClientsService();

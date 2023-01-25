@@ -35,4 +35,5 @@ export const validationSchema = yup.object({
     .when("absence1", (absence1, field) =>
       absence1 !== null ? field.required("O campo é obrigatório") : field
     ),
+  scheduledAttendance: yup.date().nullable().required("O campo é obrigatório"),
 });

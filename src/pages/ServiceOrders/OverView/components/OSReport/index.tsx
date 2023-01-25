@@ -157,8 +157,8 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
               <div className="grid-item os-number-cell  borderTopRightNone">
                 <span className="number-os-title">AUSENTE: </span>
                 <span className="number-os blue-info">
-                  {data?.dateCreated &&
-                    new Date(data?.dateCreated!).toLocaleDateString()}
+                  {data?.absence1 &&
+                    new Date(data?.absence1!).toLocaleDateString()}
                 </span>
                 <span
                   className="number-os-title"
@@ -166,11 +166,13 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                 >
                   HORA:{" "}
                 </span>
-                <span className="number-os blue-info">{data?.id}</span>
+                <span className="number-os blue-info">
+                  {data?.absence1 && new Date(data?.absence1!).getHours()}
+                </span>
               </div>
               <div className="grid-item os-number-cell  borderTopNone">
                 <span className="number-os-title">INFORMOU AUSÊNCIA: </span>
-                <span className="number-os blue-info">{data?.id}</span>
+                <span className="number-os blue-info">{data?.obsAbsence}</span>
               </div>
             </div>
             <div className="grid-container details">

@@ -108,6 +108,18 @@ class ServiceOrdersService {
 
     return data;
   }
+
+  async cancelServiceOrder(
+    payload: { date: Date; obs: string },
+    id: number
+  ): Promise<ResponseOK> {
+    const { data } = await api.patch<ResponseOK>(
+      `/OrderService/absence/${id}`,
+      payload
+    );
+
+    return data;
+  }
 }
 
 export const serviceOrdersService = new ServiceOrdersService();

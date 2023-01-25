@@ -15,3 +15,9 @@ export const validationSchema = yup.object({
     })
   ),
 });
+
+export const absenceValidationSchema = yup.object({
+  date: yup.date().nullable().required("O campo é obrigatório"),
+  hours: yup.date().nullable().required("O campo é obrigatório"),
+  obs: yup.string().required("O campo é obrigatório"),
+});
