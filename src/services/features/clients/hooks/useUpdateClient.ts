@@ -21,6 +21,7 @@ export const useUpdateClient = () => {
     {
       onSuccess: async () => {
         queryClient.invalidateQueries("fetchClients");
+        queryClient.invalidateQueries("fetchClientById");
         showNotification({
           title: "Sucesso",
           message: "Cliente atualizado com sucesso",

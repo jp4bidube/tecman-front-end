@@ -5,6 +5,10 @@ export type Client = {
   phoneNumber: string;
   email: string;
   address: Array<ClientAddress>;
+  typePerson: string;
+  documentIdenfication: string;
+  stateRegistration: string;
+  municipalRegistration: string;
 };
 
 export type ClientList = {
@@ -30,6 +34,10 @@ export type ClientCreatePayload = {
     complement: string;
     defaultAddress: boolean;
   };
+  typePerson: string;
+  documentIdenfication: string;
+  stateRegistration: string;
+  municipalRegistration: string;
 };
 
 export type ClientUpdatePayload = {

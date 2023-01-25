@@ -1,12 +1,17 @@
 import { useCreateClient } from "@/services/features/clients/hooks/useCreateClient";
 import { ClientCreatePayload } from "@/types/clients";
 import {
+  Box,
   Button,
+  Center,
   Grid,
   Group,
+  Input,
   InputBase,
   Loader,
+  NumberInput,
   Paper,
+  SegmentedControl,
   Stack,
   Switch,
   Text,
@@ -16,6 +21,7 @@ import {
 import cep from "cep-promise";
 import { useFormik } from "formik";
 import { useState } from "react";
+import { BsBuilding, BsPersonBoundingBox } from "react-icons/bs";
 import { TbDeviceFloppy } from "react-icons/tb";
 import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +48,10 @@ export const ClientCreateForm = () => {
         complement: "",
         defaultAddress: true,
       },
+      typePerson: "PF",
+      documentIdenfication: "",
+      stateRegistration: "",
+      municipalRegistration: "",
     } as ClientCreatePayload,
     validationSchema,
     onSubmit: (values) => {
@@ -120,7 +130,7 @@ export const ClientCreateForm = () => {
                 withAsterisk
               />
             </Grid.Col>
-            <Grid.Col xs={12} md={6}>
+            <Grid.Col xs={12} md={3.5}>
               <TextInput
                 placeholder="E-mail"
                 label="E-mail"
@@ -132,25 +142,7 @@ export const ClientCreateForm = () => {
                 error={touched.email && errors.email}
               />
             </Grid.Col>
-            <Grid.Col xs={12} md={6}>
-              <InputBase
-                placeholder="Digite o Documento"
-                label="CPF ou CNPJ"
-                name="cpf"
-                id="cpf"
-                component={InputMask}
-                value={values.cpf}
-                onChange={action.handleChange}
-                error={touched.cpf && errors.cpf}
-                maskChar=""
-                mask={
-                  values.cpf.length < 15
-                    ? "999.999.999-999"
-                    : "99.999.999/0001-99"
-                }
-              />
-            </Grid.Col>
-            <Grid.Col xs={12} md={6}>
+            <Grid.Col xs={12} md={2.5}>
               <InputBase
                 placeholder="Telefone"
                 label="Telefone"
@@ -164,6 +156,147 @@ export const ClientCreateForm = () => {
                 mask="(99) 99999-9999"
               />
             </Grid.Col>
+            <Grid.Col xs={12} md={3}>
+              <Input.Wrapper label="Tipo do cliente">
+                <Group position="left">
+                  <SegmentedControl
+                    size="md"
+                    color="tecman"
+                    value={values.typePerson}
+                    onChange={(value: "light" | "dark") =>
+                      action.setFieldValue("typePerson", value)
+                    }
+                    data={[
+                      {
+                        value: "PF",
+                        label: (
+                          <Center>
+                            <BsPersonBoundingBox
+                              size={16}
+                              color={
+                                values.typePerson === "PF" ? "white" : "gray"
+                              }
+                            />
+                            <Box ml={10}>
+                              <Text
+                                color={
+                                  values.typePerson === "PF" ? "white" : "gray"
+                                }
+                              >
+                                Pessoa Física{" "}
+                              </Text>
+                            </Box>
+                          </Center>
+                        ),
+                      },
+                      {
+                        value: "PJ",
+                        label: (
+                          <Center>
+                            <BsBuilding
+                              size={16}
+                              color={
+                                values.typePerson === "PJ" ? "white" : "gray"
+                              }
+                            />
+                            <Box ml={10}>
+                              <Text
+                                color={
+                                  values.typePerson === "PJ" ? "white" : "gray"
+                                }
+                              >
+                                Pessoa Jurídica
+                              </Text>
+                            </Box>
+                          </Center>
+                        ),
+                      },
+                    ]}
+                  />
+                </Group>
+              </Input.Wrapper>
+            </Grid.Col>
+            {values.typePerson === "PF" ? (
+              <>
+                <Grid.Col xs={12} md={3}>
+                  <InputBase
+                    placeholder="Digite o Documento"
+                    label="CPF"
+                    name="cpf"
+                    id="cpf"
+                    component={InputMask}
+                    value={values.cpf}
+                    onChange={action.handleChange}
+                    error={touched.cpf && errors.cpf}
+                    maskChar=""
+                    mask="999.999.999-99"
+                  />
+                </Grid.Col>
+                <Grid.Col xs={12} md={3}>
+                  <TextInput
+                    placeholder="Digite o Documento"
+                    label="RG"
+                    name="documentIdenfication"
+                    id="documentIdenfication"
+                    value={values.documentIdenfication}
+                    onChange={action.handleChange}
+                    maxLength={20}
+                    error={
+                      touched.documentIdenfication &&
+                      errors.documentIdenfication
+                    }
+                  />
+                </Grid.Col>
+              </>
+            ) : (
+              <>
+                <Grid.Col xs={12} md={3}>
+                  <InputBase
+                    placeholder="Digite o Documento"
+                    label="CNPJ"
+                    name="cpf"
+                    id="cpf"
+                    component={InputMask}
+                    value={values.cpf}
+                    onChange={action.handleChange}
+                    error={touched.cpf && errors.cpf}
+                    maskChar=""
+                    mask="99.999.999/999-99"
+                  />
+                </Grid.Col>
+                <Grid.Col xs={12} md={3}>
+                  <NumberInput
+                    hideControls
+                    placeholder="Digite o Documento"
+                    label="Inscrição Estadual"
+                    name="stateRegistration"
+                    id="stateRegistration"
+                    value={+values.stateRegistration}
+                    onChange={action.handleChange}
+                    maxLength={50}
+                    error={
+                      touched.stateRegistration && errors.stateRegistration
+                    }
+                  />
+                </Grid.Col>
+                <Grid.Col xs={12} md={3}>
+                  <NumberInput
+                    hideControls
+                    placeholder="Digite o Documento"
+                    label="Inscrição Municipal"
+                    name="municipalRegistration"
+                    id="municipalRegistration"
+                    value={+values.municipalRegistration}
+                    onChange={action.handleChange}
+                    maxLength={50}
+                    error={
+                      touched.municipalRegistration &&
+                      errors.municipalRegistration
+                    }
+                  />
+                </Grid.Col>
+              </>
+            )}
           </Grid>
           <Grid>
             <Grid.Col span={12}>
