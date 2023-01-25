@@ -1,16 +1,32 @@
 import { ServiceOrders } from "@/types/serviceOrders";
-import { Card, Group, Text, Title } from "@mantine/core";
-
+import { Box, Button, Card, Group, Text, Title } from "@mantine/core";
+import { useRef } from "react";
+import { TbPrinter } from "react-icons/tb";
+import { useReactToPrint } from "react-to-print";
+import { GaranteeReport } from "../GaranteeReport";
 type OSInfoProps = {
   data: ServiceOrders;
 };
 
 export const DeviceInfo = ({ data }: OSInfoProps) => {
+  const componentGRef = useRef<HTMLDivElement>(null);
+
+  const handlePrintGarantee = useReactToPrint({
+    content: () => componentGRef.current,
+  });
   return (
     <>
-      <Title order={5} mb={10}>
-        Informações da Garantia
-      </Title>
+      <Group position="apart" mb={10}>
+        <Title order={5}>Informações da Garantia</Title>
+        <Button
+          leftIcon={<TbPrinter size={20} />}
+          radius="xl"
+          onClick={handlePrintGarantee}
+        >
+          Imprimir Garantia
+        </Button>
+      </Group>
+
       <Card
         p="md"
         radius="sm"
@@ -56,6 +72,9 @@ export const DeviceInfo = ({ data }: OSInfoProps) => {
           )}
         </Group>
       </Card>
+      <Box sx={{ display: "none" }}>
+        <GaranteeReport data={data} componentRef={componentGRef} />
+      </Box>
     </>
   );
 };

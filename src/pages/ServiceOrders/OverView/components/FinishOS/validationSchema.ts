@@ -12,4 +12,10 @@ export const validationSchema = yup.object({
     // brand: yup.string().required("O campo é obrigatório"),
     // model: yup.string().required("O campo é obrigatório"),
   }),
+  paymentMethod: yup
+    .string()
+    .nullable()
+    .when("datePayment", (datePayment, field) =>
+      datePayment !== null ? field.required("O campo é obrigatório") : field
+    ),
 });

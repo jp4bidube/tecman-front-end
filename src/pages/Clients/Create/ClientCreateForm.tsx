@@ -177,13 +177,15 @@ export const ClientCreateForm = () => {
                             <BsPersonBoundingBox
                               size={16}
                               color={
-                                values.typePerson === "PF" ? "white" : "gray"
+                                values.typePerson === "PF" ? "white" : "initial"
                               }
                             />
                             <Box ml={10}>
                               <Text
                                 color={
-                                  values.typePerson === "PF" ? "white" : "gray"
+                                  values.typePerson === "PF"
+                                    ? "white"
+                                    : "initial"
                                 }
                               >
                                 Pessoa Física{" "}
@@ -199,13 +201,15 @@ export const ClientCreateForm = () => {
                             <BsBuilding
                               size={16}
                               color={
-                                values.typePerson === "PJ" ? "white" : "gray"
+                                values.typePerson === "PJ" ? "white" : "initial"
                               }
                             />
                             <Box ml={10}>
                               <Text
                                 color={
-                                  values.typePerson === "PJ" ? "white" : "gray"
+                                  values.typePerson === "PJ"
+                                    ? "white"
+                                    : "initial"
                                 }
                               >
                                 Pessoa Jurídica

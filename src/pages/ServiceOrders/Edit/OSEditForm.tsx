@@ -79,6 +79,8 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
         ? new Date(os.scheduledAttendance)
         : null,
       hasWarranty: os?.equipments[0]?.mounthsWarranty ? "sim" : "não",
+      taxVisit: os.taxVisit ? os.taxVisit! : "",
+      paymentMethod: os.paymentMethod || "",
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -89,6 +91,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
         ...values,
         tecnicId: +values.tecnicId || 0,
         budget: +values.budget || 0,
+        taxVisit: +values.taxVisit || 0,
         amountReceived: +values.amountReceived || 0,
         absence1:
           absence1 !== null
@@ -127,7 +130,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
       action.setFieldValue("device.warrantyPeriod", null);
     }
   }, [currentWarranty]);
-  console.log(os?.orderServiceStatus?.id);
+
   return (
     <form onSubmit={action.handleSubmit}>
       <Paper withBorder p="1.5rem">
@@ -338,6 +341,25 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                     </Input.Wrapper>
                   </Grid.Col>
                   <Grid.Col xs={12} md={4}>
+                    <Input.Wrapper
+                      label="Taxa de Visita"
+                      error={touched?.taxVisit && errors?.taxVisit}
+                    >
+                      <Input
+                        type="number"
+                        step=".01"
+                        id="taxVisit"
+                        name="taxVisit"
+                        value={values?.taxVisit}
+                        onChange={action?.handleChange}
+                        icon={<TbCurrencyDollar size={14} />}
+                        invalid={
+                          touched?.taxVisit && errors?.taxVisit ? true : false
+                        }
+                      />
+                    </Input.Wrapper>
+                  </Grid.Col>
+                  <Grid.Col xs={12} md={4}>
                     <InputDate
                       placeholder="Data de Pagamento"
                       label="Data de Pagamento"
@@ -346,6 +368,32 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                       formik={formik}
                       withAsterisk
                       minDate={new Date(os.dateCreated)}
+                    />
+                  </Grid.Col>
+                  <Grid.Col xs={12} md={4}>
+                    <Select
+                      label="Forma de pagamento"
+                      placeholder="Selecione a forma de pagamento"
+                      value={values?.paymentMethod}
+                      error={touched?.paymentMethod && errors?.paymentMethod}
+                      onChange={(value) =>
+                        formik.setFieldValue("paymentMethod", value)
+                      }
+                      rightSection={isFetching && <Loader size="xs" />}
+                      data={[
+                        {
+                          value: "Cartão de Débito",
+                          label: "Cartão de Débito",
+                        },
+                        {
+                          value: "Cartão de Crédito",
+                          label: "Cartão de Crédito",
+                        },
+                        { value: "Pix", label: "Pix" },
+                        { value: "Dinheiro", label: "Dinheiro" },
+                      ]}
+                      searchable
+                      clearable
                     />
                   </Grid.Col>
                   <Grid.Col xs={12} md={6}>

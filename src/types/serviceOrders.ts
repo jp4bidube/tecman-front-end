@@ -87,6 +87,8 @@ export interface ServiceOrderFinish {
   equipments: Equipment[];
   hasWarranty?: string;
   device?: Device;
+  taxVisit: number;
+  paymentMethod: string;
 }
 
 export interface ServiceOrders {
@@ -115,6 +117,8 @@ export interface ServiceOrders {
   obsAbsence: string | null;
   serviceExecuted: string | null;
   scheduledAttendance: Date | null;
+  taxVisit: number;
+  paymentMethod: string;
 }
 
 export interface Client {

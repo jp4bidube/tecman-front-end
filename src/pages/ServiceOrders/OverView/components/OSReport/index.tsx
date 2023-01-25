@@ -182,7 +182,7 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
               </div>
               <div className="grid-item os-number-cell  borderTopNone">
                 <span className="number-os-title">FORMA DE PAGAMENTO: </span>
-                <span className="number-os blue-info">{data?.id}</span>
+                <span className="number-os blue-info"></span>
               </div>
             </div>
             <div className="grid">

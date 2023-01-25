@@ -44,7 +44,7 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
 
   const formik = useFormik({
     initialValues: {
-      tecnicId: os.tecnic.id + "" || "",
+      tecnicId: os.tecnic.id ? os.tecnic.id + "" : null,
       amountReceived: os.amountReceived ? os.amountReceived! : "",
       budget: os.budget ? os.budget : "",
       clientPiece: os.clientPiece ? os.clientPiece : false,
@@ -56,6 +56,8 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
         os?.equipments !== null
           ? os?.equipments[0]
           : ({ brand: "", model: "", type: "" } as Device),
+      taxVisit: os.taxVisit ? os.taxVisit! : "",
+      paymentMethod: os.paymentMethod || "",
     },
     validationSchema,
 
@@ -178,6 +180,25 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                 </Input.Wrapper>
               </Grid.Col>
               <Grid.Col xs={12} md={4}>
+                <Input.Wrapper
+                  label="Taxa de Visita"
+                  error={touched?.taxVisit && errors?.taxVisit}
+                >
+                  <Input
+                    type="number"
+                    step=".01"
+                    id="taxVisit"
+                    name="taxVisit"
+                    value={values?.taxVisit}
+                    onChange={action?.handleChange}
+                    icon={<TbCurrencyDollar size={14} />}
+                    invalid={
+                      touched?.taxVisit && errors?.taxVisit ? true : false
+                    }
+                  />
+                </Input.Wrapper>
+              </Grid.Col>
+              <Grid.Col xs={12} md={4}>
                 <InputDate
                   placeholder="Data de Pagamento"
                   label="Data de Pagamento"
@@ -187,7 +208,26 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                   minDate={new Date(os.dateCreated)}
                 />
               </Grid.Col>
-
+              <Grid.Col xs={12} md={4}>
+                <Select
+                  label="Forma de pagamento"
+                  placeholder="Selecione a forma de pagamento"
+                  value={values?.paymentMethod}
+                  error={touched?.paymentMethod && errors?.paymentMethod}
+                  onChange={(value) =>
+                    formik.setFieldValue("paymentMethod", value)
+                  }
+                  rightSection={isFetching && <Loader size="xs" />}
+                  data={[
+                    { value: "Cartão de Débito", label: "Cartão de Débito" },
+                    { value: "Cartão de Crédito", label: "Cartão de Crédito" },
+                    { value: "Pix", label: "Pix" },
+                    { value: "Dinheiro", label: "Dinheiro" },
+                  ]}
+                  searchable
+                  clearable
+                />
+              </Grid.Col>
               <Grid.Col xs={12} md={12}>
                 <Textarea
                   withAsterisk

@@ -55,13 +55,13 @@ export const OSInfo = ({ data }: OSInfoProps) => {
         )}
       </Group>
       <Group mt={15} spacing="xs" position="apart">
-        <Group>
+        <Group spacing="xs">
           <Text size="sm" weight={500} component="label">
             Técnico:
           </Text>
           <Text size="sm">{data?.tecnic?.name}</Text>
         </Group>
-        <Group>
+        <Group spacing="xs">
           <Text size="sm" weight={500} component="label">
             Data do Atendimento:
           </Text>
@@ -74,20 +74,23 @@ export const OSInfo = ({ data }: OSInfoProps) => {
       </Group>
 
       <Group mt={5} position="apart">
-        <Group>
+        <Group spacing="xs">
           <Text size="sm" weight={500} component="label">
             Período:
           </Text>
           <Text size="sm">{data?.periodAttendance}</Text>
         </Group>
         {data?.datePayment ? (
-          <Group>
-            <Text size="sm" weight={500} component="label">
-              Data de Pagamento:
-            </Text>
-            <Text size="sm">
-              {new Date(data?.datePayment || "").toLocaleDateString("pt-BR")}
-            </Text>
+          <Group spacing="xs">
+            <Group spacing="xs">
+              <Text size="sm" weight={500} component="label">
+                Data de Pagamento:
+              </Text>
+              <Text size="sm">
+                {new Date(data?.datePayment || "").toLocaleDateString("pt-BR")}
+                {data?.paymentMethod && ` - ${data?.paymentMethod}`}
+              </Text>
+            </Group>
           </Group>
         ) : null}
       </Group>

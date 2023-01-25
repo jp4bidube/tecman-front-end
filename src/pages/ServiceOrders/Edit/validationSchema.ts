@@ -36,4 +36,10 @@ export const validationSchema = yup.object({
       absence1 !== null ? field.required("O campo é obrigatório") : field
     ),
   scheduledAttendance: yup.date().nullable().required("O campo é obrigatório"),
+  paymentMethod: yup
+    .string()
+    .nullable()
+    .when("datePayment", (datePayment, field) =>
+      datePayment !== null ? field.required("O campo é obrigatório") : field
+    ),
 });
