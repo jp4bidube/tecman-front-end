@@ -7,6 +7,7 @@ export const useMe = () => {
   const store = useStore();
 
   return useQuery(["me"], async () => usersService.getCurrentUser(), {
+    cacheTime: 0,
     onSuccess: async (res) => {
       store.setLoggedUser(res);
     },
