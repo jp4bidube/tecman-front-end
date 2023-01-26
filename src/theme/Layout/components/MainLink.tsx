@@ -1,3 +1,4 @@
+import { usePermission } from "@/hooks/usePermission";
 import useStore from "@/store";
 import {
   ActionIcon,
@@ -82,72 +83,78 @@ const data: MainLinkProps[] = [
 export function MainLinks() {
   const links = data.map((link) => <MainLink {...link} key={link.label} />);
   const [openAdmin, setOpenAdmin] = useState(true);
-
+  const hasPermission = usePermission();
   return (
     <div>
       {links}
-      <UnstyledButton
-        sx={(theme) => ({
-          display: "block",
-          width: "100%",
-          padding: theme.spacing.xs,
-          borderRadius: theme.radius.sm,
-          color:
-            theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-          backgroundColor: openAdmin
-            ? theme.colorScheme === "dark"
-              ? theme.colors.dark[4]
-              : theme.colors.gray[1]
-            : "default",
-          "&:hover": {
-            backgroundColor:
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[6]
-                : theme.colors.gray[0],
-          },
-        })}
-        onClick={() => setOpenAdmin(!openAdmin)}
-      >
-        <Group position="apart">
-          <Group>
-            <ThemeIcon variant="light">
-              <TbAddressBook size={16} />
-            </ThemeIcon>
-            <Text size="sm">Administrativo</Text>
-          </Group>
-          <ActionIcon color="primary" variant="transparent">
-            <TbChevronDown
-              size={16}
-              style={{
-                transform: openAdmin ? "rotate(180deg)" : "rotate(0deg)",
-                transition: "500ms",
-              }}
-            />
-          </ActionIcon>
-        </Group>
-      </UnstyledButton>
-      <Collapse in={openAdmin}>
-        <Box
-          sx={(theme) => ({
-            marginLeft: "2rem",
-            paddingLeft: ".5rem",
-            marginTop: ".5rem",
-            borderColor: "0.5",
-            borderLeft: `2px solid ${theme.colors.tecman[3] + "8C"}`,
-          })}
-        >
-          <MainLink
-            icon={<TbUserCircle size={16} />}
-            label="Usuários"
-            path="/users"
-          />
-          <MainLink
-            icon={<IoBuildOutline size={16} />}
-            label="Técnicos"
-            path="/technicians"
-          />
-        </Box>
-      </Collapse>
+      {hasPermission && (
+        <>
+          <UnstyledButton
+            sx={(theme) => ({
+              display: "block",
+              width: "100%",
+              padding: theme.spacing.xs,
+              borderRadius: theme.radius.sm,
+              color:
+                theme.colorScheme === "dark"
+                  ? theme.colors.dark[0]
+                  : theme.black,
+              backgroundColor: openAdmin
+                ? theme.colorScheme === "dark"
+                  ? theme.colors.dark[4]
+                  : theme.colors.gray[1]
+                : "default",
+              "&:hover": {
+                backgroundColor:
+                  theme.colorScheme === "dark"
+                    ? theme.colors.dark[6]
+                    : theme.colors.gray[0],
+              },
+            })}
+            onClick={() => setOpenAdmin(!openAdmin)}
+          >
+            <Group position="apart">
+              <Group>
+                <ThemeIcon variant="light">
+                  <TbAddressBook size={16} />
+                </ThemeIcon>
+                <Text size="sm">Administrativo</Text>
+              </Group>
+              <ActionIcon color="primary" variant="transparent">
+                <TbChevronDown
+                  size={16}
+                  style={{
+                    transform: openAdmin ? "rotate(180deg)" : "rotate(0deg)",
+                    transition: "500ms",
+                  }}
+                />
+              </ActionIcon>
+            </Group>
+          </UnstyledButton>
+          <Collapse in={openAdmin}>
+            <Box
+              sx={(theme) => ({
+                marginLeft: "2rem",
+                paddingLeft: ".5rem",
+                marginTop: ".5rem",
+                borderColor: "0.5",
+                borderLeft: `2px solid ${theme.colors.tecman[3] + "8C"}`,
+              })}
+            >
+              <MainLink
+                icon={<TbUserCircle size={16} />}
+                label="Usuários"
+                path="/users"
+              />
+              <MainLink
+                icon={<IoBuildOutline size={16} />}
+                label="Técnicos"
+                path="/technicians"
+              />
+            </Box>
+          </Collapse>
+        </>
+      )}
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { usePermission } from "@/hooks/usePermission";
 import useStore from "@/store";
 import { Button, Group, Stack, Tooltip } from "@mantine/core";
 import { useEffect } from "react";
@@ -9,7 +10,7 @@ import { TechniciansList } from "./List";
 export const Technicians: React.FC = () => {
   const store = useStore();
   const navigate = useNavigate();
-
+  const hasPermission = usePermission();
   useEffect(
     () =>
       store.setNewBreadcrumbs({
@@ -24,14 +25,24 @@ export const Technicians: React.FC = () => {
   return (
     <Stack>
       <Group position="right">
-        <Tooltip label="Adicionar Técnico" withArrow>
-          <Button
-            radius="xl"
-            leftIcon={<TbPlus size={20} />}
-            onClick={() => navigate("/technicians/create")}
-          >
-            Cadastrar
-          </Button>
+        <Tooltip
+          label={
+            !hasPermission
+              ? "Usuário não tem permissão para executar esta ação"
+              : "Adicionar Técnico"
+          }
+          withArrow
+        >
+          <span>
+            <Button
+              radius="xl"
+              leftIcon={<TbPlus size={20} />}
+              onClick={() => navigate("/technicians/create")}
+              disabled={!hasPermission}
+            >
+              Cadastrar
+            </Button>
+          </span>
         </Tooltip>
       </Group>
       <TechniciansList />

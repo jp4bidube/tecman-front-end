@@ -1,19 +1,12 @@
 import { Th } from "@/components/Th";
 import useStore from "@/store";
-import {
-  Badge,
-  Flex,
-  Group,
-  Table,
-  Text,
-  ThemeIcon,
-  Tooltip,
-} from "@mantine/core";
+import { ActionIcon, Badge, Flex, Table, Text, Tooltip } from "@mantine/core";
 
+import { usePermission } from "@/hooks/usePermission";
+import { User } from "@/types/user";
 import { TbEdit, TbUser, TbUserOff } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { TechniciansTableSkeleton } from "../List/TechniciansTableSkeleton";
-import { User } from "@/types/user";
 
 type UsersTableProps = {
   technicians: User[] | undefined;
@@ -29,6 +22,7 @@ export const TechniciansTable = ({
   const navigate = useNavigate();
   const store = useStore();
   const { sort, order } = store.techniciansFilter;
+  const hasPermission = usePermission();
 
   const handleSort = (column: string) => {
     store.setTechniciansFilter({
@@ -102,7 +96,7 @@ export const TechniciansTable = ({
               <td>
                 {" "}
                 <Text size="xs" tt="capitalize">
-                  {technician.cpf}
+                  {hasPermission ? technician.cpf : "*************"}
                 </Text>
               </td>
               <td>
@@ -120,42 +114,72 @@ export const TechniciansTable = ({
               </td>
               <td>
                 <Flex gap={10}>
-                  <Tooltip label="Editar" withArrow>
-                    <ThemeIcon
-                      variant="light"
-                      sx={{ cursor: "pointer" }}
-                      onClick={() =>
-                        navigate(`/technicians/${technician.id}/edit`)
-                      }
-                    >
-                      <TbEdit />
-                    </ThemeIcon>
+                  <Tooltip
+                    label={
+                      !hasPermission
+                        ? "Usuário não tem permissão para executar esta ação"
+                        : "Editar Técnico"
+                    }
+                    withArrow
+                  >
+                    <span>
+                      <ActionIcon
+                        disabled={!hasPermission}
+                        variant="light"
+                        sx={{ cursor: "pointer" }}
+                        onClick={() =>
+                          navigate(`/technicians/${technician.id}/edit`)
+                        }
+                      >
+                        <TbEdit />
+                      </ActionIcon>
+                    </span>
                   </Tooltip>
                   {technician.employeeStatus.status === "Ativo" ? (
-                    <Tooltip label="Desativar usuário" withArrow>
-                      <ThemeIcon
-                        color="red"
-                        variant="light"
-                        sx={{ cursor: "pointer" }}
-                        onClick={() =>
-                          confirmInactivation(technician.id, technician)
-                        }
-                      >
-                        <TbUserOff />
-                      </ThemeIcon>
+                    <Tooltip
+                      label={
+                        !hasPermission
+                          ? "Usuário não tem permissão para executar esta ação"
+                          : "Desativar Técnico"
+                      }
+                      withArrow
+                    >
+                      <span>
+                        <ActionIcon
+                          disabled={!hasPermission}
+                          color="red"
+                          variant="light"
+                          sx={{ cursor: "pointer" }}
+                          onClick={() =>
+                            confirmInactivation(technician.id, technician)
+                          }
+                        >
+                          <TbUserOff />
+                        </ActionIcon>
+                      </span>
                     </Tooltip>
                   ) : (
-                    <Tooltip label="Ativar usuário" withArrow>
-                      <ThemeIcon
-                        color="teal"
-                        variant="light"
-                        sx={{ cursor: "pointer" }}
-                        onClick={() =>
-                          confirmInactivation(technician.id, technician)
-                        }
-                      >
-                        <TbUser />
-                      </ThemeIcon>
+                    <Tooltip
+                      label={
+                        !hasPermission
+                          ? "Usuário não tem permissão para executar esta ação"
+                          : "Ativar Técnico"
+                      }
+                      withArrow
+                    >
+                      <span>
+                        <ActionIcon
+                          disabled={!hasPermission}
+                          color="teal"
+                          variant="light"
+                          sx={{ cursor: "pointer" }}
+                          onClick={() =>
+                            confirmInactivation(technician.id, technician)
+                          }
+                        >
+                          <TbUser />
+                        </ActionIcon>
+                      </span>
                     </Tooltip>
                   )}
                 </Flex>

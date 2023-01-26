@@ -1,4 +1,5 @@
 import { InputDate } from "@/components/InputDate";
+import { usePermission } from "@/hooks/usePermission";
 import { useUpdateTechnicians } from "@/services/features/technicians/hooks/useUpdateTechnicians";
 import { EditUserPayload, User } from "@/types/user";
 import { toBase64 } from "@/utils/fileToB64";
@@ -15,8 +16,8 @@ import {
   Text,
   TextInput,
   Title,
+  Tooltip,
 } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
 import cep from "cep-promise";
 
 import { useFormik } from "formik";
@@ -33,6 +34,7 @@ type TechniciansEditProps = {
 export const TechniciansEditForm = ({ user }: TechniciansEditProps) => {
   const navigate = useNavigate();
   const mutation = useUpdateTechnicians();
+  const hasPermission = usePermission();
 
   const initialValue = {
     ...user,
@@ -103,13 +105,25 @@ export const TechniciansEditForm = ({ user }: TechniciansEditProps) => {
               <Group position="apart">
                 <Title order={4}>Informações básicas</Title>
                 <Group>
-                  <Button
-                    radius="xl"
-                    type="submit"
-                    leftIcon={<TbDeviceFloppy size={20} />}
+                  <Tooltip
+                    label={
+                      !hasPermission
+                        ? "Usuário não tem permissão para executar esta ação"
+                        : "Atualizar Técnico"
+                    }
+                    withArrow
                   >
-                    Atualizar
-                  </Button>
+                    <span>
+                      <Button
+                        radius="xl"
+                        type="submit"
+                        leftIcon={<TbDeviceFloppy size={20} />}
+                        disabled={!hasPermission}
+                      >
+                        Atualizar
+                      </Button>
+                    </span>
+                  </Tooltip>
                   <Button
                     radius="xl"
                     variant="outline"
