@@ -159,7 +159,7 @@ export const ClientCreateForm = () => {
                 mask="(99) 99999-9999"
               />
             </Grid.Col>
-            <Grid.Col xs={12} md={3}>
+            <Grid.Col xs={12} md={4.5}>
               <Input.Wrapper label="Tipo do cliente">
                 <Group position="left">
                   <SegmentedControl

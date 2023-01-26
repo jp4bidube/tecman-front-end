@@ -171,7 +171,7 @@ export const ClientEditForm = () => {
                 />
               </Grid.Col>
 
-              <Grid.Col xs={12} md={3}>
+              <Grid.Col xs={12} md={4}>
                 <Input.Wrapper label="Tipo do cliente">
                   <Group position="left">
                     <SegmentedControl
@@ -189,7 +189,9 @@ export const ClientEditForm = () => {
                               <BsPersonBoundingBox
                                 size={16}
                                 color={
-                                  values.typePerson === "PF" ? "white" : "gray"
+                                  values.typePerson === "PF"
+                                    ? "white"
+                                    : "initial"
                                 }
                               />
                               <Box ml={10}>
@@ -197,7 +199,7 @@ export const ClientEditForm = () => {
                                   color={
                                     values.typePerson === "PF"
                                       ? "white"
-                                      : "gray"
+                                      : "initial"
                                   }
                                 >
                                   Pessoa Física{" "}
@@ -213,7 +215,9 @@ export const ClientEditForm = () => {
                               <BsBuilding
                                 size={16}
                                 color={
-                                  values.typePerson === "PJ" ? "white" : "gray"
+                                  values.typePerson === "PJ"
+                                    ? "white"
+                                    : "initial"
                                 }
                               />
                               <Box ml={10}>
@@ -221,7 +225,7 @@ export const ClientEditForm = () => {
                                   color={
                                     values.typePerson === "PJ"
                                       ? "white"
-                                      : "gray"
+                                      : "initial"
                                   }
                                 >
                                   Pessoa Jurídica

@@ -29,14 +29,9 @@ export const OSOverViewForm = ({
   const componentRef = useRef<HTMLDivElement>(null);
   console.log(data);
   return (
-    <Stack style={{ maxHeight: "90vh", overflow: "hidden" }}>
+    <Stack>
       <Top data={data!} handleFinishOS={handleFinishOS} />
-      <ScrollArea.Autosize
-        maxHeight="79vh"
-        type="scroll"
-        scrollHideDelay={200}
-        scrollbarSize={8}
-      >
+      <ScrollArea type="auto" offsetScrollbars scrollbarSize={8}>
         <Grid>
           <Grid.Col xs={12} md={6}>
             <ClientSection data={data!} />
@@ -140,7 +135,7 @@ export const OSOverViewForm = ({
             </>
           ) : null}
         </Grid>
-      </ScrollArea.Autosize>
+      </ScrollArea>
     </Stack>
   );
 };
