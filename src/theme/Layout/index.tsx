@@ -85,7 +85,7 @@ export const Layout = () => {
           <Breadcrumbs />
         </Group>
       </Group>
-      <Container size="xl" sx={{ overflow: "hidden", maxHeight: "87vh" }}>
+      <Container size="xl" sx={{ maxHeight: "87vh" }}>
         <Outlet />
       </Container>
     </AppShell>

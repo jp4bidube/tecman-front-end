@@ -8,6 +8,7 @@ import {
   MediaQuery,
   Pagination,
   Paper,
+  ScrollArea,
   Stack,
   TextInput,
 } from "@mantine/core";
@@ -52,7 +53,7 @@ export const ClientsList = () => {
   }, []);
 
   return (
-    <Paper withBorder sx={{ padding: "1.5rem" }}>
+    <Paper withBorder p="1.5rem" h="100%">
       <Grid gutter="xl">
         <Grid.Col span={12}>
           <Grid gutter="xl" mb={20}>
@@ -89,9 +90,14 @@ export const ClientsList = () => {
         </Grid.Col>
         <Grid.Col span={12}>
           <MediaQuery largerThan="md" styles={{ display: "none" }}>
-            <div>
+            <ScrollArea.Autosize
+              maxHeight="100%"
+              type="scroll"
+              scrollHideDelay={100}
+              scrollbarSize={8}
+            >
               <ClientsCards clients={data?.clients} />
-            </div>
+            </ScrollArea.Autosize>
           </MediaQuery>
           <MediaQuery smallerThan="md" styles={{ display: "none" }}>
             <div>

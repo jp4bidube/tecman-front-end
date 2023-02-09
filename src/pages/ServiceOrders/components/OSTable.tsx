@@ -103,7 +103,11 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
               </td>
               <td>
                 <Text size="xs" tt="capitalize">
-                  {os.client?.phoneNumber}
+                  {
+                    os.client.phoneNumber.split(",").filter((phone) => {
+                      if (phone !== "" && phone !== undefined) return phone;
+                    })[0]
+                  }
                 </Text>
               </td>
               <td>

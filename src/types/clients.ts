@@ -40,6 +40,30 @@ export type ClientCreatePayload = {
   municipalRegistration: string;
 };
 
+export type ClientCreatePayloadForm = {
+  id: number;
+  name: string;
+  cpf: string;
+  phoneNumber: string;
+  phoneNumber1?: string;
+  phoneNumber2?: string;
+  celPhone1?: string;
+  celPhone2?: string;
+  email: string;
+  address: {
+    street: string;
+    cep: string;
+    number: string;
+    district: string;
+    complement: string;
+    defaultAddress: boolean;
+  };
+  typePerson: string;
+  documentIdenfication: string;
+  stateRegistration: string;
+  municipalRegistration: string;
+};
+
 export type ClientUpdatePayload = {
   name: string;
   cpf: string;

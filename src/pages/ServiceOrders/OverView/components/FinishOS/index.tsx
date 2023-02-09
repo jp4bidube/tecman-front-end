@@ -9,6 +9,8 @@ import {
   ServiceOrders,
 } from "@/types/serviceOrders";
 import {
+  ActionIcon,
+  Box,
   Button,
   Checkbox,
   Divider,
@@ -17,6 +19,7 @@ import {
   Group,
   Input,
   Loader,
+  NumberInput,
   ScrollArea,
   Select,
   Textarea,
@@ -26,9 +29,14 @@ import {
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { setMonth } from "date-fns";
-import { FormikProvider, getIn, useFormik } from "formik";
+import { FieldArray, FormikProvider, getIn, useFormik } from "formik";
 import { useEffect } from "react";
-import { TbCurrencyDollar, TbDeviceFloppy } from "react-icons/tb";
+import {
+  TbCurrencyDollar,
+  TbDeviceFloppy,
+  TbPlus,
+  TbTrash,
+} from "react-icons/tb";
 import { validationSchema } from "./validationSchema";
 
 type FinishOSFormProps = {
@@ -45,8 +53,8 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
   const formik = useFormik({
     initialValues: {
       tecnicId: os.tecnic.id ? os.tecnic.id + "" : null,
-      amountReceived: os.amountReceived ? os.amountReceived! : "",
-      budget: os.budget ? os.budget : "",
+      amountReceived: os.amountReceived ? os.amountReceived! : null,
+      budget: os.budget ? os.budget : null,
       clientPiece: os.clientPiece ? os.clientPiece : false,
       pieceSold: os.pieceSold ? os.pieceSold : false,
       serviceExecuted: os.serviceExecuted ? os.serviceExecuted : "",
@@ -56,21 +64,19 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
         os?.equipments !== null
           ? os?.equipments[0]
           : ({ brand: "", model: "", type: "" } as Device),
-      taxVisit: os.taxVisit ? os.taxVisit! : "",
+      taxVisit: os.taxVisit ? os.taxVisit! : null,
       paymentMethod: os.paymentMethod || "",
+      specifications: [""],
     },
     validationSchema,
 
     onSubmit: async (values) => {
       let payload = {
         ...values,
-        amountReceived:
-          values.amountReceived === "" ? 0 : values.amountReceived,
         equipments: [values.device],
       } as Omit<ServiceOrderFinish, "id">;
       delete payload.hasWarranty;
       delete payload.device;
-
       const res = await mutation.mutateAsync({ id: os.id, payload });
       if (res) {
         setOpened(false);
@@ -141,62 +147,75 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
           >
             <Grid mt={10}>
               <Grid.Col xs={12} md={4}>
-                <Input.Wrapper
+                <NumberInput
+                  id="budget"
+                  name="budget"
                   withAsterisk
                   label="Valor do Orçamento"
+                  hideControls
+                  value={values?.budget!}
+                  onChange={(value) => formik.setFieldValue("budget", value)}
+                  icon={<TbCurrencyDollar size={14} />}
+                  parser={(value) => value!.replace(/[.](?=(\d{3}))/g, "")}
+                  formatter={(value) =>
+                    !Number.isNaN(parseFloat(value!))
+                      ? value!.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                      : ""
+                  }
+                  decimalSeparator=","
+                  precision={2}
                   error={touched?.budget && errors?.budget}
-                >
-                  <Input
-                    type="number"
-                    step=".01"
-                    id="budget"
-                    name="budget"
-                    value={values?.budget}
-                    onChange={action?.handleChange}
-                    icon={<TbCurrencyDollar size={14} />}
-                    invalid={touched?.budget && errors?.budget ? true : false}
-                  />
-                </Input.Wrapper>
+                  iconWidth={25}
+                  min={0}
+                />
               </Grid.Col>
               <Grid.Col xs={12} md={4}>
-                <Input.Wrapper
-                  label="Valor do Recebido"
+                <NumberInput
+                  id="amountReceived"
+                  name="amountReceived"
+                  withAsterisk
+                  label="Valor Recebido"
+                  hideControls
+                  value={values?.amountReceived!}
+                  onChange={(value) =>
+                    formik.setFieldValue("amountReceived", value)
+                  }
+                  icon={<TbCurrencyDollar size={14} />}
+                  parser={(value) => value!.replace(/[.](?=(\d{3}))/g, "")}
+                  formatter={(value) =>
+                    !Number.isNaN(parseFloat(value!))
+                      ? value!.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                      : ""
+                  }
+                  decimalSeparator=","
+                  precision={2}
                   error={touched?.amountReceived && errors?.amountReceived}
-                >
-                  <Input
-                    type="number"
-                    step=".01"
-                    id="amountReceived"
-                    name="amountReceived"
-                    value={values?.amountReceived}
-                    onChange={action?.handleChange}
-                    icon={<TbCurrencyDollar size={14} />}
-                    invalid={
-                      touched?.amountReceived && errors?.amountReceived
-                        ? true
-                        : false
-                    }
-                  />
-                </Input.Wrapper>
+                  iconWidth={25}
+                  min={0}
+                />
               </Grid.Col>
               <Grid.Col xs={12} md={4}>
-                <Input.Wrapper
+                <NumberInput
+                  id="taxVisit"
+                  name="taxVisit"
+                  withAsterisk
                   label="Taxa de Visita"
+                  hideControls
+                  value={values?.taxVisit!}
+                  onChange={(value) => formik.setFieldValue("taxVisit", value)}
+                  icon={<TbCurrencyDollar size={14} />}
+                  parser={(value) => value!.replace(/[.](?=(\d{3}))/g, "")}
+                  formatter={(value) =>
+                    !Number.isNaN(parseFloat(value!))
+                      ? value!.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                      : ""
+                  }
+                  decimalSeparator=","
+                  precision={2}
                   error={touched?.taxVisit && errors?.taxVisit}
-                >
-                  <Input
-                    type="number"
-                    step=".01"
-                    id="taxVisit"
-                    name="taxVisit"
-                    value={values?.taxVisit}
-                    onChange={action?.handleChange}
-                    icon={<TbCurrencyDollar size={14} />}
-                    invalid={
-                      touched?.taxVisit && errors?.taxVisit ? true : false
-                    }
-                  />
-                </Input.Wrapper>
+                  iconWidth={25}
+                  min={0}
+                />
               </Grid.Col>
               <Grid.Col xs={12} md={4}>
                 <InputDate
@@ -282,10 +301,64 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                 </Input.Wrapper>
               </Grid.Col>
               <Grid.Col xs={12} md={4}></Grid.Col>
-              <Grid.Col span={12} my={20}>
+
+              <FieldArray
+                name="specifications"
+                render={(arrayHelpers) => (
+                  <>
+                    <Grid.Col span={12}>
+                      <Divider
+                        size="xs"
+                        labelPosition="left"
+                        label={
+                          <>
+                            <Title order={5}>
+                              Especificações do Atendimento
+                            </Title>
+                            <ActionIcon<"button">
+                              variant="light"
+                              size={28}
+                              ml={10}
+                              onClick={() => arrayHelpers.push("")}
+                              color="tecman"
+                              disabled={values.specifications.length === 7}
+                            >
+                              <TbPlus size={16} />
+                            </ActionIcon>
+                          </>
+                        }
+                      />
+                    </Grid.Col>
+                    {formik?.values?.specifications.map((_, index) => (
+                      <>
+                        <Grid.Col xs={11.5}>
+                          <TextInput
+                            placeholder="Descreva as especificações do técnico"
+                            id={`specifications.${index}`}
+                            name={`specifications.${index}`}
+                            value={values.specifications[index]}
+                            onChange={action.handleChange}
+                          />
+                        </Grid.Col>
+                        <Grid.Col xs={12} md={0.5}>
+                          <Box mt={5}>
+                            <ActionIcon
+                              variant="light"
+                              color="red"
+                              onClick={() => arrayHelpers.remove(index)}
+                            >
+                              <TbTrash size={20} />
+                            </ActionIcon>
+                          </Box>
+                        </Grid.Col>
+                      </>
+                    ))}
+                  </>
+                )}
+              />
+              <Grid.Col xs={12}>
                 <Divider />
               </Grid.Col>
-
               <Grid.Col xs={12} md={4}>
                 <Select
                   withAsterisk

@@ -1,14 +1,6 @@
 import useStore from "@/store";
 import { ClientList } from "@/types/clients";
-import {
-  Badge,
-  Button,
-  Card,
-  Group,
-  Text,
-  ThemeIcon,
-  Tooltip,
-} from "@mantine/core";
+import { Button, Card, Group, Text, ThemeIcon, Tooltip } from "@mantine/core";
 import { useEffect } from "react";
 import { TbChevronDown, TbChevronUp, TbEdit } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
@@ -82,7 +74,11 @@ export const ClientsCards = ({ clients }: ClientsCardsProps) => {
                 Telefone
               </Text>
               <Text size="sm" color="dimmed">
-                {client.phoneNumber}
+                {
+                  client.phoneNumber.split(",").filter((phone) => {
+                    if (phone !== "" && phone !== undefined) return phone;
+                  })[0]
+                }
               </Text>
             </Group>
             <Card.Section withBorder inheritPadding py="xs">

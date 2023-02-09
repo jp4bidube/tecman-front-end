@@ -47,7 +47,7 @@ export const OSOverViewForm = ({
             />
           </Grid.Col>
           {data.equipments ? <Equipaments data={data.equipments} /> : null}
-          <Grid.Col xs={12} md={6}>
+          <Grid.Col xs={12}>
             <Textarea
               placeholder="Descreva o defeito apresentado"
               label="Defeito Reclamado"
@@ -57,7 +57,7 @@ export const OSOverViewForm = ({
               minRows={2}
             />
           </Grid.Col>
-          <Grid.Col xs={12} md={6}>
+          {/* <Grid.Col xs={12} md={6}>
             <Textarea
               placeholder="Observações"
               label="Observações"
@@ -66,7 +66,7 @@ export const OSOverViewForm = ({
               readOnly
               minRows={2}
             />
-          </Grid.Col>
+          </Grid.Col> */}
           {data.orderServiceStatus.id === 2 ? (
             <>
               <Grid.Col xs={12} md={6}>
@@ -103,9 +103,9 @@ export const OSOverViewForm = ({
             <>
               <Grid.Col xs={12} md={4}>
                 <DatePicker
-                  placeholder="Ausencia"
+                  placeholder="Data do Cancelamento"
                   locale="pt-BR"
-                  label="Ausencia"
+                  label="Data do Cancelamento"
                   inputFormat="DD/MM/YYYY"
                   value={new Date(data.absence1)}
                   disabled
@@ -125,8 +125,8 @@ export const OSOverViewForm = ({
                 <TextInput
                   variant="filled"
                   readOnly
-                  placeholder="Quem "
-                  label="Quem informou a ausência"
+                  placeholder="Motivo do Cancelamento"
+                  label="Motivo do Cancelamento"
                   id="obsAbsence"
                   name="obsAbsence"
                   value={data?.obsAbsence!}

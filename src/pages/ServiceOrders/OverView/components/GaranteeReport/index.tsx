@@ -103,7 +103,11 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
                   <div>
                     <span className="bold">Telefone: </span>
                     <span className="blue-info" id="clientPhone">
-                      {data?.client.phoneNumber}
+                      {
+                        data.client.phoneNumber.split(",").filter((phone) => {
+                          if (phone !== "" && phone !== undefined) return phone;
+                        })[0]
+                      }
                     </span>
                   </div>
                 </div>
@@ -179,7 +183,7 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
             <div className="grid">
               <div className="grid-item  borderTopNone">
                 <span className="number-os-title">
-                  SERVIÇO(S) EXECUTADO(S):
+                  DEFEITO(S) APRESENTADO(S):
                 </span>
                 <div className="servico-content">
                   <span></span>
@@ -188,107 +192,51 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
             </div>
           </div>
         </section>
-        <section className="orcamento-infos">
-          <div className="grid-orcamento">
-            <div className="grid-container row">
-              <div className="grid-item  borderTopRightBottonNone">
-                <h6
-                  className="quant-title bold"
-                  style={{ margin: "1rem 0.5rem" }}
-                >
-                  QUANTIDADE
-                </h6>
-              </div>
-              <div className="grid-item especification borderBottomTopNone">
-                <h6 className="especification-title bold ">ESPECIFICAÇÃO</h6>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification border">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
+        <div className="grid">
+          <div className="grid-item  borderTopNone">
+            <span className="number-os-title">ESPECIFICAÇÃO</span>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
             </div>
           </div>
-        </section>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+        </div>
       </main>
       <footer>
         <section className="payment-infos">
@@ -351,6 +299,18 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
             Os aparelhos, depois de consertados, ficarão na loja por até 90
             dias, sendo descartados após este período.
           </strong>
+        </span>
+        <span
+          style={{
+            display: "flex",
+            flexWrap: "nowrap",
+            flexDirection: "row",
+            fontSize: 12,
+            justifyContent: "center",
+            fontStyle: "italic",
+          }}
+        >
+          Criado por: {data.createdBy}
         </span>
       </span>
     </div>

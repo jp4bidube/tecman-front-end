@@ -12,11 +12,10 @@ import {
   Group,
   Menu,
   Modal,
-  TextInput,
+  Textarea,
   Title,
 } from "@mantine/core";
 import { TimeInput } from "@mantine/dates";
-import { setHours, setMinutes } from "date-fns";
 import { useFormik } from "formik";
 import { useRef, useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
@@ -82,19 +81,23 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
 
   const formik = useFormik({
     initialValues: {
-      date: data.scheduledAttendance!,
+      date: new Date(),
       hours: null,
       obs: "",
     } as IForm,
     validationSchema: absenceValidationSchema,
     onSubmit: (values) => {
-      const hour = setMinutes(
-        setHours(values.hours!, values.hours?.getHours()!),
-        values.hours?.getMinutes()!
-      ).getTime();
+      const hour = values.hours?.getHours();
+      const minute = values.hours?.getMinutes();
+      const mergedDate = values.date;
+      mergedDate.setHours(hour!);
+      mergedDate.setMinutes(minute!);
+      mergedDate.setSeconds(0);
+
       console.log(hour);
       let payload = {
         ...values,
+        date: mergedDate,
       };
       delete payload.hours;
       mutation.mutate({ payload, id: data.id });
@@ -211,21 +214,21 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
         centered
         closeOnClickOutside={false}
         onClose={() => setOpened(false)}
-        title={<Title order={4}>Cancelar OS por ausência em visita</Title>}
+        title={<Title order={4}>Cancelar OS</Title>}
       >
         <form onSubmit={actions.handleSubmit}>
           <Grid mb={20}>
             <Grid.Col xs={12} md={6}>
               <InputDate
                 readOnly
-                placeholder="Ausencia"
-                label="Ausência"
+                placeholder="Data"
+                label="Data"
                 name="date"
                 formik={formik}
-                value={new Date(values.date!)}
+                value={values.date}
                 withAsterisk
-                minDate={new Date(data.scheduledAttendance!)}
-                maxDate={new Date(data.scheduledAttendance!)}
+                minDate={new Date()}
+                // maxDate={new Date(data.scheduledAttendance!)}
               />
             </Grid.Col>
             <Grid.Col xs={12} md={6}>
@@ -241,15 +244,16 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
               />
             </Grid.Col>
             <Grid.Col xs={12} md={12}>
-              <TextInput
+              <Textarea
                 placeholder="Digite quem informou a ausência"
-                label="Quem informou a ausência"
+                label="Motivo do Cancelamento"
                 id="obs"
                 name="obs"
                 value={values?.obs}
                 onChange={actions.handleChange}
                 error={touched.obs && errors.obs}
                 withAsterisk
+                minRows={3}
               />
             </Grid.Col>
           </Grid>

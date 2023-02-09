@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
-    "@mantine/core": "^5.8.4",
+    "@mantine/core": "^5.10.3",
     "@mantine/dates": "^5.4.0",
-    "@mantine/hooks": "^5.2.4",
+    "@mantine/hooks": "^5.10.3",
     "@mantine/modals": "^5.3.0",
     "@mantine/notifications": "^5.3.1",
     "@types/node": "^18.7.14",

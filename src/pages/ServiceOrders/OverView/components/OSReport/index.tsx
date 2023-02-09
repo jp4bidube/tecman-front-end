@@ -10,7 +10,7 @@ interface OSReportProps {
 
 export const OSReport = ({ componentRef, data }: OSReportProps) => {
   return (
-    <div style={{ margin: "1rem" }} ref={componentRef}>
+    <div style={{ margin: "1rem", fontSize: "0.75rem" }} ref={componentRef}>
       <header>
         <section className="data-header">
           <div className="header-grid">
@@ -65,27 +65,38 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
             <h3 id="os-title">ORDEM DE SERVIÇO</h3>
           </div>
           <div className="grid-os">
-            <div className="grid-container">
-              <div className="grid-item os-number-cell border borderBottomNone">
+            <div className="grid-container details">
+              <div className="grid-item os-number-cell  borderRightBottomNone">
                 <span className="number-os-title">NÚMERO OS: </span>
-                <span className="number-os blue-info">{data?.id}</span>
-              </div>
-              <div className="grid-item os-date-cell borderleftBottomNone">
-                <span className="date-os-title">DATA: </span>
-                <span className="date-os blue-info">
-                  {new Date(data?.dateCreated).toLocaleDateString("pt-BR")}
+                <span className="number-os blue-info">{data.id}</span>
+
+                <span
+                  className="technician-os-title"
+                  style={{ marginLeft: "1rem" }}
+                >
+                  TÉCNICO:{" "}
                 </span>
-              </div>
-              <div className="grid-item os-technician-cell borderleftBottomNone ">
-                <span className="technician-os-title">TÉCNICO: </span>
                 <span className="technician-os blue-info">
                   {data?.tecnic.name}
                 </span>
               </div>
-              <div className="grid-item os-period-cell borderleftBottomNone">
-                <span className="period-os-title">PERÍODO: </span>
+
+              <div className="grid-item os-number-cell  borderBottomNone">
+                <span className="number-os-title">ATENDIMENTO: </span>
+                <span className="number-os blue-info">
+                  {data?.scheduledAttendance !== null
+                    ? new Date(data?.scheduledAttendance).toLocaleDateString(
+                        "pt-BR"
+                      )
+                    : " "}
+                </span>
                 <span className="period-os blue-info">
-                  {data?.periodAttendance}
+                  {" "}
+                  | {data?.periodAttendance}
+                </span>
+                <span className="period-os blue-info">
+                  {" "}
+                  | {data?.observacao}
                 </span>
               </div>
             </div>
@@ -106,15 +117,23 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                   </div>
                   <div>
                     <span className="bold">Endereço: </span>
-                    <span className="blue-info" id="clientAddress">
-                      {data?.street}, {data?.number}, {data?.district},{" "}
-                      {data?.cep}.
+                    <span
+                      className="blue-info"
+                      style={{ textAlign: "start" }}
+                      id="clientAddress"
+                    >
+                      {data?.street}, {data?.number}, {data?.complement},{" "}
+                      {data?.district} {data?.cep}.
                     </span>
                   </div>
                   <div>
                     <span className="bold">Telefone: </span>
                     <span className="blue-info" id="clientPhone">
-                      {data?.client.phoneNumber}
+                      {
+                        data.client.phoneNumber.split(",").filter((phone) => {
+                          if (phone !== "" && phone !== undefined) return phone;
+                        })[0]
+                      }
                     </span>
                   </div>
                 </div>
@@ -130,17 +149,15 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                       {data?.equipments !== null
                         ? data?.equipments[0].type
                         : ""}
-                    </span>{" "}
-                    |<span className="os-brand bold">Marca: </span>
+                    </span>
                     <span className="blue-info" id="brand">
                       {data?.equipments !== null
-                        ? data?.equipments[0].brand
+                        ? " | " + data?.equipments[0].brand
                         : ""}
-                    </span>{" "}
-                    |<span className="os-model bold">Modelo: </span>
+                    </span>
                     <span className="blue-info" id="model">
                       {data?.equipments !== null
-                        ? data?.equipments[0].model
+                        ? " | " + data?.equipments[0].model
                         : ""}
                     </span>
                   </div>
@@ -167,7 +184,8 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                   HORA:{" "}
                 </span>
                 <span className="number-os blue-info">
-                  {data?.absence1 && new Date(data?.absence1!).getHours()}
+                  {data?.absence1 && new Date(data?.absence1!).getHours()}:
+                  {data?.absence1 && new Date(data?.absence1!).getMinutes()}
                 </span>
               </div>
               <div className="grid-item os-number-cell  borderTopNone">
@@ -185,16 +203,7 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                 <span className="number-os blue-info"></span>
               </div>
             </div>
-            <div className="grid">
-              <div className="grid-item  borderTopNone">
-                <span className="number-os-title">
-                  SERVIÇO(S) EXECUTADO(S):
-                </span>
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
+
             <div className="grid">
               <div className="grid-item  borderTopNone">
                 <span className="number-os-title">GARANTIA: </span>
@@ -202,112 +211,67 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
             </div>
           </div>
         </section>
+        <div className="grid">
+          <div className="grid-item  borderTopNone">
+            <span className="number-os-title">ESPECIFICAÇÃO</span>
+          </div>
+
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+          <div className="grid-item  borderTopNone">
+            <div className="servico-content">
+              <span></span>
+            </div>
+          </div>
+        </div>
         <section className="orcamento-infos">
           <div className="grid-orcamento">
-            <div className="grid-container row">
-              <div className="grid-item  borderTopRightBottonNone">
-                <h6
-                  className="quant-title bold"
-                  style={{ margin: "1rem 0.5rem" }}
-                >
-                  QUANTIDADE
-                </h6>
-              </div>
-              <div className="grid-item especification borderBottomTopNone">
-                <h6 className="especification-title bold ">ESPECIFICAÇÃO</h6>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
-            <div className="grid-container row">
-              <div className="grid-item  borderRightBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-              <div className="grid-item especification borderBottomNone">
-                <div className="servico-content">
-                  <span></span>
-                </div>
-              </div>
-            </div>
             <div className="grid-container total">
-              <div className="grid-item signature total-title borderRightNone">
+              <div
+                className="grid-item signature total-title borderTopRightNone"
+                style={{ padding: ".5rem" }}
+              >
                 <span className="total-value-title bold">
                   VALOR TOTAL DO ORÇAMENTO:{" "}
                 </span>
               </div>
-              <div className="grid-item signature total-value border">
+              <div
+                className="grid-item signature total-value  borderTopNone"
+                style={{ padding: ".5rem" }}
+              >
                 <span className="total-value bold">R$</span>
               </div>
             </div>
@@ -317,18 +281,30 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
       <footer>
         <section className="payment-infos">
           <div className="grid-container">
+            <div className="grid-item signature borderTopRightNone">
+              <span className="left-tech-signature-title">
+                RECEBI A IMPORTÂNCIA DE: _____________________________ REFERENTE
+                AOS SERVIÇOS PRESTADOS CONFORME ORÇAMENTO ACIMA.
+              </span>
+            </div>
+            <div className="grid-item signature borderTopNone">
+              <p className="signature-technician-title regular">
+                ASSINATURA DO TÉCNICO:
+              </p>
+            </div>
+          </div>
+          <div className="grid-container">
             <div className="grid-item signature borderTopRightBottonNone">
               <span className="left-tech-signature-title">
-                <strong>OBSERVAÇÃO:</strong> APÓS DADO O ORÇAMENTO, O PRAZO PARA
-                RETIRADA DO APARELHO, DO ESTABELECIMENTO, É DE 30 DIAS. SENDO
-                ULTRAPASSADO ESTE PRAZO, O APARELHO SERÁ DESCARTADO.
+                APÓS DADO O ORÇAMENTO, O PRAZO PARA RETIRADA DO APARELHO, DO
+                ESTABELECIMENTO, É DE 30 DIAS. SENDO ULTRAPASSADO ESTE PRAZO, O
+                APARELHO SERÁ DESCARTADO.
               </span>
             </div>
             <div className="grid-item signature borderBottomTopNone">
-              <h6 className="signature-technician-title regular">
+              <p className="signature-technician-title regular">
                 ASSINATURA DO CLIENTE:
-              </h6>
-              <hr className="hr" />
+              </p>
             </div>
           </div>
           <div className="grid-container">
@@ -339,7 +315,10 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
               </span>
               <div className="checkbox">
                 <span className="checkbox-title">
-                  <strong> FIQUEI COM AS PEÇAS USADAS:</strong>
+                  <strong style={{ fontSize: "9.5px" }}>
+                    {" "}
+                    FIQUEI COM AS PEÇAS USADAS:
+                  </strong>
                 </span>
                 <div className="check">
                   <input type="checkbox" value="" id="checkTrue" />
@@ -352,24 +331,9 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
               </div>
             </div>
             <div className="grid-item signature border">
-              <h6 className="signature-technician-title regular">
+              <p className="signature-technician-title regular">
                 ASSINATURA DO CLIENTE:
-              </h6>
-              <hr className="hr" />
-            </div>
-          </div>
-          <div className="grid-container">
-            <div className="grid-item signature borderTopRightNone">
-              <span className="left-tech-signature-title">
-                RECEBI A IMPORTÂNCIA DE: ___________ REFERENTE AOS SERVIÇOS
-                PRESTADOS CONFORME ORÇAMENTO ACIMA.
-              </span>
-            </div>
-            <div className="grid-item signature borderTopNone">
-              <h6 className="signature-technician-title regular">
-                ASSINATURA DO TÉCNICO:
-              </h6>
-              <hr className="hr" />
+              </p>
             </div>
           </div>
         </section>
@@ -382,6 +346,18 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
         ocorrer com o congelador, como também, na troca do congelador a empresa
         não se responsabiliza pelo compressor. | Na carga de gás a garantia se
         resume unicamente a vazamentos externos.
+      </span>
+      <span
+        style={{
+          display: "flex",
+          flexWrap: "nowrap",
+          flexDirection: "row",
+          fontSize: 12,
+          justifyContent: "center",
+          fontStyle: "italic",
+        }}
+      >
+        Criado por: {data.createdBy}
       </span>
     </div>
   );

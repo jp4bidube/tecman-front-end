@@ -59,7 +59,7 @@ export const ClientSection = ({ data }: ClientSectionProps) => {
           Endereço:
         </Text>
         <Text size="sm">
-          {data?.street}, {data?.number}
+          {data?.street}, {data?.number}, {data?.complement}
         </Text>
       </Group>
       <Group mt={5}>

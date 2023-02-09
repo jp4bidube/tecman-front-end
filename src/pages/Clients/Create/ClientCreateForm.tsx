@@ -1,5 +1,5 @@
 import { useCreateClient } from "@/services/features/clients/hooks/useCreateClient";
-import { ClientCreatePayload } from "@/types/clients";
+import { ClientCreatePayloadForm } from "@/types/clients";
 import {
   Box,
   Button,
@@ -37,6 +37,10 @@ export const ClientCreateForm = () => {
     initialValues: {
       name: "",
       phoneNumber: "",
+      phoneNumber1: "",
+      phoneNumber2: "",
+      celPhone1: "",
+      celPhone2: "",
       cpf: "",
       email: "",
       address: {
@@ -51,14 +55,27 @@ export const ClientCreateForm = () => {
       documentIdenfication: "",
       stateRegistration: "",
       municipalRegistration: "",
-    } as ClientCreatePayload,
+    } as ClientCreatePayloadForm,
     validationSchema,
     onSubmit: (values) => {
-      mutation.mutate({
+      const payload = {
         ...values,
+        phoneNumber:
+          values.phoneNumber1! +
+          "," +
+          values.phoneNumber2! +
+          "," +
+          values.celPhone1! +
+          "," +
+          values.celPhone2!,
         stateRegistration: values.stateRegistration.toString(),
         municipalRegistration: values.municipalRegistration.toString(),
-      });
+      };
+      delete values.phoneNumber1;
+      delete values.phoneNumber2;
+      delete values.celPhone1;
+      delete values.celPhone2;
+      mutation.mutate(payload);
     },
   });
   const handleCreateOSChange = (check: boolean) => {
@@ -89,7 +106,7 @@ export const ClientCreateForm = () => {
             <Grid.Col span={12}>
               <Group position="apart">
                 <Title order={4}>Informações básicas</Title>
-                <Group align="flex-start">
+                <Group align="flex-end">
                   <Switch
                     labelPosition="left"
                     checked={createOs}
@@ -133,7 +150,7 @@ export const ClientCreateForm = () => {
                 withAsterisk
               />
             </Grid.Col>
-            <Grid.Col xs={12} md={3.5}>
+            <Grid.Col xs={12} md={6}>
               <TextInput
                 placeholder="E-mail"
                 label="E-mail"
@@ -145,21 +162,8 @@ export const ClientCreateForm = () => {
                 error={touched.email && errors.email}
               />
             </Grid.Col>
-            <Grid.Col xs={12} md={2.5}>
-              <InputBase
-                placeholder="Telefone"
-                label="Telefone"
-                name="phoneNumber"
-                component={InputMask}
-                id="phoneNumber"
-                value={values.phoneNumber}
-                onChange={action.handleChange}
-                error={touched.phoneNumber && errors.phoneNumber}
-                withAsterisk
-                mask="(99) 99999-9999"
-              />
-            </Grid.Col>
-            <Grid.Col xs={12} md={4.5}>
+
+            <Grid.Col xs={12} md={4} lg={3} miw={300}>
               <Input.Wrapper label="Tipo do cliente">
                 <Group position="left">
                   <SegmentedControl
@@ -254,6 +258,7 @@ export const ClientCreateForm = () => {
                     }
                   />
                 </Grid.Col>
+                <Grid.Col xs={12} md={3}></Grid.Col>
               </>
             ) : (
               <>
@@ -278,7 +283,7 @@ export const ClientCreateForm = () => {
                     label="Inscrição Estadual"
                     name="stateRegistration"
                     id="stateRegistration"
-                    value={+values.stateRegistration}
+                    value={values.stateRegistration}
                     onChange={action.handleChange}
                     maxLength={50}
                     error={
@@ -293,7 +298,7 @@ export const ClientCreateForm = () => {
                     label="Inscrição Municipal"
                     name="municipalRegistration"
                     id="municipalRegistration"
-                    value={+values.municipalRegistration}
+                    value={values.municipalRegistration}
                     onChange={action.handleChange}
                     maxLength={50}
                     error={
@@ -304,6 +309,62 @@ export const ClientCreateForm = () => {
                 </Grid.Col>
               </>
             )}
+            <Grid.Col xs={12} md={3}>
+              <InputBase
+                placeholder="Telefone"
+                label="Telefone 1"
+                name="phoneNumber1"
+                component={InputMask}
+                id="phoneNumber1"
+                value={values.phoneNumber1}
+                onChange={action.handleChange}
+                error={touched.phoneNumber1 && errors.phoneNumber1}
+                withAsterisk
+                mask="(99) 9999-9999"
+              />
+            </Grid.Col>
+            <Grid.Col xs={12} md={3}>
+              <InputBase
+                placeholder="Telefone"
+                label="Telefone 2"
+                name="phoneNumber2"
+                component={InputMask}
+                id="phoneNumber2"
+                value={values.phoneNumber2}
+                onChange={action.handleChange}
+                error={touched.phoneNumber2 && errors.phoneNumber2}
+                withAsterisk
+                mask="(99) 9999-9999"
+              />
+            </Grid.Col>
+            <Grid.Col xs={12} md={3}>
+              <InputBase
+                placeholder="Telefone"
+                label="Celular 1"
+                name="celPhone1"
+                component={InputMask}
+                id="celPhone1"
+                value={values.celPhone1}
+                onChange={action.handleChange}
+                error={touched.celPhone1 && errors.celPhone1}
+                withAsterisk
+                mask="(99) 99999-9999"
+              />
+            </Grid.Col>
+            <Grid.Col xs={12} md={3}>
+              <InputBase
+                placeholder="Telefone"
+                label="Celular 2"
+                name="celPhone2"
+                component={InputMask}
+                id="celPhone2"
+                value={values.celPhone2}
+                onChange={action.handleChange}
+                error={touched.celPhone2 && errors.celPhone2}
+                withAsterisk
+                mask="(99) 99999-9999"
+              />
+            </Grid.Col>
           </Grid>
           <Grid>
             <Grid.Col span={12}>

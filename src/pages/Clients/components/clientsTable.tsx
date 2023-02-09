@@ -100,7 +100,11 @@ export const ClientsTable = ({
               </td>
               <td>
                 <Text size="xs" tt="capitalize">
-                  {client.phoneNumber}
+                  {
+                    client.phoneNumber.split(",").filter((phone) => {
+                      if (phone !== "" && phone !== undefined) return phone;
+                    })[0]
+                  }
                 </Text>
               </td>
               <td>

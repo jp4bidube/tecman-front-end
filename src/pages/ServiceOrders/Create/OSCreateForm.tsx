@@ -12,6 +12,7 @@ import {
   InputBase,
   Loader,
   Modal,
+  NumberInput,
   Paper,
   ScrollArea,
   Select,
@@ -23,7 +24,12 @@ import {
 import cep from "cep-promise";
 import { FormikProvider, getIn, useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { TbArrowUpRight, TbDeviceFloppy, TbSearch } from "react-icons/tb";
+import {
+  TbArrowUpRight,
+  TbCurrencyDollar,
+  TbDeviceFloppy,
+  TbSearch,
+} from "react-icons/tb";
 import InputMask from "react-input-mask";
 import { useNavigate, useParams } from "react-router-dom";
 import { ClientAddressList } from "../components/ClientAddressList";
@@ -66,6 +72,7 @@ export const OSCreateForm = () => {
         complement: clienteData?.address[0]?.address?.complement || "",
         tecnicId: "",
         periodAttendance: "",
+        taxVisit: null || 0,
         defect: "",
         observacao: "",
         devices: [{ type: "", brand: "", model: "" }] as Array<Equipment>,
@@ -84,6 +91,7 @@ export const OSCreateForm = () => {
       complement: "",
       tecnicId: "",
       periodAttendance: "",
+      taxVisit: null || 0,
       defect: "",
       observacao: "",
       devices: [{ type: "", brand: "", model: "" }] as Array<Equipment>,
@@ -95,6 +103,7 @@ export const OSCreateForm = () => {
         ...values,
         tecnicId: +values.tecnicId,
         clientId: client?.id!,
+        taxVisit: values.taxVisit === null ? 0 : values.taxVisit,
       };
       createOSMutation.mutate(payload);
     },
@@ -152,8 +161,8 @@ export const OSCreateForm = () => {
             }
           }}
         >
-          <Paper withBorder p="1.5rem">
-            <Grid gutter="xl" mb={16}>
+          <Paper withBorder p="1rem">
+            <Grid gutter="xl" mb={10}>
               <Grid.Col span={12}>
                 <Group position="apart">
                   <Title order={4}>Informações do Cliente</Title>
@@ -325,20 +334,13 @@ export const OSCreateForm = () => {
                   </Group>
                 </Grid.Col>
                 <Grid.Col xs={12} md={4}>
-                  <Select
-                    label="Técnico responsável"
-                    placeholder="Selecione um técnico"
-                    value={formik.values.tecnicId}
-                    error={
-                      formik?.touched?.tecnicId && formik?.errors?.tecnicId
-                    }
-                    onChange={(value) =>
-                      formik.setFieldValue("tecnicId", value)
-                    }
-                    rightSection={isFetching && <Loader size="xs" />}
-                    data={data ? data : []}
-                    searchable
-                    clearable
+                  <InputDate
+                    placeholder="Data do atendimento"
+                    label="Data do atendimento"
+                    name="scheduledAttendance"
+                    formik={formik}
+                    value={formik.values.scheduledAttendance}
+                    minDate={new Date()}
                   />
                 </Grid.Col>
                 <Grid.Col xs={12} md={4}>
@@ -362,13 +364,56 @@ export const OSCreateForm = () => {
                   />
                 </Grid.Col>
                 <Grid.Col xs={12} md={4}>
-                  <InputDate
-                    placeholder="Data do atendimento"
-                    label="Data do atendimento"
-                    name="scheduledAttendance"
-                    formik={formik}
-                    value={formik.values.scheduledAttendance}
-                    minDate={new Date()}
+                  <TextInput
+                    placeholder="Descreva observações sobre horário"
+                    label="Observações"
+                    name="observacao"
+                    id="observacao"
+                    value={formik.values.observacao}
+                    onChange={formik.handleChange}
+                    maxLength={25}
+                  />
+                </Grid.Col>
+                <Grid.Col xs={12} md={4}>
+                  <Select
+                    label="Técnico responsável"
+                    placeholder="Selecione um técnico"
+                    value={formik.values.tecnicId}
+                    error={
+                      formik?.touched?.tecnicId && formik?.errors?.tecnicId
+                    }
+                    onChange={(value) =>
+                      formik.setFieldValue("tecnicId", value)
+                    }
+                    rightSection={isFetching && <Loader size="xs" />}
+                    data={data ? data : []}
+                    searchable
+                    clearable
+                  />
+                </Grid.Col>
+                <Grid.Col xs={12} md={2}>
+                  <NumberInput
+                    id="taxVisit"
+                    name="taxVisit"
+                    withAsterisk
+                    label="Taxa de Visita"
+                    hideControls
+                    value={formik.values?.taxVisit!}
+                    onChange={(value) =>
+                      formik.setFieldValue("taxVisit", value)
+                    }
+                    icon={<TbCurrencyDollar size={14} />}
+                    parser={(value) => value!.replace(/[.](?=(\d{3}))/g, "")}
+                    formatter={(value) =>
+                      !Number.isNaN(parseFloat(value!))
+                        ? value!.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                        : ""
+                    }
+                    decimalSeparator=","
+                    precision={2}
+                    error={formik.touched?.taxVisit && formik.errors?.taxVisit}
+                    iconWidth={25}
+                    min={0}
                   />
                 </Grid.Col>
                 <Grid.Col span={12}>
@@ -425,7 +470,7 @@ export const OSCreateForm = () => {
                     onChange={formik.handleChange}
                   />
                 </Grid.Col>
-                <Grid.Col xs={12} md={6}>
+                <Grid.Col xs={12}>
                   <Textarea
                     placeholder="Descreva o defeito apresentado"
                     label="Defeito"
@@ -436,19 +481,7 @@ export const OSCreateForm = () => {
                     error={formik.touched.defect && formik.errors.defect}
                     withAsterisk
                     autosize
-                    minRows={2}
-                  />
-                </Grid.Col>
-                <Grid.Col xs={12} md={6}>
-                  <Textarea
-                    placeholder="Observações"
-                    label="Observações"
-                    name="observacao"
-                    id="observacao"
-                    value={formik.values.observacao}
-                    onChange={formik.handleChange}
-                    autosize
-                    minRows={2}
+                    minRows={4}
                   />
                 </Grid.Col>
               </Grid>

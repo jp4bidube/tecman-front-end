@@ -1,4 +1,5 @@
 import { ServiceOrders } from "@/types/serviceOrders";
+import { converCurrency } from "@/utils/fileToB64";
 import { Badge, Card, Group, Text, Title } from "@mantine/core";
 
 type OSInfoProps = {
@@ -25,16 +26,28 @@ export const OSInfo = ({ data }: OSInfoProps) => {
             {new Date(data?.dateCreated || "").toLocaleDateString("pt-BR")}
           </Text>
         </Group>
-        {data?.orderServiceStatus.id === 2 && (
-          <Group spacing="xs">
-            <Text size="sm" weight={500} component="label">
-              Orçamento:
-            </Text>
-            <Badge size="md" color="orange">
-              {`R$ ${data.budget}`}
-            </Badge>
-          </Group>
-        )}
+        <Group>
+          {data?.budget !== 0 && (
+            <Group spacing="xs">
+              <Text size="sm" weight={500} component="label">
+                Orçamento:
+              </Text>
+              <Badge size="md" color="orange">
+                {converCurrency(data.budget!)}
+              </Badge>
+            </Group>
+          )}
+          {data?.taxVisit !== 0 && (
+            <Group spacing="xs">
+              <Text size="sm" weight={500} component="label">
+                Visita:
+              </Text>
+              <Badge size="md" color="orange">
+                {converCurrency(data.taxVisit!)}
+              </Badge>
+            </Group>
+          )}
+        </Group>
       </Group>
       <Group mt={5} position="apart">
         <Group spacing="xs">
@@ -49,7 +62,7 @@ export const OSInfo = ({ data }: OSInfoProps) => {
               Valor Recebido:
             </Text>
             <Badge size="md" color="teal">
-              {`R$ ${data.amountReceived}`}
+              {converCurrency(data.amountReceived!)}
             </Badge>
           </Group>
         )}

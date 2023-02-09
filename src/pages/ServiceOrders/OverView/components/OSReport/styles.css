@@ -121,7 +121,7 @@ h6 {
 }
 
 .grid-orcamento .grid-container.total {
-  grid-template-columns: 7fr 3fr;
+  grid-template-columns: 7.4fr 2.7fr;
 }
 .grid-orcamento .grid-container.row {
   grid-template-columns: 2.5fr 7.5fr;
@@ -132,7 +132,7 @@ h6 {
 }
 
 .payment-infos .grid-container {
-  grid-template-columns: 7fr 3fr;
+  grid-template-columns: 7.4fr 2.7fr;
 }
 
 .grid-orcamento .grid-item {
@@ -183,7 +183,16 @@ h6 {
 }
 
 .grid-item.signature {
-  padding: 0.5rem;
+  padding: 0 0.5rem;
+}
+.left-tech-signature-title {
+  padding: 0.5rem 0;
+  font-size: 0.75rem !important;
+}
+
+.signature-technician-title {
+  font-size: 0.75rem !important;
+  text-align: center;
 }
 .servico-content {
   margin-left: 1rem;
@@ -203,6 +212,7 @@ hr {
   display: flex;
   padding: 0.5rem 0;
   gap: 1rem;
+  font-size: 0.75remx;
 }
 
 .check {
@@ -212,6 +222,7 @@ hr {
 .check > span {
   margin-left: 0.5rem;
   margin-top: 0.2rem;
+  font-size: 0.75remx;
 }
 
 .borderTopNone {

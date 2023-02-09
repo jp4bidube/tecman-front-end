@@ -5,7 +5,9 @@ import { useEditOS } from "@/services/features/serviceOrders/hooks/useEditOS";
 import { useTechniciansSelect } from "@/services/features/technicians/hooks/useTechniciansSelect";
 import { ServiceOrders, ServiceOrdersEdit } from "@/types/serviceOrders";
 import {
+  ActionIcon,
   Badge,
+  Box,
   Button,
   Checkbox,
   Divider,
@@ -14,6 +16,7 @@ import {
   Input,
   InputBase,
   Loader,
+  NumberInput,
   Paper,
   ScrollArea,
   Select,
@@ -26,9 +29,14 @@ import {
 import { DatePicker, TimeInput } from "@mantine/dates";
 import cep from "cep-promise";
 import { setHours, setMinutes, setMonth } from "date-fns";
-import { getIn, useFormik } from "formik";
+import { FieldArray, FormikProvider, getIn, useFormik } from "formik";
 import { useEffect } from "react";
-import { TbCurrencyDollar, TbDeviceFloppy } from "react-icons/tb";
+import {
+  TbCurrencyDollar,
+  TbDeviceFloppy,
+  TbPlus,
+  TbTrash,
+} from "react-icons/tb";
 import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
 import { equipmentsList } from "../constants/equipaments";
@@ -52,8 +60,8 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
       serviceExecuted: os?.serviceExecuted || "",
       pieceSold: os?.pieceSold || false,
       clientPiece: os?.clientPiece || false,
-      budget: os?.budget ?? 0,
-      amountReceived: os?.amountReceived ?? 0,
+      budget: os?.budget ? os?.budget : null,
+      amountReceived: os?.amountReceived ? os?.amountReceived : null,
       datePayment: os.datePayment ? new Date(os.datePayment) : null,
       clientId: os?.client?.id || null,
       street: os?.street || "",
@@ -79,8 +87,9 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
         ? new Date(os.scheduledAttendance)
         : null,
       hasWarranty: os?.equipments[0]?.mounthsWarranty ? "sim" : "não",
-      taxVisit: os.taxVisit ? os.taxVisit! : "",
+      taxVisit: os.taxVisit ? os.taxVisit! : null,
       paymentMethod: os.paymentMethod || "",
+      specifications: [""],
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -90,9 +99,9 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
       let payload = {
         ...values,
         tecnicId: +values.tecnicId || 0,
-        budget: +values.budget || 0,
-        taxVisit: +values.taxVisit || 0,
-        amountReceived: +values.amountReceived || 0,
+        budget: values.budget || 0,
+        taxVisit: values.taxVisit || 0,
+        amountReceived: values.amountReceived || 0,
         absence1:
           absence1 !== null
             ? setMinutes(
@@ -132,58 +141,61 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
   }, [currentWarranty]);
 
   return (
-    <form onSubmit={action.handleSubmit}>
-      <Paper withBorder p="1.5rem">
-        <Stack style={{ maxHeight: "90vh", overflow: "hidden" }}>
-          <Grid gutter="xl" mb={8}>
-            <Grid.Col span={12}>
-              <Group position="apart" align="baseline">
-                <Group position="left">
-                  <Title order={5}>Número OS: </Title>
-                  <Badge variant="dot" size="md" color="tecman">
-                    {os?.id}
+    <FormikProvider value={formik}>
+      <form onSubmit={action.handleSubmit}>
+        <Paper withBorder p="1.5rem" h="100%">
+          <Stack style={{ overflow: "hidden" }}>
+            <Grid gutter="xl" mb={8}>
+              <Grid.Col span={12}>
+                <Group position="apart" align="baseline">
+                  <Group position="left">
+                    <Title order={5}>Número OS: </Title>
+                    <Badge variant="dot" size="md" color="tecman">
+                      {os?.id}
+                    </Badge>
+                  </Group>
+                  <Badge
+                    size="lg"
+                    color={
+                      os?.orderServiceStatus?.id === 1
+                        ? "orange"
+                        : os?.orderServiceStatus?.id === 3
+                        ? "red"
+                        : "teal"
+                    }
+                  >
+                    {os?.orderServiceStatus?.status}
                   </Badge>
-                </Group>
-                <Badge
-                  size="lg"
-                  color={
-                    os?.orderServiceStatus?.id === 1
-                      ? "orange"
-                      : os?.orderServiceStatus?.id === 3
-                      ? "red"
-                      : "teal"
-                  }
-                >
-                  {os?.orderServiceStatus?.status}
-                </Badge>
 
-                <Group noWrap spacing="md">
-                  <Button
-                    radius="xl"
-                    type="submit"
-                    leftIcon={<TbDeviceFloppy size={20} />}
-                  >
-                    Salvar
-                    {/* {mutation.isLoading ? <Loader size="xs" /> : "Salvar"} */}
-                  </Button>
-                  <Button
-                    radius="xl"
-                    variant="outline"
-                    onClick={() => navigate(-1)}
-                  >
-                    Cancelar
-                  </Button>
+                  <Group noWrap spacing="md">
+                    <Button
+                      radius="xl"
+                      type="submit"
+                      leftIcon={<TbDeviceFloppy size={20} />}
+                    >
+                      Salvar
+                      {/* {mutation.isLoading ? <Loader size="xs" /> : "Salvar"} */}
+                    </Button>
+                    <Button
+                      radius="xl"
+                      variant="outline"
+                      onClick={() => navigate(-1)}
+                    >
+                      Cancelar
+                    </Button>
+                  </Group>
                 </Group>
-              </Group>
-            </Grid.Col>
-          </Grid>
+              </Grid.Col>
+            </Grid>
+          </Stack>
           <ScrollArea.Autosize
-            maxHeight="79vh"
+            maxHeight="100%"
             type="scroll"
-            scrollHideDelay={200}
+            scrollHideDelay={100}
             scrollbarSize={8}
           >
-            <Grid>
+            <Grid mb={50}>
+              {/* CLIENTE */}
               <Grid.Col xs={12}>
                 <Divider
                   size="xs"
@@ -198,7 +210,6 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                   variant="filled"
                   readOnly
                   value={os?.client.name}
-                  withAsterisk
                 />
               </Grid.Col>
               <Grid.Col xs={12} md={3}>
@@ -291,6 +302,195 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                   error={touched.complement && errors.complement}
                 />
               </Grid.Col>
+              {/* ATENDIMENTO */}
+              <Grid.Col xs={12}>
+                <Divider
+                  size="xs"
+                  labelPosition="left"
+                  label={<Title order={5}>Informações do Atendimento</Title>}
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={4}>
+                <InputDate
+                  placeholder="Data do atendimento"
+                  label="Data do atendimento"
+                  name="scheduledAttendance"
+                  formik={formik}
+                  value={formik.values.scheduledAttendance}
+                  minDate={new Date()}
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={4}>
+                <Select
+                  label="Período de atendimento"
+                  placeholder="Selecione período"
+                  value={formik.values.periodAttendance}
+                  error={
+                    formik?.touched?.periodAttendance &&
+                    formik?.errors?.periodAttendance
+                  }
+                  onChange={(value) =>
+                    formik.setFieldValue("periodAttendance", value)
+                  }
+                  data={[
+                    { value: "Período da manhã", label: "Período da manhã" },
+                    { value: "Período da tarde", label: "Período da tarde" },
+                  ]}
+                  searchable
+                  clearable
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={4}>
+                <TextInput
+                  placeholder="Descreva observações sobre horário"
+                  label="Observações"
+                  name="observacao"
+                  id="observacao"
+                  value={formik.values.observacao}
+                  onChange={formik.handleChange}
+                  maxLength={25}
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={4}>
+                <Select
+                  label="Técnico responsável"
+                  placeholder="Selecione um técnico"
+                  value={formik.values.tecnicId}
+                  error={formik?.touched?.tecnicId && formik?.errors?.tecnicId}
+                  onChange={(value) => formik.setFieldValue("tecnicId", value)}
+                  rightSection={isFetching && <Loader size="xs" />}
+                  data={technicians ? technicians : []}
+                  searchable
+                  clearable
+                />
+              </Grid.Col>
+              {/* EQUIPAMENTO */}
+              <Grid.Col xs={12}>
+                <Divider
+                  size="xs"
+                  labelPosition="left"
+                  label={<Title order={5}>Informações do Equipamento</Title>}
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={4}>
+                <Select
+                  withAsterisk
+                  label="Equipamento"
+                  placeholder="Selecione um equipamento"
+                  value={values?.device?.type}
+                  error={touched?.device?.type && errors?.device?.type}
+                  onChange={(value) =>
+                    formik.setFieldValue("device.type", value)
+                  }
+                  data={equipmentsList}
+                  clearable
+                />
+              </Grid.Col>
+              <Grid.Col xs={6} md={4}>
+                <TextInput
+                  placeholder="Marca"
+                  label="Marca"
+                  name={"device.brand"}
+                  id={"device.brand"}
+                  value={values?.device?.brand}
+                  error={touched?.device?.brand && errors?.device?.brand}
+                  onChange={action.handleChange}
+                />
+              </Grid.Col>
+              <Grid.Col xs={6} md={4}>
+                <TextInput
+                  placeholder="Modelo"
+                  label="Modelo"
+                  name={`device.model`}
+                  id={`device.model`}
+                  value={values?.device?.model}
+                  error={touched?.device?.model && errors?.device?.model}
+                  onChange={formik.handleChange}
+                />
+              </Grid.Col>
+              {os.orderServiceStatus.id === 2 ? (
+                <>
+                  <Grid.Col xs={12} md={4}>
+                    <Tooltip
+                      label="Usuário não tem permissão para executar esta ação"
+                      withArrow
+                      color="red.4"
+                      disabled={hasPermission}
+                    >
+                      <Select
+                        variant={hasPermission ? "default" : "filled"}
+                        readOnly={!hasPermission}
+                        label="Garantia"
+                        placeholder="Selecione garantia"
+                        value={values?.hasWarranty}
+                        error={touched?.hasWarranty && errors?.hasWarranty}
+                        onChange={(value) =>
+                          formik.setFieldValue("hasWarranty", value)
+                        }
+                        data={[
+                          { value: "não", label: "Sem garantia" },
+                          { value: "sim", label: "Com garantia" },
+                        ]}
+                        withAsterisk
+                        clearable
+                      />
+                    </Tooltip>
+                  </Grid.Col>
+                  {values?.hasWarranty === "sim" ? (
+                    <>
+                      <Grid.Col xs={12} md={2}>
+                        <Tooltip
+                          label="Usuário não tem permissão para executar esta ação"
+                          withArrow
+                          color="red.4"
+                          disabled={hasPermission}
+                        >
+                          <Input.Wrapper label="Tempo de garantia">
+                            <QuantityInput
+                              formik={formik}
+                              objName="device"
+                              name="device.mounthsWarranty"
+                              dateInputName="device.warrantyPeriod"
+                              disabled={hasPermission}
+                            />
+                          </Input.Wrapper>
+                        </Tooltip>
+                      </Grid.Col>
+                      <Grid.Col xs={12} md={3}>
+                        <DatePicker
+                          placeholder="Término da garantia"
+                          locale="pt-BR"
+                          label="Data de término da garantia"
+                          value={values?.device?.warrantyPeriod}
+                          error={
+                            touched?.device?.warrantyPeriod &&
+                            errors?.device?.warrantyPeriod &&
+                            getIn(errors, `device.warrantyPeriod`)
+                          }
+                          onChange={(value) =>
+                            action.setFieldValue(`device.warrantyPeriod`, value)
+                          }
+                          disabled
+                        />
+                      </Grid.Col>
+                    </>
+                  ) : (
+                    <Grid.Col xs={12} md={6}></Grid.Col>
+                  )}
+                </>
+              ) : null}
+              <Grid.Col xs={12}>
+                <Textarea
+                  placeholder="Descreva o defeito apresentado"
+                  label="Defeito Reclamado"
+                  id="defect"
+                  name="defect"
+                  value={values.defect}
+                  onChange={action.handleChange}
+                  error={touched.defect && errors.defect}
+                  minRows={3}
+                />
+              </Grid.Col>
               <Grid.Col xs={12}>
                 <Divider
                   size="xs"
@@ -298,67 +498,83 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                   label={<Title order={5}>Informações da OS</Title>}
                 />
               </Grid.Col>
+              <Grid.Col xs={12} md={4}>
+                <NumberInput
+                  id="budget"
+                  name="budget"
+                  withAsterisk
+                  label="Valor do Orçamento"
+                  hideControls
+                  value={values?.budget!}
+                  onChange={(value) => formik.setFieldValue("budget", value)}
+                  icon={<TbCurrencyDollar size={14} />}
+                  parser={(value) => value!.replace(/[.](?=(\d{3}))/g, "")}
+                  formatter={(value) =>
+                    !Number.isNaN(parseFloat(value!))
+                      ? value!.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                      : ""
+                  }
+                  decimalSeparator=","
+                  precision={2}
+                  error={touched?.budget && errors?.budget}
+                  iconWidth={25}
+                  min={0}
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={4}>
+                <NumberInput
+                  id="taxVisit"
+                  name="taxVisit"
+                  withAsterisk
+                  label="Taxa de Visita"
+                  hideControls
+                  value={values?.taxVisit!}
+                  onChange={(value) => formik.setFieldValue("taxVisit", value)}
+                  icon={<TbCurrencyDollar size={14} />}
+                  parser={(value) => value!.replace(/[.](?=(\d{3}))/g, "")}
+                  formatter={(value) =>
+                    !Number.isNaN(parseFloat(value!))
+                      ? value!.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                      : ""
+                  }
+                  decimalSeparator=","
+                  precision={2}
+                  error={touched?.taxVisit && errors?.taxVisit}
+                  iconWidth={25}
+                  min={0}
+                />
+              </Grid.Col>
+              <Grid.Col xs={12} md={4}>
+                <NumberInput
+                  id="amountReceived"
+                  name="amountReceived"
+                  withAsterisk
+                  label="Valor do Recebido"
+                  hideControls
+                  variant={
+                    os.orderServiceStatus.id === 1 ? "filled" : "default"
+                  }
+                  readOnly={os.orderServiceStatus.id === 1 ? true : false}
+                  value={values?.amountReceived!}
+                  onChange={(value) =>
+                    formik.setFieldValue("amountReceived", value)
+                  }
+                  icon={<TbCurrencyDollar size={14} />}
+                  parser={(value) => value!.replace(/[.](?=(\d{3}))/g, "")}
+                  formatter={(value) =>
+                    !Number.isNaN(parseFloat(value!))
+                      ? value!.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                      : ""
+                  }
+                  decimalSeparator=","
+                  precision={2}
+                  error={touched?.amountReceived && errors?.amountReceived}
+                  iconWidth={25}
+                  min={0}
+                />
+              </Grid.Col>
               {os.orderServiceStatus.id === 2 ? (
                 <>
-                  <Grid.Col xs={12} md={4}>
-                    <Input.Wrapper
-                      label="Valor do Orçamento"
-                      error={touched?.budget && errors?.budget}
-                    >
-                      <Input
-                        type="number"
-                        step=".01"
-                        id="budget"
-                        name="budget"
-                        value={values?.budget}
-                        onChange={action?.handleChange}
-                        icon={<TbCurrencyDollar size={14} />}
-                        invalid={
-                          touched?.budget && errors?.budget ? true : false
-                        }
-                      />
-                    </Input.Wrapper>
-                  </Grid.Col>
-                  <Grid.Col xs={12} md={4}>
-                    <Input.Wrapper
-                      label="Valor do Recebido"
-                      error={touched?.amountReceived && errors?.amountReceived}
-                    >
-                      <Input
-                        type="number"
-                        step=".01"
-                        id="amountReceived"
-                        name="amountReceived"
-                        value={values?.amountReceived}
-                        onChange={action?.handleChange}
-                        icon={<TbCurrencyDollar size={14} />}
-                        invalid={
-                          touched?.amountReceived && errors?.amountReceived
-                            ? true
-                            : false
-                        }
-                      />
-                    </Input.Wrapper>
-                  </Grid.Col>
-                  <Grid.Col xs={12} md={4}>
-                    <Input.Wrapper
-                      label="Taxa de Visita"
-                      error={touched?.taxVisit && errors?.taxVisit}
-                    >
-                      <Input
-                        type="number"
-                        step=".01"
-                        id="taxVisit"
-                        name="taxVisit"
-                        value={values?.taxVisit}
-                        onChange={action?.handleChange}
-                        icon={<TbCurrencyDollar size={14} />}
-                        invalid={
-                          touched?.taxVisit && errors?.taxVisit ? true : false
-                        }
-                      />
-                    </Input.Wrapper>
-                  </Grid.Col>
                   <Grid.Col xs={12} md={4}>
                     <InputDate
                       placeholder="Data de Pagamento"
@@ -433,49 +649,6 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                   </Grid.Col>
                 </>
               ) : null}
-
-              <Grid.Col xs={12} md={4}>
-                <Select
-                  label="Técnico Responsável"
-                  placeholder="Selecione um técnico"
-                  value={values.tecnicId}
-                  error={touched?.tecnicId && errors?.tecnicId}
-                  onChange={(value) => formik.setFieldValue("tecnicId", value)}
-                  rightSection={isFetching && <Loader size="xs" />}
-                  data={technicians ? technicians : []}
-                  withAsterisk
-                  searchable
-                  clearable
-                />
-              </Grid.Col>
-              <Grid.Col xs={12} md={4}>
-                <Select
-                  label="Período de atendimento"
-                  placeholder="Selecione período"
-                  value={values.periodAttendance}
-                  error={touched?.periodAttendance && errors?.periodAttendance}
-                  onChange={(value) =>
-                    formik.setFieldValue("periodAttendance", value)
-                  }
-                  data={[
-                    { value: "Período da manhã", label: "Período da manhã" },
-                    { value: "Período da tarde", label: "Período da tarde" },
-                  ]}
-                  searchable
-                  clearable
-                />
-              </Grid.Col>
-              <Grid.Col xs={12} md={4}>
-                <InputDate
-                  withAsterisk
-                  placeholder="Data do atendimento"
-                  label="Data do atendimento"
-                  name="scheduledAttendance"
-                  formik={formik}
-                  value={formik.values.scheduledAttendance}
-                  minDate={new Date()}
-                />
-              </Grid.Col>
               {os?.absence1 !== null ? (
                 <>
                   <Grid.Col xs={12} md={4}>
@@ -518,7 +691,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                       variant="filled"
                       readOnly
                       placeholder="Quem "
-                      label="Quem informou a ausência"
+                      label="Motivo do cancelamento"
                       id="obsAbsence"
                       name="obsAbsence"
                       value={values?.obsAbsence}
@@ -529,150 +702,64 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                   </Grid.Col>
                 </>
               ) : null}
-              <Grid.Col xs={12}>
-                <Divider
-                  size="xs"
-                  labelPosition="left"
-                  label={<Title order={5}>Informações do Equipamento</Title>}
-                />
-              </Grid.Col>
 
-              <Grid.Col xs={12} md={4}>
-                <Select
-                  withAsterisk
-                  label="Equipamento"
-                  placeholder="Selecione um equipamento"
-                  value={values?.device?.type}
-                  error={touched?.device?.type && errors?.device?.type}
-                  onChange={(value) =>
-                    formik.setFieldValue("device.type", value)
-                  }
-                  data={equipmentsList}
-                  clearable
-                />
-              </Grid.Col>
-              <Grid.Col xs={6} md={4}>
-                <TextInput
-                  placeholder="Marca"
-                  label="Marca"
-                  name={"device.brand"}
-                  id={"device.brand"}
-                  value={values?.device?.brand}
-                  error={touched?.device?.brand && errors?.device?.brand}
-                  onChange={action.handleChange}
-                />
-              </Grid.Col>
-              <Grid.Col xs={6} md={4}>
-                <TextInput
-                  placeholder="Modelo"
-                  label="Modelo"
-                  name={`device.model`}
-                  id={`device.model`}
-                  value={values?.device?.model}
-                  error={touched?.device?.model && errors?.device?.model}
-                  onChange={formik.handleChange}
-                />
-              </Grid.Col>
-              {os.orderServiceStatus.id === 2 ? (
-                <>
-                  <Grid.Col xs={12} md={4}>
-                    <Tooltip
-                      label="Usuário não tem permissão para executar esta ação"
-                      withArrow
-                      color="red.4"
-                      disabled={hasPermission}
-                    >
-                      <Select
-                        variant={hasPermission ? "default" : "filled"}
-                        readOnly={!hasPermission}
-                        label="Garantia"
-                        placeholder="Selecione garantia"
-                        value={values?.hasWarranty}
-                        error={touched?.hasWarranty && errors?.hasWarranty}
-                        onChange={(value) =>
-                          formik.setFieldValue("hasWarranty", value)
+              {/* ESPECIFICAÇÕES */}
+              <FieldArray
+                name="specifications"
+                render={(arrayHelpers) => (
+                  <>
+                    <Grid.Col span={12}>
+                      <Divider
+                        size="xs"
+                        labelPosition="left"
+                        label={
+                          <>
+                            <Title order={5}>Especificações</Title>
+                            <ActionIcon<"button">
+                              variant="light"
+                              size={28}
+                              ml={10}
+                              onClick={() => arrayHelpers.push("")}
+                              color="tecman"
+                              disabled={values.specifications.length === 7}
+                            >
+                              <TbPlus size={16} />
+                            </ActionIcon>
+                          </>
                         }
-                        data={[
-                          { value: "não", label: "Sem garantia" },
-                          { value: "sim", label: "Com garantia" },
-                        ]}
-                        withAsterisk
-                        clearable
                       />
-                    </Tooltip>
-                  </Grid.Col>
-                  {values?.hasWarranty === "sim" ? (
-                    <>
-                      <Grid.Col xs={12} md={4}>
-                        <Tooltip
-                          label="Usuário não tem permissão para executar esta ação"
-                          withArrow
-                          color="red.4"
-                          disabled={hasPermission}
-                        >
-                          <Input.Wrapper label="Tempo de garantia">
-                            <QuantityInput
-                              formik={formik}
-                              objName="device"
-                              name="device.mounthsWarranty"
-                              dateInputName="device.warrantyPeriod"
-                              disabled={hasPermission}
-                            />
-                          </Input.Wrapper>
-                        </Tooltip>
-                      </Grid.Col>
-                      <Grid.Col xs={12} md={4}>
-                        <DatePicker
-                          placeholder="Término da garantia"
-                          locale="pt-BR"
-                          label="Data de término da garantia"
-                          value={values?.device?.warrantyPeriod}
-                          error={
-                            touched?.device?.warrantyPeriod &&
-                            errors?.device?.warrantyPeriod &&
-                            getIn(errors, `device.warrantyPeriod`)
-                          }
-                          onChange={(value) =>
-                            action.setFieldValue(`device.warrantyPeriod`, value)
-                          }
-                          disabled
-                        />
-                      </Grid.Col>
-                    </>
-                  ) : (
-                    <Grid.Col xs={12} md={6}></Grid.Col>
-                  )}
-                </>
-              ) : null}
-
-              <Grid.Col xs={12} md={6}>
-                <Textarea
-                  placeholder="Descreva o defeito apresentado"
-                  label="Defeito Reclamado"
-                  id="defect"
-                  name="defect"
-                  value={values.defect}
-                  onChange={action.handleChange}
-                  error={touched.defect && errors.defect}
-                  minRows={2}
-                />
-              </Grid.Col>
-              <Grid.Col xs={12} md={6}>
-                <Textarea
-                  placeholder="Observações"
-                  label="Observações"
-                  value={values.observacao}
-                  id="observacao"
-                  name="observacao"
-                  onChange={action.handleChange}
-                  error={touched.observacao && errors.observacao}
-                  minRows={2}
-                />
-              </Grid.Col>
+                    </Grid.Col>
+                    {formik?.values?.specifications.map((_, index) => (
+                      <>
+                        <Grid.Col xs={11.5}>
+                          <TextInput
+                            placeholder="Descreva as especificações do técnico"
+                            id={`specifications.${index}`}
+                            name={`specifications.${index}`}
+                            value={values.specifications[index]}
+                            onChange={action.handleChange}
+                          />
+                        </Grid.Col>
+                        <Grid.Col xs={12} md={0.5}>
+                          <Box mt={5}>
+                            <ActionIcon
+                              variant="light"
+                              color="red"
+                              onClick={() => arrayHelpers.remove(index)}
+                            >
+                              <TbTrash size={20} />
+                            </ActionIcon>
+                          </Box>
+                        </Grid.Col>
+                      </>
+                    ))}
+                  </>
+                )}
+              />
             </Grid>
           </ScrollArea.Autosize>
-        </Stack>
-      </Paper>
-    </form>
+        </Paper>
+      </form>
+    </FormikProvider>
   );
 };
