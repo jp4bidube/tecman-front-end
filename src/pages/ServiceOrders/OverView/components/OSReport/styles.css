@@ -196,7 +196,11 @@ h6 {
 }
 .servico-content {
   margin-left: 1rem;
-  padding: 1rem;
+  padding: 0.3rem 0;
+}
+
+.empty {
+  padding: 1rem 0;
 }
 
 hr {

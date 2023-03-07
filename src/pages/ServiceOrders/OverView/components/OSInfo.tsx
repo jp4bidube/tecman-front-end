@@ -49,12 +49,14 @@ export const OSInfo = ({ data }: OSInfoProps) => {
           )}
         </Group>
       </Group>
-      <Group mt={5} position="apart">
+      <Group mt={5} position="apart" spacing="xs">
         <Group spacing="xs">
           <Text size="sm" weight={500} component="label">
             Atendente:
           </Text>
-          <Text size="sm">{data?.createdBy}</Text>
+          <Text size="sm" lineClamp={1}>
+            {data?.createdBy}
+          </Text>
         </Group>
         {data?.orderServiceStatus.id === 2 && (
           <Group spacing="xs">

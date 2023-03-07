@@ -3,7 +3,11 @@ import { QuantityInput } from "@/components/QuantityInput";
 import { usePermission } from "@/hooks/usePermission";
 import { useEditOS } from "@/services/features/serviceOrders/hooks/useEditOS";
 import { useTechniciansSelect } from "@/services/features/technicians/hooks/useTechniciansSelect";
-import { ServiceOrders, ServiceOrdersEdit } from "@/types/serviceOrders";
+import {
+  IOSEditForm,
+  ServiceOrders,
+  ServiceOrdersEdit,
+} from "@/types/serviceOrders";
 import {
   ActionIcon,
   Badge,
@@ -26,10 +30,16 @@ import {
   Title,
   Tooltip,
 } from "@mantine/core";
-import { DatePicker, TimeInput } from "@mantine/dates";
+import { TimeInput } from "@mantine/dates";
 import cep from "cep-promise";
 import { setHours, setMinutes, setMonth } from "date-fns";
-import { FieldArray, FormikProvider, getIn, useFormik } from "formik";
+import {
+  FieldArray,
+  FormikProps,
+  FormikProvider,
+  getIn,
+  useFormik,
+} from "formik";
 import { useEffect } from "react";
 import {
   TbCurrencyDollar,
@@ -52,7 +62,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
   const mutation = useEditOS();
   const hasPermission = usePermission();
 
-  const formik = useFormik({
+  const formik: FormikProps<IOSEditForm> = useFormik<IOSEditForm>({
     initialValues: {
       status: os?.orderServiceStatus?.id || 0,
       id: os?.id || 0,
@@ -89,7 +99,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
       hasWarranty: os?.equipments[0]?.mounthsWarranty ? "sim" : "não",
       taxVisit: os.taxVisit ? os.taxVisit! : null,
       paymentMethod: os.paymentMethod || "",
-      specifications: [""],
+      specifications: os.specifications || [""],
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -129,11 +139,28 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
 
   useEffect(() => {
     if (currentWarranty === "sim") {
-      action.setFieldValue("device.mounthsWarranty", 1);
-      action.setFieldValue(
-        "device.warrantyPeriod",
-        setMonth(new Date(), new Date().getMonth() + 1)
-      );
+      if (
+        os.equipments[0].mounthsWarranty === null &&
+        os.equipments[0].warrantyPeriod === null
+      ) {
+        action.setFieldValue("device.mounthsWarranty", 1);
+        action.setFieldValue(
+          "device.warrantyPeriod",
+          setMonth(
+            new Date(os.scheduledAttendance!),
+            new Date(os.scheduledAttendance!).getMonth() + 1
+          )
+        );
+      } else {
+        action.setFieldValue(
+          "device.mounthsWarranty",
+          values.device.mounthsWarranty
+        );
+        action.setFieldValue(
+          "device.warrantyPeriod",
+          values.device.warrantyPeriod
+        );
+      }
     } else {
       action.setFieldValue("device.mounthsWarranty", null);
       action.setFieldValue("device.warrantyPeriod", null);
@@ -172,6 +199,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                       radius="xl"
                       type="submit"
                       leftIcon={<TbDeviceFloppy size={20} />}
+                      loading={mutation.isLoading}
                     >
                       Salvar
                       {/* {mutation.isLoading ? <Loader size="xs" /> : "Salvar"} */}
@@ -318,6 +346,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                   formik={formik}
                   value={formik.values.scheduledAttendance}
                   minDate={new Date()}
+                  withAsterisk
                 />
               </Grid.Col>
               <Grid.Col xs={12} md={4}>
@@ -447,8 +476,6 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                         >
                           <Input.Wrapper label="Tempo de garantia">
                             <QuantityInput
-                              formik={formik}
-                              objName="device"
                               name="device.mounthsWarranty"
                               dateInputName="device.warrantyPeriod"
                               disabled={hasPermission}
@@ -457,20 +484,14 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                         </Tooltip>
                       </Grid.Col>
                       <Grid.Col xs={12} md={3}>
-                        <DatePicker
-                          placeholder="Término da garantia"
-                          locale="pt-BR"
+                        <InputDate
+                          placeholder="Data de Pagamento"
                           label="Data de término da garantia"
-                          value={values?.device?.warrantyPeriod}
-                          error={
-                            touched?.device?.warrantyPeriod &&
-                            errors?.device?.warrantyPeriod &&
-                            getIn(errors, `device.warrantyPeriod`)
-                          }
-                          onChange={(value) =>
-                            action.setFieldValue(`device.warrantyPeriod`, value)
-                          }
+                          value={new Date(values?.device?.warrantyPeriod!)}
+                          name="device.warrantyPeriod"
+                          formik={formik}
                           disabled
+                          minDate={new Date(os.dateCreated)}
                         />
                       </Grid.Col>
                     </>
@@ -697,7 +718,6 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                       value={values?.obsAbsence}
                       onChange={action.handleChange}
                       error={touched.obsAbsence && errors.obsAbsence}
-                      withAsterisk
                     />
                   </Grid.Col>
                 </>
@@ -738,6 +758,7 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
                             name={`specifications.${index}`}
                             value={values.specifications[index]}
                             onChange={action.handleChange}
+                            maxLength={110}
                           />
                         </Grid.Col>
                         <Grid.Col xs={12} md={0.5}>

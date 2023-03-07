@@ -1,3 +1,4 @@
+import { IOSEditForm } from "@/types/serviceOrders";
 import {
   ActionIcon,
   createStyles,
@@ -5,7 +6,7 @@ import {
   NumberInputHandlers,
   Text,
 } from "@mantine/core";
-import { setMonth } from "date-fns";
+import { useFormikContext } from "formik";
 import { useRef } from "react";
 import { TbMinus, TbPlus } from "react-icons/tb";
 
@@ -53,45 +54,35 @@ const useStyles = createStyles((theme) => ({
 interface QuantityInputProps {
   min?: number;
   max?: number;
-  formik: any;
   name: string;
   dateInputName: string;
-  objName: string;
   disabled?: boolean;
 }
 
 export function QuantityInput({
   min = 1,
   max = 24,
-  formik,
   name,
-  objName,
   dateInputName,
   disabled = false,
 }: QuantityInputProps) {
   const { classes } = useStyles();
   const handlers = useRef<NumberInputHandlers>(null);
 
+  const formik = useFormikContext<IOSEditForm>();
+
   const handleIncrement = () => {
-    formik.setFieldValue(name, formik.values?.[objName]?.mounthsWarranty + 1);
-    formik.setFieldValue(
-      dateInputName,
-      setMonth(
-        formik.values?.[objName]?.warrantyPeriod,
-        formik.values?.[objName]?.warrantyPeriod.getMonth() + 1
-      )
-    );
+    const date = new Date(formik.values.device.warrantyPeriod!);
+    const incrementedDate = date.setMonth(date.getMonth() + 1);
+    formik.setFieldValue(name, formik.values?.device?.mounthsWarranty + 1);
+    formik.setFieldValue(dateInputName, new Date(incrementedDate));
   };
 
   const handleDecrement = () => {
-    formik.setFieldValue(name, formik.values?.[objName]?.mounthsWarranty - 1);
-    formik.setFieldValue(
-      dateInputName,
-      setMonth(
-        formik.values?.[objName]?.warrantyPeriod,
-        formik.values?.[objName]?.warrantyPeriod.getMonth() - 1
-      )
-    );
+    const date = new Date(formik.values.device.warrantyPeriod!);
+    const decrementedDate = date.setMonth(date.getMonth() - 1);
+    formik.setFieldValue(name, formik.values?.device?.mounthsWarranty - 1);
+    formik.setFieldValue(dateInputName, new Date(decrementedDate));
   };
 
   return (
@@ -99,7 +90,7 @@ export function QuantityInput({
       <ActionIcon<"button">
         size={28}
         onClick={handleDecrement}
-        disabled={!disabled || formik.values?.[objName]?.mounthsWarranty <= min}
+        disabled={!disabled || formik.values?.device?.mounthsWarranty <= min}
         onMouseDown={(event) => event.preventDefault()}
       >
         <TbMinus size={16} />
@@ -109,22 +100,20 @@ export function QuantityInput({
           variant="unstyled"
           min={min}
           max={max}
-          value={Number.parseInt(formik.values?.[objName]?.mounthsWarranty!)}
+          value={formik.values?.device?.mounthsWarranty!}
           handlersRef={handlers}
           onChange={formik.handleChange}
           hidden
           disabled={!disabled}
         />
-        {formik.values?.[objName]?.mounthsWarranty! < 2
-          ? `${formik.values?.[objName]?.mounthsWarranty!} mês`
-          : `${formik.values?.[objName]?.mounthsWarranty!} meses`}
+        {formik.values?.device?.mounthsWarranty! < 2
+          ? `${formik.values?.device?.mounthsWarranty!} mês`
+          : `${formik.values?.device?.mounthsWarranty!} meses`}
       </Text>
       <ActionIcon<"button">
         size={28}
         onClick={handleIncrement}
-        disabled={
-          !disabled || formik.values?.[objName]?.mounthsWarranty === max
-        }
+        disabled={!disabled || formik.values?.device?.mounthsWarranty === max}
         onMouseDown={(event) => event.preventDefault()}
       >
         <TbPlus size={16} />

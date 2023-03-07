@@ -1,6 +1,7 @@
 import paymentQr from "@/assets/payment-qr-code.png";
 import logo from "@/assets/tecman-logo.jpg";
 import { ServiceOrders } from "@/types/serviceOrders";
+import { converCurrency } from "@/utils/fileToB64";
 import "./styles.css";
 
 interface OSReportProps {
@@ -61,8 +62,24 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
       </header>
       <main>
         <section className="os-infos">
-          <div className="os">
+          <div className="os" style={{ position: "relative" }}>
+            <span></span>
             <h3 id="os-title">ORDEM DE SERVIÇO</h3>
+            <span
+              style={{
+                fontSize: 12,
+                fontStyle: "italic",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                position: "absolute",
+                width: "15rem",
+                right: 0,
+              }}
+            >
+              Atendente: {data.createdBy.split(" ")[0]}{" "}
+              {data.createdBy.split(" ")[data.createdBy.split(" ").length - 1]}
+            </span>
           </div>
           <div className="grid-os">
             <div className="grid-container details">
@@ -128,12 +145,18 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                   </div>
                   <div>
                     <span className="bold">Telefone: </span>
-                    <span className="blue-info" id="clientPhone">
-                      {
-                        data.client.phoneNumber.split(",").filter((phone) => {
+
+                    <span
+                      className="blue-info"
+                      id="clientPhone"
+                      style={{ textAlign: "start" }}
+                    >
+                      {data.client.phoneNumber
+                        .split(",")
+                        .filter((phone) => {
                           if (phone !== "" && phone !== undefined) return phone;
-                        })[0]
-                      }
+                        })
+                        .join(" ")}
                     </span>
                   </div>
                 </div>
@@ -189,24 +212,53 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                 </span>
               </div>
               <div className="grid-item os-number-cell  borderTopNone">
-                <span className="number-os-title">INFORMOU AUSÊNCIA: </span>
+                <span className="number-os-title">CANCELAMENTO: </span>
                 <span className="number-os blue-info">{data?.obsAbsence}</span>
               </div>
             </div>
             <div className="grid-container details">
               <div className="grid-item os-number-cell  borderTopRightNone">
                 <span className="number-os-title">CUSTO DA VISITA: </span>
-                <span className="number-os blue-info"></span>
+                <span className="number-os blue-info">
+                  {data.taxVisit !== null && data.taxVisit > 0
+                    ? converCurrency(data.taxVisit)
+                    : "R$"}
+                </span>
               </div>
               <div className="grid-item os-number-cell  borderTopNone">
                 <span className="number-os-title">FORMA DE PAGAMENTO: </span>
-                <span className="number-os blue-info"></span>
+                <span className="number-os blue-info">
+                  {data.paymentMethod}
+                </span>
               </div>
             </div>
 
             <div className="grid">
               <div className="grid-item  borderTopNone">
                 <span className="number-os-title">GARANTIA: </span>
+                <span>
+                  {data.equipments[0]?.mounthsWarranty
+                    ? data.equipments[0]?.mounthsWarranty > 1
+                      ? `${data.equipments[0]?.mounthsWarranty} Meses`
+                      : `${data.equipments[0]?.mounthsWarranty} Mês`
+                    : data.orderServiceStatus.id !== 1
+                    ? "Sem Garantia"
+                    : ""}
+                </span>
+                {data.orderServiceStatus.id !== 1 && (
+                  <>
+                    <span className="number-os-title">
+                      {" "}
+                      {data.equipments[0]?.mounthsWarranty ? "Término: " : ""}
+                    </span>
+                    <span>
+                      {data.equipments[0]?.warrantyPeriod &&
+                        new Date(
+                          data.equipments[0]?.warrantyPeriod!
+                        ).toLocaleDateString("pt-BR")}
+                    </span>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -217,43 +269,101 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
           </div>
 
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(0) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(0)}
+              </span>
             </div>
           </div>
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(1) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(1)}
+              </span>
             </div>
           </div>
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(2) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(2)}
+              </span>
             </div>
           </div>
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(3) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(3)}
+              </span>
             </div>
           </div>
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(4) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(4)}
+              </span>
             </div>
           </div>
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(5) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(5)}
+              </span>
             </div>
           </div>
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
-            </div>
-          </div>
-          <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(6) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(6)}
+              </span>
             </div>
           </div>
         </div>
@@ -272,7 +382,11 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                 className="grid-item signature total-value  borderTopNone"
                 style={{ padding: ".5rem" }}
               >
-                <span className="total-value bold">R$</span>
+                <span className="total-value bold">
+                  {data.budget !== null && data.budget > 0
+                    ? converCurrency(data.budget)
+                    : "R$"}
+                </span>
               </div>
             </div>
           </div>
@@ -307,7 +421,7 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
               </p>
             </div>
           </div>
-          <div className="grid-container">
+          {/* <div className="grid-container">
             <div className="grid-item signature borderRightNone">
               <span className="left-tech-signature-title">
                 O EQUIPAMENTO SE ENCONTRA EM PERFEITAS CONDIÇÕES DE USO E FOI
@@ -335,6 +449,40 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
                 ASSINATURA DO CLIENTE:
               </p>
             </div>
+          </div> */}
+          <div className="grid-container">
+            <div className="grid-item signature borderRightNone">
+              <span className="left-tech-signature-title">
+                O EQUIPAMENTO SE ENCONTRA EM PERFEITAS CONDIÇÕES DE USO E FOI
+                DEVIDAMENTE TESTADO PELO TÉCNICO NA MINHA PRESENÇA.
+              </span>
+              <div className="checkbox">
+                <span className="checkbox-title">
+                  <strong> FIQUEI COM AS PEÇAS USADAS:</strong>
+                </span>
+                <div className="check">
+                  <input
+                    type="checkbox"
+                    checked={data.clientPiece !== null && data.clientPiece}
+                    id="checkTrue"
+                  />
+                  <span>SIM</span>
+                </div>
+                <div className="check">
+                  <input
+                    type="checkbox"
+                    checked={data.clientPiece !== null && !data.clientPiece}
+                    id="checkFalse"
+                  />
+                  <span>NÃO</span>
+                </div>
+              </div>
+            </div>
+            <div className="grid-item signature border">
+              <h6 className="signature-technician-title regular">
+                ASSINATURA DO CLIENTE:
+              </h6>
+            </div>
           </div>
         </section>
       </footer>
@@ -346,18 +494,6 @@ export const OSReport = ({ componentRef, data }: OSReportProps) => {
         ocorrer com o congelador, como também, na troca do congelador a empresa
         não se responsabiliza pelo compressor. | Na carga de gás a garantia se
         resume unicamente a vazamentos externos.
-      </span>
-      <span
-        style={{
-          display: "flex",
-          flexWrap: "nowrap",
-          flexDirection: "row",
-          fontSize: 12,
-          justifyContent: "center",
-          fontStyle: "italic",
-        }}
-      >
-        Criado por: {data.createdBy}
       </span>
     </div>
   );

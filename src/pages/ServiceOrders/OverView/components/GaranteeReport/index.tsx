@@ -62,8 +62,24 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
       </header>
       <main>
         <section className="os-infos">
-          <div className="os">
+          <div className="os" style={{ position: "relative" }}>
+            <span></span>
             <h3 id="os-title">GARANTIA</h3>
+            <span
+              style={{
+                fontSize: 12,
+                fontStyle: "italic",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                position: "absolute",
+                width: "15rem",
+                right: 0,
+              }}
+            >
+              Atendente: {data.createdBy.split(" ")[0]}{" "}
+              {data.createdBy.split(" ")[data.createdBy.split(" ").length - 1]}
+            </span>
           </div>
           <div className="grid-os">
             <div className="grid-container details">
@@ -103,11 +119,12 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
                   <div>
                     <span className="bold">Telefone: </span>
                     <span className="blue-info" id="clientPhone">
-                      {
-                        data.client.phoneNumber.split(",").filter((phone) => {
+                      {data.client.phoneNumber
+                        .split(",")
+                        .filter((phone) => {
                           if (phone !== "" && phone !== undefined) return phone;
-                        })[0]
-                      }
+                        })
+                        .join(" ")}
                     </span>
                   </div>
                 </div>
@@ -196,44 +213,103 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
           <div className="grid-item  borderTopNone">
             <span className="number-os-title">ESPECIFICAÇÃO</span>
           </div>
+
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(0) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(0)}
+              </span>
             </div>
           </div>
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(1) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(1)}
+              </span>
             </div>
           </div>
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(2) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(2)}
+              </span>
             </div>
           </div>
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(3) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(3)}
+              </span>
             </div>
           </div>
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(4) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(4)}
+              </span>
             </div>
           </div>
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(5) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(5)}
+              </span>
             </div>
           </div>
           <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
-            </div>
-          </div>
-          <div className="grid-item  borderTopNone">
-            <div className="servico-content">
-              <span></span>
+            <div
+              className={`servico-content ${
+                data.specifications?.length > 0 &&
+                data.specifications?.at(6) !== undefined
+                  ? ""
+                  : "empty"
+              }`}
+            >
+              <span>
+                {data.specifications?.length > 0 && data.specifications?.at(6)}
+              </span>
             </div>
           </div>
         </div>
@@ -299,18 +375,6 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
             Os aparelhos, depois de consertados, ficarão na loja por até 90
             dias, sendo descartados após este período.
           </strong>
-        </span>
-        <span
-          style={{
-            display: "flex",
-            flexWrap: "nowrap",
-            flexDirection: "row",
-            fontSize: 12,
-            justifyContent: "center",
-            fontStyle: "italic",
-          }}
-        >
-          Criado por: {data.createdBy}
         </span>
       </span>
     </div>

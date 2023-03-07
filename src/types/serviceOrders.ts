@@ -119,6 +119,7 @@ export interface ServiceOrders {
   scheduledAttendance: Date | null;
   taxVisit: number;
   paymentMethod: string;
+  specifications: Array<string>;
 }
 
 export interface Client {
@@ -167,4 +168,42 @@ export interface WarrantyVisitItem {
   serviceExecuted: string;
   equipment: Equipment;
   employee: User;
+}
+
+export interface IOSEditForm {
+  status: number;
+  id: number;
+  tecnicId: string;
+  serviceExecuted: string;
+  pieceSold: boolean;
+  clientPiece: boolean;
+  budget: number | null;
+  amountReceived: number | null;
+  datePayment: Date | null;
+  clientId: number | null;
+  street: string;
+  periodAttendance: string;
+  cep: string;
+  number: string;
+  district: string;
+  complement: string;
+  observacao: string;
+  defect: string;
+  absence1: Date | null;
+  absence1Hour: Date | null;
+  obsAbsence: string;
+  device: IDevice;
+  scheduledAttendance: Date | null;
+  hasWarranty: string;
+  taxVisit: number | null;
+  paymentMethod: string;
+  specifications: string[];
+}
+export interface IDevice {
+  id: number | null;
+  type: string;
+  brand: string;
+  model: string;
+  mounthsWarranty: number;
+  warrantyPeriod: Date | null;
 }

@@ -8,6 +8,7 @@ import {
   MediaQuery,
   Pagination,
   Paper,
+  Select,
   Stack,
   TextInput,
 } from "@mantine/core";
@@ -24,18 +25,25 @@ export const ServiceOrdersList = () => {
   const { data, isFetching, isLoading } = useFetchOS(store.serviceOrdersFilter);
 
   const [keySearch, setKeySearch] = useState(search);
+  const [select, setSelect] = useState<string>("");
 
   const handleSearch = () => {
     store.setServiceOrdersFilter({
       ...store.serviceOrdersFilter,
       search: keySearch,
+      select,
       page: 1,
     });
   };
 
   const handleClear = () => {
     setKeySearch("");
-    store.setServiceOrdersFilter({ ...store.serviceOrdersFilter, search: "" });
+    setSelect("");
+    store.setServiceOrdersFilter({
+      ...store.serviceOrdersFilter,
+      search: "",
+      select: "",
+    });
   };
 
   useEffect(() => {
@@ -44,6 +52,7 @@ export const ServiceOrdersList = () => {
       order: "desc",
       search: "",
       sort: "name",
+      select,
     });
   }, []);
 
@@ -60,6 +69,23 @@ export const ServiceOrdersList = () => {
                 placeholder="Pesquisar"
                 onKeyDown={({ key }) => key === "Enter" && handleSearch()}
                 width={200}
+              />
+            </Grid.Col>
+            <Grid.Col xs={2} md={2.1}>
+              <Select
+                placeholder="Selecione Coluna"
+                value={select}
+                onChange={(value) => setSelect(value!)}
+                data={[
+                  { value: "os", label: "Número OS" },
+                  // { value: "name", label: "Nome" },
+                  { value: "documento", label: "Documento" },
+                  { value: "endereco", label: "Endereço" },
+                  { value: "telefone", label: "Telefone" },
+                  { value: "status", label: "Situação" },
+                ]}
+                searchable
+                clearable
               />
             </Grid.Col>
             <Grid.Col xs={12} md={4}>

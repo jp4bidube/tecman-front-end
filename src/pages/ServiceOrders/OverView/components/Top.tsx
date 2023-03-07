@@ -95,11 +95,14 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
       mergedDate.setSeconds(0);
 
       console.log(hour);
+      console.log(minute);
+      console.log(mergedDate);
       let payload = {
         ...values,
         date: mergedDate,
       };
       delete payload.hours;
+      console.log(payload);
       mutation.mutate({ payload, id: data.id });
     },
   });

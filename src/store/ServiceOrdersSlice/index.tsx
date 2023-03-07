@@ -1,10 +1,10 @@
-import { Filter } from "@/types/common";
+import { OSFilter } from "@/types/common";
 import { StateCreator } from "zustand";
 
 export type OSSlice = {
-  serviceOrdersFilter: Filter;
+  serviceOrdersFilter: OSFilter;
   setServiceOrdersPage: (page: number) => void;
-  setServiceOrdersFilter: (filter: Filter) => void;
+  setServiceOrdersFilter: (filter: OSFilter) => void;
 };
 
 export const createOSSlice: StateCreator<OSSlice> = (set) => ({
@@ -13,6 +13,7 @@ export const createOSSlice: StateCreator<OSSlice> = (set) => ({
     order: "desc",
     search: "",
     sort: "name",
+    select: "",
   },
   setServiceOrdersPage(page) {
     set((state) => ({

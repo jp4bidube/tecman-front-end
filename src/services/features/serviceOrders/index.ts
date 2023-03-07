@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { Filter } from "@/types/common";
+import { Filter, OSFilter } from "@/types/common";
 import { ResponseOK } from "@/types/responseOk";
 import {
   ServiceOrderFinish,
@@ -23,19 +23,30 @@ class ServiceOrdersService {
     return data.result;
   }
 
-  async fetchServiceOrder({ order, page, search, sort }: Filter): Promise<{
+  async fetchServiceOrder({
+    order,
+    page,
+    search,
+    sort,
+    select,
+  }: OSFilter): Promise<{
     serviceOrders: ServiceOrders[];
     total: number;
   }> {
-    const { data, headers } = await api.get("/OrderService", {
-      params: {
-        limit: "10",
-        offset: page - 1,
-        order,
-        sort,
-        search,
-      },
-    });
+    console.log(select);
+    const { data, headers } = await api.get(
+      `/OrderService/${select === null || select === "" ? "" : "filters"}`,
+      {
+        params: {
+          limit: "10",
+          offset: page - 1,
+          order,
+          sort,
+          search,
+          select,
+        },
+      }
+    );
 
     return {
       serviceOrders: data.result,
@@ -113,6 +124,7 @@ class ServiceOrdersService {
     payload: { date: Date; obs: string },
     id: number
   ): Promise<ResponseOK> {
+    console.log(payload);
     const { data } = await api.patch<ResponseOK>(
       `/OrderService/absence/${id}`,
       payload

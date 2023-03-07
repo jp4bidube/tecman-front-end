@@ -184,6 +184,7 @@ export const OSCreateForm = () => {
                       type="submit"
                       disabled={mutation.isLoading}
                       leftIcon={<TbDeviceFloppy size={20} />}
+                      loading={createOSMutation.isLoading}
                     >
                       {mutation.isLoading ? <Loader size="xs" /> : "Salvar"}
                     </Button>
@@ -341,6 +342,7 @@ export const OSCreateForm = () => {
                     formik={formik}
                     value={formik.values.scheduledAttendance}
                     minDate={new Date()}
+                    withAsterisk
                   />
                 </Grid.Col>
                 <Grid.Col xs={12} md={4}>
