@@ -2,6 +2,7 @@ import { Th } from "@/components/Th";
 import useStore from "@/store";
 import { Badge, Group, Table, Text, ThemeIcon, Tooltip } from "@mantine/core";
 
+import { CopyComponent } from "@/components/CopyComponent";
 import { ServiceOrders } from "@/types/serviceOrders";
 import { TbSearch } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
@@ -92,23 +93,38 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
                 </Text>
               </td>
               <td>
-                <Text size="xs" tt="capitalize">
-                  {os.client?.cpf}
-                </Text>
+                <Group>
+                  <Text size="xs" tt="capitalize">
+                    {os.client?.cpf}
+                  </Text>
+                  <CopyComponent value={os.client?.cpf} />
+                </Group>
               </td>
               <td>
-                <Text size="xs" tt="capitalize">
-                  {os.street}, {os.number}
-                </Text>
+                <Group>
+                  <Text size="xs" tt="capitalize">
+                    {os.street}, {os.number}
+                  </Text>
+                  <CopyComponent value={os.street} />
+                </Group>
               </td>
               <td>
-                <Text size="xs" tt="capitalize">
-                  {
-                    os.client.phoneNumber.split(",").filter((phone) => {
-                      if (phone !== "" && phone !== undefined) return phone;
-                    })[0]
-                  }
-                </Text>
+                <Group>
+                  <Text size="xs" tt="capitalize">
+                    {
+                      os.client.phoneNumber.split(",").filter((phone) => {
+                        if (phone !== "" && phone !== undefined) return phone;
+                      })[0]
+                    }
+                  </Text>
+                  <CopyComponent
+                    value={
+                      os.client.phoneNumber.split(",").filter((phone) => {
+                        if (phone !== "" && phone !== undefined) return phone;
+                      })[0]
+                    }
+                  />
+                </Group>
               </td>
               <td>
                 <Badge

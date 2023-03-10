@@ -71,7 +71,7 @@ export const ServiceOrdersList = () => {
                 width={200}
               />
             </Grid.Col>
-            <Grid.Col xs={2} md={2.1}>
+            <Grid.Col xs={12} sm={4} md={2.1}>
               <Select
                 placeholder="Selecione Coluna"
                 value={select}
