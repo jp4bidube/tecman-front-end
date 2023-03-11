@@ -417,7 +417,6 @@ export const FinishOSForm = ({ opened, setOpened, os }: FinishOSFormProps) => {
                   <Grid.Col xs={12} md={4}>
                     <Input.Wrapper label="Tempo de garantia">
                       <QuantityInput
-                        formik={formik}
                         name="device.mounthsWarranty"
                         dateInputName="device.warrantyPeriod"
                         disabled

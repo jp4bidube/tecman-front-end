@@ -100,6 +100,7 @@ export const ClientEdit = () => {
         order: "asc",
         search: "",
         sort: "name",
+        select: "",
       });
     }
     setActiveTab(
