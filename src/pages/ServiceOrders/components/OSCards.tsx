@@ -1,16 +1,8 @@
 import useStore from "@/store";
 import { ServiceOrders } from "@/types/serviceOrders";
-import {
-  Badge,
-  Button,
-  Card,
-  Group,
-  Text,
-  ThemeIcon,
-  Tooltip,
-} from "@mantine/core";
+import { Badge, Button, Card, Group, Text, Tooltip } from "@mantine/core";
 import { useEffect } from "react";
-import { TbChevronDown, TbChevronUp, TbEdit, TbUserOff } from "react-icons/tb";
+import { TbSearch } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { OSCardSkeleton } from "../List/OSCardSkeleton";
 
@@ -68,15 +60,15 @@ export const OSCards = ({ serviceOrders, isFetching }: UsersCardsProps) => {
             </Group>
             <Card.Section withBorder inheritPadding py="xs">
               <Group>
-                <Tooltip label="Editar" withArrow>
+                <Tooltip label="Visualizar" withArrow>
                   <Button
                     variant="light"
                     onClick={() =>
                       navigate(`/service-orders/${os.id}/over-view`)
                     }
-                    leftIcon={<TbEdit />}
+                    leftIcon={<TbSearch />}
                   >
-                    <Text>Editar</Text>
+                    <Text>Visualizar</Text>
                   </Button>
                 </Tooltip>
               </Group>

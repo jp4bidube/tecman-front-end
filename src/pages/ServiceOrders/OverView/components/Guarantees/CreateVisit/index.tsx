@@ -35,6 +35,7 @@ export const CreateVisit = ({
   const mutation = useCreateWarranty();
 
   const initialValues = {
+    defect: "",
     clientePiece: false,
     dateVisit: new Date(),
     serviceExecuted: "",
@@ -78,6 +79,19 @@ export const CreateVisit = ({
     >
       <form onSubmit={action.handleSubmit}>
         <Grid>
+          <Grid.Col xs={12}>
+            <Textarea
+              placeholder="Defeito apresentado"
+              label="Defeito apresentado"
+              name="defect"
+              id="defect"
+              value={values.defect}
+              error={touched.defect && errors.defect}
+              onChange={action.handleChange}
+              autosize
+              minRows={6}
+            />
+          </Grid.Col>
           <Grid.Col>
             <InputDate
               label="Data da visita"

@@ -2,13 +2,13 @@ import { useMe } from "@/services/features/users/hooks/useMe";
 import useStore from "@/store";
 import {
   AppShell,
+  Box,
   Burger,
-  Container,
   Drawer,
-  Grid,
   Group,
   MediaQuery,
   Navbar,
+  ScrollArea,
   useMantineTheme,
 } from "@mantine/core";
 import { Outlet } from "react-router-dom";
@@ -38,7 +38,7 @@ export const Layout = () => {
           <Navbar.Section>
             <Brand />
           </Navbar.Section>
-          <Navbar.Section grow mt="md">
+          <Navbar.Section grow mt="md" component={ScrollArea}>
             <MainLinks />
           </Navbar.Section>
           <Navbar.Section>
@@ -59,20 +59,16 @@ export const Layout = () => {
         onClose={() => setIsMenuOpen(false)}
         padding="xl"
       >
-        <Grid>
-          <Grid.Col>
+        <Box sx={{ height: "90vh", display: "flex", flexDirection: "column" }}>
+          <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
             <Brand />
-          </Grid.Col>
-          <Grid.Col mt="md" style={{ minHeight: "71vh" }}>
             <MainLinks />
-          </Grid.Col>
-          <Grid.Col>
-            <AccountSettingsLink />
-          </Grid.Col>
-        </Grid>
+          </Box>
+          <AccountSettingsLink />
+        </Box>
       </Drawer>
-      <Group position="apart" sx={{ marginBottom: "3rem" }}>
-        <Group spacing={-20}>
+      <Group position="apart" sx={{ marginBottom: "1.6rem" }}>
+        <Group>
           <MediaQuery largerThan="xl" styles={{ display: "none" }}>
             <Burger
               opened={isMenuOpen}
@@ -85,9 +81,9 @@ export const Layout = () => {
           <Breadcrumbs />
         </Group>
       </Group>
-      <Container size="xl" sx={{ maxHeight: "87vh" }}>
+      <div>
         <Outlet />
-      </Container>
+      </div>
     </AppShell>
   );
 };

@@ -25,8 +25,8 @@ import {
   ScrollArea,
   Select,
   Stack,
-  Textarea,
   TextInput,
+  Textarea,
   Title,
   Tooltip,
 } from "@mantine/core";
@@ -217,9 +217,9 @@ export const OSEditForm = ({ os }: OSEditFormProps) => {
             </Grid>
           </Stack>
           <ScrollArea.Autosize
-            maxHeight="100%"
-            type="scroll"
-            scrollHideDelay={100}
+            maxHeight="calc(100vh - 180px)"
+            type="auto"
+            offsetScrollbars
             scrollbarSize={8}
           >
             <Grid mb={50}>

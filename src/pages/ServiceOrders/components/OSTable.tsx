@@ -7,6 +7,7 @@ import { ServiceOrders } from "@/types/serviceOrders";
 import { TbSearch } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { OSTableSkeleton } from "../List/OSTableSkeleton";
+import { checkStatusColor } from "@/utils/checkStatus";
 
 type OSTableProps = {
   serviceOrders: ServiceOrders[] | undefined;
@@ -127,15 +128,7 @@ export const OSTable = ({ serviceOrders, isFetching }: OSTableProps) => {
                 </Group>
               </td>
               <td>
-                <Badge
-                  color={
-                    os?.orderServiceStatus?.id === 1
-                      ? "orange"
-                      : os?.orderServiceStatus?.id === 3
-                      ? "red"
-                      : "teal"
-                  }
-                >
+                <Badge color={checkStatusColor(os?.orderServiceStatus?.id)}>
                   <Text size="xs" tt="capitalize">
                     {os.orderServiceStatus.status}
                   </Text>

@@ -27,11 +27,15 @@ export const OSOverViewForm = ({
   data,
 }: OSOverViewFormProps) => {
   const componentRef = useRef<HTMLDivElement>(null);
-  console.log(data);
   return (
     <Stack>
       <Top data={data!} handleFinishOS={handleFinishOS} />
-      <ScrollArea type="auto" offsetScrollbars scrollbarSize={8}>
+      <ScrollArea.Autosize
+        maxHeight="calc(100vh - 250px)"
+        type="auto"
+        offsetScrollbars
+        scrollbarSize={8}
+      >
         <Grid>
           <Grid.Col xs={12} md={6}>
             <ClientSection data={data!} />
@@ -54,7 +58,7 @@ export const OSOverViewForm = ({
               value={data.defect}
               variant="filled"
               readOnly
-              minRows={2}
+              minRows={4}
             />
           </Grid.Col>
           {/* <Grid.Col xs={12} md={6}>
@@ -77,7 +81,7 @@ export const OSOverViewForm = ({
                   variant="filled"
                   readOnly
                   autosize
-                  minRows={2}
+                  minRows={3}
                 />
               </Grid.Col>
               <Grid.Col xs={12} md={6}>
@@ -134,8 +138,27 @@ export const OSOverViewForm = ({
               </Grid.Col>
             </>
           ) : null}
+          <Grid.Col xs={12}>
+            <Divider
+              size="xs"
+              labelPosition="left"
+              label={<Title order={5}>Especificações</Title>}
+            />
+          </Grid.Col>
+          {data.specifications &&
+            data.specifications?.map((spec) => (
+              <Grid.Col xs={12}>
+                <TextInput
+                  placeholder="Descreva as especificações do técnico"
+                  value={spec}
+                  readOnly
+                  variant="filled"
+                  maxLength={110}
+                />
+              </Grid.Col>
+            ))}
         </Grid>
-      </ScrollArea>
+      </ScrollArea.Autosize>
     </Stack>
   );
 };

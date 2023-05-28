@@ -63,7 +63,20 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
       <main>
         <section className="os-infos">
           <div className="os" style={{ position: "relative" }}>
-            <span></span>
+            <span
+              style={{
+                fontSize: 12,
+                fontStyle: "italic",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                position: "absolute",
+                width: "15rem",
+                left: 0,
+              }}
+            >
+              Técnico: {data.tecnic.name}
+            </span>
             <h3 id="os-title">GARANTIA</h3>
             <span
               style={{
@@ -74,7 +87,7 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
                 textOverflow: "ellipsis",
                 position: "absolute",
                 width: "15rem",
-                right: 0,
+                right: -5,
               }}
             >
               Atendente: {data.createdBy.split(" ")[0]}{" "}
@@ -111,9 +124,13 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
                   </div>
                   <div>
                     <span className="bold">Endereço: </span>
-                    <span className="blue-info" id="clientAddress">
-                      {data?.street}, {data?.number}, {data?.district},{" "}
-                      {data?.cep}.
+                    <span
+                      className="blue-info"
+                      id="clientAddress"
+                      style={{ textAlign: "start" }}
+                    >
+                      {data?.street}, {data?.number}, {data?.complement},{" "}
+                      {data?.district} {data?.cep}.
                     </span>
                   </div>
                   <div>
