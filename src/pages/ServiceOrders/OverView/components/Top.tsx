@@ -211,7 +211,8 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
                   </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  {data.orderServiceStatus.id === 1 ? (
+                  {data.orderServiceStatus.id === 1 ||
+                  data.orderServiceStatus.id === 4 ? (
                     <Menu.Item
                       icon={<TbPrinter size={16} color={menuIconColor} />}
                       onClick={handlePrint}
