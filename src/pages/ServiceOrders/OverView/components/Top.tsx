@@ -12,6 +12,7 @@ import {
   Group,
   Menu,
   Modal,
+  Text,
   Textarea,
   Title,
 } from "@mantine/core";
@@ -31,6 +32,9 @@ import { useReactToPrint } from "react-to-print";
 import { absenceValidationSchema } from "../validationSchema";
 import { GaranteeReport } from "./GaranteeReport";
 import { OSReport } from "./OSReport";
+import { openConfirmModal } from "@mantine/modals";
+import { useMarkASPrintedOS } from "@/services/features/serviceOrders/hooks/useMarkASPrintedOS";
+import { checkStatusColor } from "@/utils/checkStatus";
 
 type TopProps = {
   data: ServiceOrders;
@@ -64,14 +68,65 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
   const componentGRef = useRef<HTMLDivElement>(null);
 
   const mutation = useCancelOS();
+  const mutationPrinted = useMarkASPrintedOS();
 
-  const handlePrint = useReactToPrint({
+  const print = useReactToPrint({
     content: () => componentRef.current,
+    onAfterPrint: () => openConfirmPrintModal(),
   });
+  const handlePrint = () => {
+    if (data.printed) {
+      return openPrintConfirmation();
+    }
+    print();
+  };
 
   const handlePrintGarantee = useReactToPrint({
     content: () => componentGRef.current,
   });
+
+  const openConfirmPrintModal = () => {
+    openConfirmModal({
+      title: <Title order={4}>Confirmação de impressão</Title>,
+      centered: true,
+      children: (
+        <Text size="sm">
+          Por favor confirme se a impressão foi realizada com sucesso.
+        </Text>
+      ),
+      labels: { confirm: "Confirmar", cancel: "Cancelar" },
+      confirmProps: {
+        color: "primary",
+        radius: "xl",
+        variant: "outline",
+      },
+      cancelProps: { radius: "xl" },
+      onConfirm: () => mutationPrinted.mutate(data.id),
+      closeOnEscape: false,
+      closeOnClickOutside: false,
+    });
+  };
+  const openPrintConfirmation = () => {
+    openConfirmModal({
+      title: <Title order={4}>Confirmação de impressão</Title>,
+      centered: true,
+      children: (
+        <Text size="sm">
+          Essa Ordem de serviço ja foi impressa, deseja imprimir novamente?
+        </Text>
+      ),
+      labels: { confirm: "Confirmar", cancel: "Cancelar" },
+      confirmProps: {
+        color: "primary",
+        radius: "xl",
+        variant: "outline",
+      },
+      cancelProps: { radius: "xl" },
+      onConfirm: () => print(),
+      closeOnEscape: false,
+      closeOnClickOutside: false,
+    });
+  };
 
   interface IForm {
     date: Date;
@@ -93,10 +148,6 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
       mergedDate.setHours(hour!);
       mergedDate.setMinutes(minute!);
       mergedDate.setSeconds(0);
-
-      console.log(hour);
-      console.log(minute);
-      console.log(mergedDate);
       let payload = {
         ...values,
         date: mergedDate,
@@ -121,19 +172,14 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
             </Group>
             <Badge
               size="lg"
-              color={
-                data?.orderServiceStatus?.id === 1
-                  ? "orange"
-                  : data?.orderServiceStatus?.id === 3
-                  ? "red"
-                  : "teal"
-              }
+              color={checkStatusColor(data?.orderServiceStatus?.id)}
             >
               {data?.orderServiceStatus?.status}
             </Badge>
 
             <Group noWrap spacing={0}>
-              {data.orderServiceStatus.id === 1 ? (
+              {data.orderServiceStatus.id === 1 ||
+              data.orderServiceStatus.id === 4 ? (
                 <Button
                   radius="xl"
                   onClick={() => handleFinishOS(true)}
@@ -179,7 +225,8 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
                   >
                     Imprimir Garantia
                   </Menu.Item>
-                  {data.orderServiceStatus.id === 1 ? (
+                  {data.orderServiceStatus.id === 1 ||
+                  data.orderServiceStatus.id === 4 ? (
                     <Menu.Item
                       icon={<MdOutlineCancel size={16} color={menuIconColor} />}
                       onClick={() => setOpened(true)}

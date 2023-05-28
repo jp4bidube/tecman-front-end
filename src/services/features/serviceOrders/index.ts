@@ -132,6 +132,12 @@ class ServiceOrdersService {
 
     return data;
   }
+
+  async markOSasPrinted(id: number): Promise<ResponseOK> {
+    const { data } = await api.patch<ResponseOK>(`/OrderService/print/${id}`);
+
+    return data;
+  }
 }
 
 export const serviceOrdersService = new ServiceOrdersService();

@@ -120,6 +120,7 @@ export interface ServiceOrders {
   taxVisit: number;
   paymentMethod: string;
   specifications: Array<string>;
+  printed: boolean;
 }
 
 export interface Client {
@@ -154,6 +155,7 @@ export interface Tecnic {
 }
 
 export interface WarrantyVisit {
+  defect: string;
   clientePiece: boolean;
   dateVisit: Date;
   serviceExecuted: string;
