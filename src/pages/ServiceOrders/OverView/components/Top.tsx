@@ -8,6 +8,7 @@ import {
   Button,
   createStyles,
   Divider,
+  Flex,
   Grid,
   Group,
   Menu,
@@ -15,6 +16,7 @@ import {
   Text,
   Textarea,
   Title,
+  Tooltip,
 } from "@mantine/core";
 import { TimeInput } from "@mantine/dates";
 import { useFormik } from "formik";
@@ -25,7 +27,9 @@ import {
   TbArrowLeft,
   TbChevronDown,
   TbEdit,
+  TbExclamationMark,
   TbPrinter,
+  TbUserExclamation,
 } from "react-icons/tb";
 import { useNavigate, useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
@@ -108,16 +112,21 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
   };
   const openPrintConfirmation = () => {
     openConfirmModal({
-      title: <Title order={4}>Confirmação de impressão</Title>,
+      title: (
+        <Title order={4}>
+          Confirmação de impressão
+          <TbExclamationMark size={18} color="orange" />
+        </Title>
+      ),
       centered: true,
       children: (
         <Text size="sm">
           Essa Ordem de serviço ja foi impressa, deseja imprimir novamente?
         </Text>
       ),
-      labels: { confirm: "Confirmar", cancel: "Cancelar" },
+      labels: { confirm: "Continuar", cancel: "Cancelar" },
       confirmProps: {
-        color: "primary",
+        color: "orange.5",
         radius: "xl",
         variant: "outline",
       },
@@ -174,7 +183,14 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
               size="lg"
               color={checkStatusColor(data?.orderServiceStatus?.id)}
             >
-              {data?.orderServiceStatus?.status}
+              <Flex gap={4} align="center">
+                {data?.orderServiceStatus?.status}
+                {data?.printed && (
+                  <Tooltip label="OS impressa" withArrow>
+                    <TbPrinter size={18} />
+                  </Tooltip>
+                )}
+              </Flex>
             </Badge>
 
             <Group noWrap spacing={0}>

@@ -1,6 +1,6 @@
 import { WarrantyVisitItem } from "@/types/serviceOrders";
 import { maskCpf } from "@/utils/getRandomColor";
-import { Accordion, Flex, Grid, Group, Text } from "@mantine/core";
+import { Accordion, Divider, Flex, Grid, Group, Text } from "@mantine/core";
 
 interface ListOfVisitsProps {
   data: WarrantyVisitItem[];
@@ -31,10 +31,20 @@ export function ListOfVisits({ data }: ListOfVisitsProps) {
               <Grid.Col xs={12}>
                 <Group spacing="xs">
                   <Text size="sm" weight={500} component="label">
+                    Defeito Reclamado:
+                  </Text>
+                  <Text size="sm">{item.defect}</Text>
+                </Group>
+                <Divider my="sm" />
+              </Grid.Col>
+              <Grid.Col xs={12}>
+                <Group spacing="xs">
+                  <Text size="sm" weight={500} component="label">
                     Cliente ficou com as peças usadas:
                   </Text>
                   <Text size="sm">{item.clientePiece ? "Sim" : "Não"}</Text>
                 </Group>
+                <Divider my="sm" />
               </Grid.Col>
               <Grid.Col xs={12}>
                 <Group spacing="xs">
@@ -45,6 +55,7 @@ export function ListOfVisits({ data }: ListOfVisitsProps) {
                     {item.employee.name} - {maskCpf(item.employee.cpf)}
                   </Text>
                 </Group>
+                <Divider my="sm" />
               </Grid.Col>
 
               <Grid.Col xs={12}>

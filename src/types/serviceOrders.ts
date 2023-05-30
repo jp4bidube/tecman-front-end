@@ -170,6 +170,7 @@ export interface WarrantyVisitItem {
   serviceExecuted: string;
   equipment: Equipment;
   employee: User;
+  defect: string;
 }
 
 export interface IOSEditForm {
