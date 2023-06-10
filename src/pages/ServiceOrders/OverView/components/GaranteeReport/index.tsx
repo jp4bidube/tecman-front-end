@@ -63,20 +63,6 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
       <main>
         <section className="os-infos">
           <div className="os" style={{ position: "relative" }}>
-            <span
-              style={{
-                fontSize: 12,
-                fontStyle: "italic",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                position: "absolute",
-                width: "15rem",
-                left: 0,
-              }}
-            >
-              Técnico: {data.tecnic.name}
-            </span>
             <h3 id="os-title">GARANTIA</h3>
             <span
               style={{
@@ -99,6 +85,15 @@ export const GaranteeReport = ({ componentRef, data }: GaranteeReportProps) => {
               <div className="grid-item os-number-cell  borderRightBottomNone">
                 <span className="number-os-title">GARANTIA DA OS: </span>
                 <span className="number-os blue-info">{data?.id}</span>
+                <span
+                  className="technician-os-title"
+                  style={{ marginLeft: "1rem" }}
+                >
+                  TÉCNICO:{" "}
+                </span>
+                <span className="technician-os blue-info">
+                  {data?.tecnic.name}
+                </span>
               </div>
               <div className="grid-item os-number-cell  borderBottomNone">
                 <span className="date-os-title">DATA VISITA: </span>

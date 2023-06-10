@@ -194,8 +194,7 @@ export const Top = ({ data, handleFinishOS }: TopProps) => {
             </Badge>
 
             <Group noWrap spacing={0}>
-              {data.orderServiceStatus.id === 1 ||
-              data.orderServiceStatus.id === 4 ? (
+              {data.orderServiceStatus.id === 4 ? (
                 <Button
                   radius="xl"
                   onClick={() => handleFinishOS(true)}
